@@ -1,10 +1,8 @@
 import SUAVE
-from SUAVE.Core import Units, Data
+from SUAVE.Core import Units
 from SUAVE.Components.Energy.Networks import Lift_Cruise
-from SUAVE.Methods.Propulsion import propeller_design
-from SUAVE.Methods.Power.Battery.Sizing import initialize_from_mass
 
-#vehicle definition
+# Vehicle definition
 def base_vehicle():
     # Vehicle initialization
     vehicle = SUAVE.Vehicle()
@@ -22,9 +20,7 @@ def base_vehicle():
     
     return vehicle
 
-# aerodynamics configuration
-# This function configures the aerodynamics of the vehicle
-# It includes the main wing and fuselage
+# Aerodynamics configuration
 def configure_aerodynamics(vehicle):
     # Main wing
     wing = SUAVE.Components.Wings.Main_Wing()
@@ -41,6 +37,8 @@ def configure_aerodynamics(vehicle):
     
     # Add to vehicle
     vehicle.append_component(wing)
+    
+    # Ensure the vehicle's reference area is set to the wing's reference area
     vehicle.reference_area = wing.areas.reference
     
     # Fuselage (simplified)
@@ -53,9 +51,7 @@ def configure_aerodynamics(vehicle):
     
     return vehicle
 
-# propulsion configuration
-# This function configures the propulsion system of the vehicle
-# It includes the lift and cruise propellers, motors, and battery
+# Propulsion configuration
 def configure_propulsion(vehicle):
     # Initialize network
     net = Lift_Cruise()
@@ -87,7 +83,7 @@ def configure_propulsion(vehicle):
     net.motor = SUAVE.Components.Energy.Converters.Motor()
     net.motor.efficiency = 0.9
     
-        # Battery configuration
+    # Battery configuration
     battery = SUAVE.Components.Energy.Storages.Batteries.Constant_Mass.Lithium_Ion()
     battery.mass_properties.mass = 4.0 * Units.kg
     battery.energy = 2000.0 * Units.Wh
@@ -95,23 +91,17 @@ def configure_propulsion(vehicle):
     
     # Assign battery to network
     net.battery = battery
-    # Battery
-    #net.battery = SUAVE.Components.Energy.Storages.Batteries.Constant_Mass.Lithium_Ion()
-    #net.battery.energy = 2000 * Units.Wh
     
     vehicle.append_component(net)
     return vehicle
-    
 
-#mission configuration
-# This function sets up the mission segments for the UAV
-# It includes hover, transition, and cruise segments
+# Mission configuration
 def setup_mission(vehicle):
     # Mission initialization
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
     mission.tag = 'Lift_Cruise_Mission'
     
-    #Battery
+    # Battery
     battery = vehicle.networks.lift_cruise_network.battery
 
     # Atmospheric conditions
@@ -151,28 +141,7 @@ def setup_mission(vehicle):
     
     return mission
 
-def create_hover_segment(vehicle):
-    hover = SUAVE.Analyses.Mission.Segments.Hover.Climb()
-    hover.tag = 'hover'
-    hover.altitude_start = 0.0 * Units.meters
-    hover.altitude_end = 30.0 * Units.meters
-    hover.battery_energy = vehicle.networks.lift_cruise_network.battery.energy
-    return hover
-
-def create_transition_segment():
-    transition = SUAVE.Analyses.Mission.Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb()
-    transition.tag = 'transition'
-    transition.acceleration = 1.5 * Units.m/Units.s**2
-    return transition
-
-def create_cruise_segment():
-    cruise = SUAVE.Analyses.Mission.Segments.Cruise.Constant_Speed_Constant_Altitude()
-    cruise.tag = 'cruise'
-    cruise.air_speed = 15.0 * Units.m/Units.s
-    return cruise
 # Full analysis function
-# This function integrates all components and runs the analysis
-# It builds the vehicle, configures aerodynamics and propulsion, sets up the mission, and runs the analysis
 def full_analysis():
     # Build the vehicle
     vehicle = base_vehicle()
@@ -182,56 +151,25 @@ def full_analysis():
     # Setup analyses
     analyses = SUAVE.Analyses.Vehicle()
     
-  # 3. Add standard analyses
+    # Add standard analyses
     analyses.aerodynamics = SUAVE.Analyses.Aerodynamics.Fidelity_Zero()
     analyses.stability = SUAVE.Analyses.Stability.Fidelity_Zero()
     analyses.energy = SUAVE.Analyses.Energy.Energy()
     
-    # 4. Create mission analysis PROPERLY
-    mission = SUAVE.Analyses.Mission.Mission()
-    mission.tag = 'base_mission'
+    # Create mission analysis
+    mission = setup_mission(vehicle)
     
-    # 5. Create and populate segments
-    segments = SUAVE.Analyses.Mission.Segments.Segment.Container()
-    
-    # Hover segment
-    segment = SUAVE.Analyses.Mission.Segments.Hover.Climb()
-    segment.tag = "hover_climb"
-    segment.altitude_start = 0.0 * Units.ft
-    segment.altitude_end = 100.0 * Units.ft
-    segments.append(segment)
-    
-    # Transition segment
-    segment = SUAVE.Analyses.Mission.Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb()
-    segment.tag = "transition"
-    segment.altitude = 100.0 * Units.ft
-    segments.append(segment)
-    
-    # Cruise segment
-    segment = SUAVE.Analyses.Mission.Segments.Cruise.Constant_Speed_Constant_Altitude()
-    segment.tag = "cruise"
-    segment.distance = 10.0 * Units.nautical_mile
-    segments.append(segment)
-    
-    # 6. Assign segments to mission
-    mission.segments = segments
-    
-    # 7. Add mission to analyses
+    # Add mission to analyses
     analyses.mission = mission
     
-    # 8. Finalize everything
+    # Finalize everything
     analyses.finalize()
     vehicle.finalize()
     
-    # 9. Run mission
+    # Run mission
     results = mission.evaluate()
-
-    print("Mission type:", mission.typestring())  # Should return "Mission"
-    print("Segment container type:", segments.typestring())  # Should return "Segment.Container"
     
     return vehicle, analyses, results
-
-
 
 def print_results(results):
     print("\nMission Summary:")
@@ -246,10 +184,9 @@ def print_results(results):
     cruise_energy = results.segments.cruise.conditions.propulsion.battery_energy[:,0]
     print("Cruise energy used:", cruise_energy[0] - cruise_energy[-1], "Wh")
 
-    print("Full results:  ", results)
-    print("Full Analysis: ", analyses)
-    print("Full Vehicle Description: ", vehicle)
-
 if __name__ == "__main__":
+    print("running full analysis")
     vehicle, analyses, results = full_analysis()
+    print("Vehicle and analyses setup complete.")
     print_results(results)
+    print("Results printed.")
