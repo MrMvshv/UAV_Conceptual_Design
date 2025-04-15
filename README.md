@@ -1,4 +1,3 @@
-# UAV_Conceptual_Design
-Conceptual design of lift cruise configuration UAV using SUAVE framework
+# SUAVE Tutorials
 
-Recommend you use python3.9 for best compatibility; packages in requirements.txt
+See [suave.stanford.edu/tutorials](https://suave.stanford.edu/tutorials.html) for more information
