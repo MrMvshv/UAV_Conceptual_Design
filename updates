@@ -170,3 +170,115 @@ print(f"Fuselage Total Length: {fuselage.lengths.total / Units.meter} m")
 print(f"Boom Total Length: {boom.lengths.total / Units.meter} m")
 print(f"Boom Right Origin: {boom.origin[0] / Units.meter} m")
 print(f"Boom Left Origin: {other_boom.origin[0] / Units.meter} m")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ------------------------------------------------------------------
+# MAIN WING (Scaled down from 35ft to ~1.5m span)
+# ------------------------------------------------------------------
+wing = SUAVE.Components.Wings.Main_Wing()
+wing.tag = 'main_wing'
+wing.origin = [[0.3, 0., -0.1]] * Units.meter  # Adjusted to match fuselage
+wing.spans.projected = 1.5 * Units.meter  # Original: 35ft (~10.67m) → Scaled to ~1.5m
+wing.chords.root = 0.3 * Units.meter  # Original: 3.25ft (~0.99m) → Scaled to 0.3m
+
+# Root Segment
+segment = SUAVE.Components.Wings.Segment()
+segment.tag = 'Root'
+segment.percent_span_location = 0.
+segment.twist = 0. * Units.degrees
+segment.root_chord_percent = 1.5  # Root chord extension
+segment.dihedral_outboard = 1.0 * Units.degrees
+segment.sweeps.quarter_chord = 8.5 * Units.degrees
+segment.thickness_to_chord = 0.18  # Airfoil thickness (e.g., NACA 2418)
+wing.Segments.append(segment)
+
+# Mid Segment (22.7% span)
+segment = SUAVE.Components.Wings.Segment()
+segment.tag = 'Section_2'
+segment.percent_span_location = 0.227
+segment.twist = 0. * Units.degrees
+segment.root_chord_percent = 1.0  # Transition to uniform chord
+segment.dihedral_outboard = 1.0 * Units.degrees
+segment.sweeps.quarter_chord = 0.0 * Units.degrees
+segment.thickness_to_chord = 0.12  # Thinner airfoil outboard
+wing.Segments.append(segment)
+
+# Tip Segment
+segment = SUAVE.Components.Wings.Segment()
+segment.tag = 'Tip'
+segment.percent_span_location = 1.0
+segment.twist = 0. * Units.degrees
+segment.root_chord_percent = 1.0
+segment.dihedral_outboard = 0.0 * Units.degrees
+segment.sweeps.quarter_chord = 0.0 * Units.degrees
+segment.thickness_to_chord = 0.12
+wing.Segments.append(segment)
+
+# Auto-compute planform
+wing = segment_properties(wing)
+wing = wing_segmented_planform(wing)
+vehicle.reference_area = wing.areas.reference  # Updates reference area
+vehicle.append_component(wing)
+
+
+
+
+# ------------------------------------------------------------------
+# HORIZONTAL TAIL (Scaled to ~0.3m span)
+# ------------------------------------------------------------------
+htail = SUAVE.Components.Wings.Horizontal_Tail()
+htail.tag = 'horizontal_tail'
+htail.areas.reference = 0.06 * Units['meters**2']  # Original: 2.0 ft² → ~0.186m² → Scaled to 0.06m²
+htail.taper = 0.5
+htail.sweeps.quarter_chord = 20. * Units.degrees
+htail.aspect_ratio = 5.0
+htail.thickness_to_chord = 0.12
+htail.dihedral = 5. * Units.degrees
+htail.origin = [[0.8, 0.0, 0.05]] * Units.meter  # Adjusted to tail position
+
+# Auto-compute planform
+htail = wing_planform(htail)
+vehicle.append_component(htail)
+
+
+
+# ------------------------------------------------------------------
+# VERTICAL TAIL (Scaled to ~0.2m height)
+# ------------------------------------------------------------------
+vtail = SUAVE.Components.Wings.Vertical_Tail()
+vtail.tag = 'vertical_tail'
+vtail.areas.reference = 0.03 * Units['meters**2']  # Original: 1.0 ft² → ~0.093m² → Scaled to 0.03m²
+vtail.taper = 0.5
+vtail.sweeps.quarter_chord = 30. * Units.degrees
+vtail.aspect_ratio = 2.5
+vtail.thickness_to_chord = 0.12
+vtail.origin = [[0.8, 0.0, 0.05]] * Units.meter  # Co-located with htail
+
+# Auto-compute planform
+vtail = wing_planform(vtail)
+vehicle.append_component(vtail)

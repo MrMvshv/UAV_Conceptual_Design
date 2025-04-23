@@ -144,42 +144,44 @@ def setup_vehicle():
     # WING PROPERTIES
     wing                          = SUAVE.Components.Wings.Main_Wing()
     wing.tag                      = 'main_wing'
-    wing.origin                   = [[1.5, 0., -0.5 ]]
-    wing.spans.projected          = 35.0   * Units.feet
-    wing.chords.root              = 3.25   * Units.feet
+    wing.origin = [[0.3, 0., 0.05]] * Units.meter  # Adjusted to match fuselage
+    wing.spans.projected = 1.4 * Units.meter  # Original: 35ft (~10.67m) → Scaled to ~1.5m
+    wing.chords.root = 0.2 * Units.meter  # Original: 3.25ft (~0.99m) → Scaled to 0.3m
 
-    # Segment
-    segment                       = SUAVE.Components.Wings.Segment()
-    segment.tag                   = 'Root'
+
+    # Root Segment
+    segment = SUAVE.Components.Wings.Segment()
+    segment.tag = 'Root'
     segment.percent_span_location = 0.
-    segment.twist                 = 0.
-    segment.root_chord_percent    = 1.5
-    segment.dihedral_outboard     = 1.0 * Units.degrees
-    segment.sweeps.quarter_chord  = 8.5 * Units.degrees
-    segment.thickness_to_chord    = 0.18
+    segment.twist = 0. * Units.degrees
+    segment.root_chord_percent = 1.5  # Root chord extension
+    segment.dihedral_outboard = 1.0 * Units.degrees
+    segment.sweeps.quarter_chord = 8.5 * Units.degrees
+    segment.thickness_to_chord = 0.18  # Airfoil thickness (e.g., NACA 2418)
     wing.Segments.append(segment)
 
-    # Segment
-    segment                       = SUAVE.Components.Wings.Segment()
-    segment.tag                   = 'Section_2'
-    segment.percent_span_location = 0.227
-    segment.twist                 = 0.
-    segment.root_chord_percent    = 1.
-    segment.dihedral_outboard     = 1.0  * Units.degrees
-    segment.sweeps.quarter_chord  = 0.0  * Units.degrees
-    segment.thickness_to_chord    = 0.12
+    # Mid Segment (22.7% span) - 10%
+    segment = SUAVE.Components.Wings.Segment()
+    segment.tag = 'Section_2'
+    segment.percent_span_location = 0.1
+    segment.twist = 0. * Units.degrees
+    segment.root_chord_percent = 1.0  # Transition to uniform chord
+    segment.dihedral_outboard = 1.0 * Units.degrees
+    segment.sweeps.quarter_chord = 0.0 * Units.degrees
+    segment.thickness_to_chord = 0.12  # Thinner airfoil outboard
     wing.Segments.append(segment)
 
-    # Segment
-    segment                       = SUAVE.Components.Wings.Segment()
-    segment.tag                   = 'Tip'
+    # Tip Segment
+    segment = SUAVE.Components.Wings.Segment()
+    segment.tag = 'Tip'
     segment.percent_span_location = 1.0
-    segment.twist                 = 0.
-    segment.root_chord_percent    = 1.0
-    segment.dihedral_outboard     = 0.0 * Units.degrees
-    segment.sweeps.quarter_chord  = 0.0 * Units.degrees
-    segment.thickness_to_chord    = 0.12
+    segment.twist = 0. * Units.degrees
+    segment.root_chord_percent = 0.8
+    segment.dihedral_outboard = 0.0 * Units.degrees
+    segment.sweeps.quarter_chord = 0.0 * Units.degrees
+    segment.thickness_to_chord = 0.12
     wing.Segments.append(segment)
+
     
     # Fill out more segment properties automatically
     wing = segment_properties(wing)
@@ -192,117 +194,131 @@ def setup_vehicle():
     # add to vehicle
     vehicle.append_component(wing)
     
-    # Add a horizontal tail
-    # WING PROPERTIES
-    wing                          = SUAVE.Components.Wings.Horizontal_Tail()
-    wing.tag                      = 'horizontal_tail'
-    wing.areas.reference          = 2.0
-    wing.taper                    = 0.5
-    wing.sweeps.quarter_chord     = 20. * Units.degrees
-    wing.aspect_ratio             = 5.0
-    wing.thickness_to_chord       = 0.12
-    wing.dihedral                 = 5.  * Units.degrees
-    wing.origin                   = [[5.5 , 0.0 , 0.65 ]]
+    # ------------------------------------------------------------------
+    # HORIZONTAL TAIL (Scaled to ~0.3m span)
+    # ------------------------------------------------------------------
+    htail = SUAVE.Components.Wings.Horizontal_Tail()
+    htail.tag = 'horizontal_tail'
+    htail.areas.reference = 0.06 * Units['meters**2']  # Original: 2.0 ft² → ~0.186m² → Scaled to 0.06m²
+    htail.taper = 0.5
+    htail.sweeps.quarter_chord = 20. * Units.degrees
+    htail.aspect_ratio = 5.0
+    htail.thickness_to_chord = 0.12
+    htail.dihedral = 5. * Units.degrees
+    htail.origin = [[0.8, 0.0, 0.025]] * Units.meter  # Adjusted to tail position
+
+    # Auto-compute planform
+    htail = wing_planform(htail)
+    vehicle.append_component(htail)
+
     
-    # Fill out more segment properties automatically
-    wing = wing_planform(wing)
-    
-    # add to vehicle
-    vehicle.append_component(wing)    
-    
-    # Add a vertical tail
-    wing                          = SUAVE.Components.Wings.Vertical_Tail()
-    wing.tag                      = 'vertical_tail'
-    wing.areas.reference          = 1.0
-    wing.taper                    = 0.5
-    wing.sweeps.quarter_chord     = 30 * Units.degrees
-    wing.aspect_ratio             = 2.5
-    wing.thickness_to_chord       = 0.12
-    wing.origin                   = [[5.5 , 0.0 , 0.65 ]]
-    
-    # Fill out more segment properties automatically
-    wing = wing_planform(wing)
-    
-    # add to vehicle
-    vehicle.append_component(wing)        
-    
+    # ------------------------------------------------------------------
+    # VERTICAL TAIL (Scaled to ~0.2m height)
+    # ------------------------------------------------------------------
+    vtail = SUAVE.Components.Wings.Vertical_Tail()
+    vtail.tag = 'vertical_tail'
+    vtail.areas.reference = 0.03 * Units['meters**2']  # Original: 1.0 ft² → ~0.093m² → Scaled to 0.03m²
+    vtail.taper = 0.5
+    vtail.sweeps.quarter_chord = 30. * Units.degrees
+    vtail.aspect_ratio = 2.5
+    vtail.thickness_to_chord = 0.12
+    vtail.origin = [[0.8, 0.0, 0.025]] * Units.meter  # Co-located with htail
+
+    # Auto-compute planform
+    vtail = wing_planform(vtail)
+    vehicle.append_component(vtail)
     # Add a fuseelage
     
     # ---------------------------------------------------------------
     # FUSELAGE
     # ---------------------------------------------------------------
     # FUSELAGE PROPERTIES
-    fuselage                                    = SUAVE.Components.Fuselages.Fuselage()
-    fuselage.tag                                = 'fuselage'
-    fuselage.seats_abreast                      = 2.
-    fuselage.fineness.nose                      = 0.88
-    fuselage.fineness.tail                      = 1.13
-    fuselage.lengths.nose                       = 3.2 * Units.feet
-    fuselage.lengths.tail                       = 6.4 * Units.feet
-    fuselage.lengths.cabin                      = 6.4 * Units.feet
-    fuselage.lengths.total                      = 6.0
-    fuselage.width                              = 5.85 * Units.feet
-    fuselage.heights.maximum                    = 4.65 * Units.feet
-    fuselage.heights.at_quarter_length          = 3.75 * Units.feet
-    fuselage.heights.at_wing_root_quarter_chord = 4.65 * Units.feet
-    fuselage.heights.at_three_quarters_length   = 4.26 * Units.feet
-    fuselage.areas.wetted                       = 236. * Units.feet**2
-    fuselage.areas.front_projected              = 0.14 * Units.feet**2
-    fuselage.effective_diameter                 = 5.85 * Units.feet
-    fuselage.differential_pressure              = 0.
+    fuselage = SUAVE.Components.Fuselages.Fuselage()
+    fuselage.tag = 'eVTOL_Fuselage' # Updated tag
+
+    # Basic parameters scaled for 1m vehicle
+    fuselage.fineness.nose = 1.33 # (nose_length / width) = 0.2 / 0.15
+    fuselage.fineness.tail = 1.33 # (tail_length / width) = 0.2 / 0.15
+    fuselage.lengths.nose = 0.2 * Units.meter # 20 cm nose
+    fuselage.lengths.tail = 0.2 * Units.meter # 20 cm tail
+    fuselage.lengths.cabin = 0.6 * Units.meter # 60 cm cabin = 1.0m total - nose - tail
+    fuselage.lengths.total = fuselage.lengths.nose + fuselage.lengths.cabin + fuselage.lengths.tail # Calculated total: 1.0 m
+    fuselage.width = 0.15 * Units.meter # Max width 15 cm
+    fuselage.heights.maximum = 0.15 * Units.meter # Max height 15 cm
+
+    # Specific heights (can be refined, starting similar to max height)
+    # Scaling based on the ratio of new max_height (0.15m) to old max_height (4.65ft ~= 1.417m)
+    # Scale factor = 0.15 / 1.417 ~= 0.106
+    # However, simpler approach for initial design: base it on the new max height
+    fuselage.heights.at_quarter_length = 0.14 * Units.meter # Slightly less than max if tapered
+    fuselage.heights.at_wing_root_quarter_chord = 0.15 * Units.meter # Assume wing at max height point
+    fuselage.heights.at_three_quarters_length = 0.14 * Units.meter # Slightly less than max if tapered
+
+    # Estimated areas for the 1m fuselage
+    fuselage.areas.wetted = 0.6 * Units['meters**2'] # Previous estimate
+    fuselage.areas.front_projected = (0.15 * 0.15) * Units['meters**2'] # Approx 0.0225 m^2
+
+    fuselage.effective_diameter = 0.15 * Units.meter # Based on max width/height
+
+    # Unpressurized
+    fuselage.differential_pressure = 0.0 * Units.pascal # Use units
+
+    # Initialize Segments list if it doesn't exist (Good practice)
+    if not hasattr(fuselage, 'Segments'):
+        fuselage.Segments = [] # Use list for append
 
     # Segment
     segment                           = SUAVE.Components.Lofted_Body_Segment.Segment()
     segment.tag                       = 'segment_0'
     segment.percent_x_location        = 0.
-    segment.percent_z_location        = -0.05
-    segment.height                    = 0.1
-    segment.width                     = 0.1
+    segment.percent_z_location        = 0.
+    segment.height = 0.01 * Units.meter # Very small at the tip
+    segment.width = 0.01 * Units.meter # Very small at the tip
     fuselage.Segments.append(segment)
 
     # Segment
     segment                           = SUAVE.Components.Lofted_Body_Segment.Segment()
     segment.tag                       = 'segment_1'
     segment.percent_x_location        = 0.06
-    segment.percent_z_location        = -0.05
-    segment.height                    = 0.52
-    segment.width                     = 0.75
+    segment.percent_z_location = 0. # Keep centerline for simplicity now
+    segment.height = 0.08 * Units.meter # Scale: 0.52 * 0.107 = 0.055 -> adjusted up
+    segment.width = 0.10 * Units.meter # Scale: 0.75 * 0.107 = 0.08 -> adjusted up
     fuselage.Segments.append(segment)
 
     # Segment
     segment                           = SUAVE.Components.Lofted_Body_Segment.Segment()
     segment.tag                       = 'segment_2'
-    segment.percent_x_location        =  0.25
-    segment.percent_z_location        = -.01
-    segment.height                    =  1.2
-    segment.width                     =  1.43
+    segment.percent_x_location = 0.20 # Adjusted location (was 0.25)
+    segment.percent_z_location = 0.
+    segment.height = 0.15 * Units.meter # Reaching max height
+    segment.width = 0.15 * Units.meter # Reaching max width
     fuselage.Segments.append(segment)
 
     # Segment
     segment                           = SUAVE.Components.Lofted_Body_Segment.Segment()
     segment.tag                       = 'segment_3'
-    segment.percent_x_location        =  0.475
-    segment.percent_z_location        =  0
-    segment.height                    =  1.4
-    segment.width                     =  1.4
+    segment.percent_x_location = 0.5 # Adjusted location (was 0.475) - Mid point approx
+    segment.percent_z_location = 0.
+    segment.height = 0.15 * Units.meter # Max Height
+    segment.width = 0.15 * Units.meter # Max Width
     fuselage.Segments.append(segment)
 
     # Segment
     segment                           = SUAVE.Components.Lofted_Body_Segment.Segment()
     segment.tag                       = 'segment_4'
-    segment.percent_x_location        = 0.75
-    segment.percent_z_location        = 0.06
-    segment.height                    = 0.6
-    segment.width                     = 0.4
+    segment.percent_x_location = 0.8 # Adjusted location (was 0.75) - Start of tail
+    segment.percent_z_location = 0.01 # Slight raise maybe
+    segment.height = 0.10 * Units.meter # Tapering down (Scale: 0.6 * 0.107 = 0.06 -> adjusted)
+    segment.width = 0.08 * Units.meter # Tapering down (Scale: 0.4 * 0.107 = 0.04 -> adjusted)
     fuselage.Segments.append(segment)
 
     # Segment
     segment                           = SUAVE.Components.Lofted_Body_Segment.Segment()
     segment.tag                       = 'segment_5'
-    segment.percent_x_location        = 1.
-    segment.percent_z_location        = 0.1
-    segment.height                    = 0.05
-    segment.width                     = 0.05
+    segment.percent_x_location = 1. # End of tail
+    segment.percent_z_location = 0.02 # Maybe slightly higher tail tip
+    segment.height = 0.01 * Units.meter # Very small at the tip
+    segment.width = 0.01 * Units.meter # Very small at the tip
     fuselage.Segments.append(segment)
 
     # add to vehicle
@@ -315,21 +331,37 @@ def setup_vehicle():
     # Add booms for the motors
     boom                                   = SUAVE.Components.Fuselages.Fuselage()
     boom.tag                                = 'boom_R'
-    boom.origin                             = [[0.525, 3.0, -0.35]]
-    boom.lengths.nose                       = 0.2
-    boom.lengths.tail                       = 0.2
-    boom.lengths.total                      = 4
-    boom.width                              = 0.15
-    boom.heights.maximum                    = 0.15
-    boom.heights.at_quarter_length          = 0.15
-    boom.heights.at_three_quarters_length   = 0.15
-    boom.heights.at_wing_root_quarter_chord = 0.15
-    boom.effective_diameter                 = 0.15
-    boom.areas.wetted                       = 2*np.pi*(0.075)*3.5
-    boom.areas.front_projected              = np.pi*0.15
-    boom.fineness.nose                      = 0.15/0.2
-    boom.fineness.tail                      = 0.15/0.2 
-    
+
+    # Placement: Needs careful consideration based on wing/rotor placement.
+    # Example: Place start of boom slightly behind nose, outboard, slightly below fuselage centerline.
+    # Assume wing starts at x=0.25m, boom under wing. Place boom start at x=0.3m?
+    # Place outboard Y=0.5m? Place Z=-0.1m? (Relative to vehicle origin 0,0,0)
+    boom.origin = [[0.1, 0.35, 0.06]] * Units.meter # Units are important!
+
+    # Boom Dimensions (scaled down significantly)
+    boom.lengths.total = 0.66 * Units.meter # Example: Boom slightly longer than fuselage? Or shorter? Depends on layout. Adjust as needed.
+    boom.lengths.nose = 0.1 * Units.meter # Short nose cone
+    boom.lengths.tail = 0.1 * Units.meter # Short tail cone
+    boom.lengths.cabin = boom.lengths.total - boom.lengths.nose - boom.lengths.tail # Should define cabin length if using segments, otherwise less critical.
+
+    boom.width = 0.03 * Units.meter # e.g., 8 cm diameter boom
+    boom.heights.maximum = 0.03 * Units.meter
+    boom.heights.at_quarter_length = 0.03 * Units.meter
+    boom.heights.at_three_quarters_length = 0.03 * Units.meter
+    boom.heights.at_wing_root_quarter_chord = 0.03 * Units.meter # Less relevant for boom unless wing attaches to it
+
+    boom.effective_diameter = 0.03 * Units.meter
+
+    # Areas (Recalculate for new dimensions)
+    # Wetted Area: Approx surface area. Cylinder approx: pi * D * L_cyl = pi * 0.08 * (1.2-0.1-0.1) = pi * 0.08 * 1.0 = ~0.25 m^2. Add ends. Let's estimate higher.
+    boom.areas.wetted = 0.05 * Units['meters**2'] # Rough estimate
+    # Frontal Area: Area of cross-section. pi * (D/2)^2 = pi * (0.08/2)^2 = pi * 0.04^2 = ~0.005 m^2
+    boom.areas.front_projected = np.pi * (0.03/2)**2 * Units['meters**2']
+
+    # Fineness (Length / Diameter)
+    boom.fineness.nose = boom.lengths.nose / boom.width # 0.1 / 0.08 = 1.25
+    boom.fineness.tail = boom.lengths.tail / boom.width # 0.1 / 0.08 = 1.25
+        
     vehicle.append_component(boom)
     
     # Now attach the mirrored boom
@@ -416,7 +448,7 @@ def setup_vehicle():
     lift_rotor.design_tip_mach            = 0.65
     lift_rotor.freestream_velocity        = 500. * Units['ft/min']
     lift_rotor.angular_velocity           = lift_rotor.design_tip_mach* Air().compute_speed_of_sound()/lift_rotor.tip_radius
-    lift_rotor.design_Cl                  = 0.7
+    lift_rotor.design_Cl                  = 0.5
     lift_rotor.design_altitude            = 3000. * Units.feet
     lift_rotor.design_thrust              = 2500*Units.lbf/4
     lift_rotor.variable_pitch             = False
