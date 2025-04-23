@@ -1,0 +1,2587 @@
+<?xml version="1.0"?>
+<Vsp_Geometry>
+  <Version>5</Version>
+  <Vehicle>
+    <ParmContainer>
+      <ID>CDWOAUNOCA</ID>
+      <Name>Vehicle</Name>
+      <AttributeCollection ID="TFPISJUPQ" AttachID="CDWOAUNOCA" AttachType="2">
+        <Attribute ID="_AttrVehNotes" AttachID="TFPISJUPQ" Name="VSP::VehicleNotes" Type="3" EventGroup="-1" StrData="" Desc="Vehicle level notes for users" Protection="1"/>
+        <Attribute ID="_AttrWMGroup" AttachID="TFPISJUPQ" Name="VSP::WatermarkGroup" Type="8" EventGroup="0" Desc="Watermark attributes for text &amp; display controls" Protection="1">
+          <AttributeCollection ID="FTBEZYNNM" AttachID="_AttrWMGroup" AttachType="7">
+            <Attribute ID="_AttrWMEdgeAlpha" AttachID="FTBEZYNNM" Name="VSP::EdgeAlpha" Type="2" EventGroup="0" DblData="0.000000000000000000e+00" Desc="Alpha for watermark box" Protection="1"/>
+            <Attribute ID="_AttrWMEdgeColor" AttachID="FTBEZYNNM" Name="VSP::EdgeColor" Type="4" EventGroup="0" Desc="RGB Color for watermark box" Protection="1">
+              <Vec3dData>0.000000000000000000e+00, 0.000000000000000000e+00, 0.000000000000000000e+00, </Vec3dData>
+            </Attribute>
+            <Attribute ID="_AttrWMFillAlpha" AttachID="FTBEZYNNM" Name="VSP::FillAlpha" Type="2" EventGroup="0" DblData="1.000000000000000000e+00" Desc="Alpha for watermark fill" Protection="1"/>
+            <Attribute ID="_AttrWMFillColor" AttachID="FTBEZYNNM" Name="VSP::FillColor" Type="4" EventGroup="0" Desc="RGB Color for watermark fill" Protection="1">
+              <Vec3dData>1.000000000000000021e-02, 5.000000000000000000e-01, 3.200000000000000067e-01, </Vec3dData>
+            </Attribute>
+            <Attribute ID="_AttrWMShow" AttachID="FTBEZYNNM" Name="VSP::ShowWatermark" Type="1" EventGroup="0" IntData="0" Desc="Toggle watermark display state" Protection="1"/>
+            <Attribute ID="_AttrWMText" AttachID="FTBEZYNNM" Name="VSP::Text" Type="3" EventGroup="0" StrData="Watermark" Desc="Watermark text" Protection="1"/>
+            <Attribute ID="_AttrWMTextAlpha" AttachID="FTBEZYNNM" Name="VSP::TextAlpha" Type="2" EventGroup="0" DblData="1.000000000000000000e+00" Desc="Alpha for watermark text" Protection="1"/>
+            <Attribute ID="_AttrWMTextColor" AttachID="FTBEZYNNM" Name="VSP::TextColor" Type="4" EventGroup="0" Desc="RGB color for watermark text" Protection="1">
+              <Vec3dData>1.000000000000000000e+00, 1.000000000000000000e+00, 1.000000000000000000e+00, </Vec3dData>
+            </Attribute>
+            <Attribute ID="_AttrWMTextScale" AttachID="FTBEZYNNM" Name="VSP::TextScale" Type="2" EventGroup="0" DblData="2.000000000000000000e+00" Desc="Scale factor for watermark text" Protection="1"/>
+          </AttributeCollection>
+        </Attribute>
+      </AttributeCollection>
+      <AdjustView>
+        <CORX Value="0.000000000000000000e+00" ID="VBSOWKQEDQU"/>
+        <CORY Value="0.000000000000000000e+00" ID="DRHGTCGKJFY"/>
+        <CORZ Value="0.000000000000000000e+00" ID="QSFMPTMJRRJ"/>
+        <PanX Value="0.000000000000000000e+00" ID="KOTXWOWSHZD"/>
+        <PanY Value="0.000000000000000000e+00" ID="NXDQAZSRSSE"/>
+        <RotationX Value="0.000000000000000000e+00" ID="OMMNOGTPKKC"/>
+        <RotationY Value="0.000000000000000000e+00" ID="OEEWLZNCDDH"/>
+        <RotationZ Value="0.000000000000000000e+00" ID="PFCHTVXXMCC"/>
+        <ViewportX Value="-1.000000000000000000e+00" ID="GZCEUGTLSOE"/>
+        <ViewportY Value="-1.000000000000000000e+00" ID="SLWUMJQYHZD"/>
+        <Zoom Value="1.799999999999999864e-02" ID="UHXLZVCZVJW"/>
+      </AdjustView>
+      <AdvLinkSettings>
+        <AdvLinkDefNameContainer Value="1.000000000000000000e+00" ID="GRRLRUYXICD"/>
+        <AdvLinkDefNameGroup Value="0.000000000000000000e+00" ID="MWJSWYAPAUB"/>
+        <AdvLinkGenDefName Value="0.000000000000000000e+00" ID="HWEDLFMIREN"/>
+      </AdvLinkSettings>
+      <AirfoilExport>
+        <AFAppendGeomIDFlag Value="1.000000000000000000e+00" ID="HCKAMEIXYLK"/>
+        <AFExportType Value="1.000000000000000000e+00" ID="NKTLORFAFDE"/>
+        <AFWTessFactor Value="1.000000000000000000e+00" ID="YXELQNKZJBJ"/>
+      </AirfoilExport>
+      <AttributeExplorerGUI>
+        <AttrBool Value="0.000000000000000000e+00" ID="ZUCHALEBPKZ"/>
+        <CaseSens Value="0.000000000000000000e+00" ID="ETXNKGLEVBT"/>
+      </AttributeExplorerGUI>
+      <Axis>
+        <AxisLength Value="1.000000000000000000e+00" ID="KGPEXGARWPS"/>
+      </Axis>
+      <BBox>
+        <X_Len Value="5.336633983786426505e+00" ID="CXIQSPJWZXJ"/>
+        <X_Min Value="-1.666666666666667407e-01" ID="BOTOARCMCYS"/>
+        <Y_Len Value="1.013384788939750791e+01" ID="ZUGQVCDQJDJ"/>
+        <Y_Min Value="-5.066923944698753957e+00" ID="UPKXTHKJNBI"/>
+        <Z_Len Value="1.000000000000000000e+00" ID="RNRQRAJNXBD"/>
+        <Z_Min Value="-5.000000000000000000e-01" ID="QQZQGQBKVOE"/>
+      </BBox>
+      <Background>
+        <HeightScale Value="1.000000000000000000e+00" ID="OONDAUPLBKB"/>
+        <WidthScale Value="1.000000000000000000e+00" ID="QYWYHHZHOLV"/>
+        <XOffset Value="0.000000000000000000e+00" ID="XHBWQIIDTDJ"/>
+        <YOffset Value="0.000000000000000000e+00" ID="QPEYCTGOVNI"/>
+      </Background>
+      <CompGeom>
+        <UseModeCompGeomFlag Value="0.000000000000000000e+00" ID="OIAQTJOHDPO"/>
+      </CompGeom>
+      <DXFSettings>
+        <BottomLeftRotation Value="0.000000000000000000e+00" ID="ZAQFTVXRXEB"/>
+        <BottomLeftView Value="4.000000000000000000e+00" ID="IJNEAKPRTGN"/>
+        <BottomRightRotation Value="0.000000000000000000e+00" ID="RJCJETBMOEF"/>
+        <BottomRightView Value="0.000000000000000000e+00" ID="FJWDPJRRYRO"/>
+        <DXFAllXSecFlag Value="0.000000000000000000e+00" ID="NFPEYFHSPCJ"/>
+        <DXFColorFlag Value="0.000000000000000000e+00" ID="RQONILCRNME"/>
+        <DXFProjectionFlag Value="0.000000000000000000e+00" ID="LOLNCAMEFLR"/>
+        <DXFTessFactor Value="2.000000000000000000e+00" ID="GBOJOQZHPXI"/>
+        <DimFlag Value="0.000000000000000000e+00" ID="QXOOPMEUHAC"/>
+        <LenUnit Value="4.000000000000000000e+00" ID="DRAZIUSEPTJ"/>
+        <TopLeftRotation Value="1.000000000000000000e+00" ID="XXEWOLIOAMT"/>
+        <TopLeftView Value="2.000000000000000000e+00" ID="OCRBMTSXTUE"/>
+        <TopRightRotation Value="0.000000000000000000e+00" ID="DFNBMUPFTSB"/>
+        <TopRightView Value="6.000000000000000000e+00" ID="DRAGYHNJUZL"/>
+        <ViewType Value="3.000000000000000000e+00" ID="FXZFFFYVYOS"/>
+      </DXFSettings>
+      <DegenGeom>
+        <UseModeDegenGeomFlag Value="0.000000000000000000e+00" ID="XIGYKEPZINN"/>
+      </DegenGeom>
+      <Design>
+        <Working_XDDM_Type Value="0.000000000000000000e+00" ID="RENIROYANYL"/>
+      </Design>
+      <ExportFlag>
+        <CompGeom_CSV_Export Value="1.000000000000000000e+00" ID="BGTOSLKMUHM"/>
+        <DegenGeom_CSV_Export Value="1.000000000000000000e+00" ID="VJVAISRUPLS"/>
+        <DegenGeom_M_Export Value="1.000000000000000000e+00" ID="XXJOFQSFOQL"/>
+        <UseModeExportFlag Value="0.000000000000000000e+00" ID="AUMAMFAXDLB"/>
+      </ExportFlag>
+      <FeaStructure>
+        <StructModelUnit Value="6.000000000000000000e+00" ID="TSSQSNFFCAL"/>
+        <StructUnit Value="3.000000000000000000e+00" ID="CXIWDGGVLIS"/>
+      </FeaStructure>
+      <FitModel>
+        <Select_Box_Flag Value="0.000000000000000000e+00" ID="VMRMFMOCJIU"/>
+        <Select_One_Flag Value="0.000000000000000000e+00" ID="HDOICMLOZMN"/>
+        <U_TargetPt Value="0.000000000000000000e+00" ID="NILSNQTSFAO"/>
+        <U_Type Value="1.000000000000000000e+00" ID="ZWJBVJDLYST"/>
+        <W_TargetPt Value="0.000000000000000000e+00" ID="UGEFFYRRTUJ"/>
+        <W_Type Value="1.000000000000000000e+00" ID="ODTJBCADYSC"/>
+      </FitModel>
+      <IGESSettings>
+        <ExportPropMainSurf Value="0.000000000000000000e+00" ID="XPFTNAHIXQL"/>
+        <LabelAirfoilPart Value="1.000000000000000000e+00" ID="FMRJATGITUO"/>
+        <LabelDelim Value="0.000000000000000000e+00" ID="HOBRRFQXIQC"/>
+        <LabelID Value="1.000000000000000000e+00" ID="MKXKWPRECWT"/>
+        <LabelName Value="1.000000000000000000e+00" ID="UODYXEVUIVN"/>
+        <LabelSplitNo Value="1.000000000000000000e+00" ID="TFNIRGGAKZD"/>
+        <LabelSurfNo Value="1.000000000000000000e+00" ID="KCRHTUGVVDK"/>
+        <LenUnit Value="4.000000000000000000e+00" ID="UWFPCLSQVRP"/>
+        <MergeLETE Value="0.000000000000000000e+00" ID="CHFHBCWVLUK"/>
+        <SplitSubSurfs Value="0.000000000000000000e+00" ID="GIPCREWGWHL"/>
+        <SplitSurfs Value="1.000000000000000000e+00" ID="NOPHARBTGFK"/>
+        <StructureExportIndex Value="0.000000000000000000e+00" ID="PHWSLNKNQMV"/>
+        <StructureLabelAirfoilPart Value="1.000000000000000000e+00" ID="GRIMYIYNZLX"/>
+        <StructureLabelDelim Value="0.000000000000000000e+00" ID="BPKSPOOSRWB"/>
+        <StructureLabelID Value="1.000000000000000000e+00" ID="DEUJPIYIJHN"/>
+        <StructureLabelName Value="1.000000000000000000e+00" ID="YVDPAGPSNAP"/>
+        <StructureLabelSplitNo Value="1.000000000000000000e+00" ID="MIFDAJYPFPW"/>
+        <StructureLabelSurfNo Value="1.000000000000000000e+00" ID="BPJNDGHXZKH"/>
+        <StructureSplitSurfs Value="1.000000000000000000e+00" ID="WIZDNZDTLDC"/>
+        <StructureToCubic Value="0.000000000000000000e+00" ID="UVVKIRQFYOU"/>
+        <StructureToCubicTol Value="9.999999999999999547e-07" ID="FBWZGQEVENC"/>
+        <ToCubic Value="0.000000000000000000e+00" ID="ONCZYFUWFXL"/>
+        <ToCubicTol Value="9.999999999999999547e-07" ID="FAFPZYVLVPG"/>
+        <TrimTE Value="0.000000000000000000e+00" ID="XDUQKXTIDHX"/>
+      </IGESSettings>
+      <MassProperties>
+        <DrawCgFlag Value="1.000000000000000000e+00" ID="AKPMFDIPWLV"/>
+        <MassSliceDir Value="0.000000000000000000e+00" ID="XOZRENHICXN"/>
+        <NumMassSlices Value="2.000000000000000000e+01" ID="RNTVYFRTQAJ"/>
+        <UseModeMassFlag Value="0.000000000000000000e+00" ID="ZJKELNPPVDB"/>
+      </MassProperties>
+      <Measure>
+        <LenUnit Value="6.000000000000000000e+00" ID="ONGYZXJMULZ"/>
+      </Measure>
+      <ModelNotesGUI>
+        <ShowNotes Value="0.000000000000000000e+00" ID="MGJNMVOVPUA"/>
+      </ModelNotesGUI>
+      <PSlice>
+        <AutoBoundsFlag Value="1.000000000000000000e+00" ID="MWEUDEZFBOH"/>
+        <MeasureDuctFlag Value="0.000000000000000000e+00" ID="ERKSSKFOCCR"/>
+        <NumPlanerSlices Value="1.000000000000000000e+01" ID="IJLDEACKVFH"/>
+        <PlanarAxisType Value="0.000000000000000000e+00" ID="VWZUDRLBVEN"/>
+        <PlanarEndLocation Value="1.000000000000000000e+01" ID="TGBRLSUWLVP"/>
+        <PlanarStartLocation Value="0.000000000000000000e+00" ID="SHULKLEPDEL"/>
+        <UseModePlanarSliceFlag Value="0.000000000000000000e+00" ID="JVCPONBMTXS"/>
+      </PSlice>
+      <Projection>
+        <BoundaryType Value="0.000000000000000000e+00" ID="YCTOQBBEPJR"/>
+        <DirectionType Value="0.000000000000000000e+00" ID="EXJNUCYXHUV"/>
+        <TargetType Value="0.000000000000000000e+00" ID="XTWLURSHSAF"/>
+        <XComp Value="0.000000000000000000e+00" ID="IYSXBWJLDYM"/>
+        <YComp Value="0.000000000000000000e+00" ID="TAFVOJKDXDL"/>
+        <ZComp Value="0.000000000000000000e+00" ID="FDJQZZTCYKV"/>
+      </Projection>
+      <STEPSettings>
+        <ExportPropMainSurf Value="0.000000000000000000e+00" ID="XIQVBTMIKUI"/>
+        <LabelAirfoilPart Value="1.000000000000000000e+00" ID="IDPWSADIYCE"/>
+        <LabelDelim Value="0.000000000000000000e+00" ID="VGDVEMGPDCO"/>
+        <LabelID Value="1.000000000000000000e+00" ID="VIZOFUCWYIA"/>
+        <LabelName Value="1.000000000000000000e+00" ID="QKDUPMLZLKA"/>
+        <LabelSplitNo Value="1.000000000000000000e+00" ID="JUSBSLDTFJM"/>
+        <LabelSurfNo Value="1.000000000000000000e+00" ID="WYDDXMTDMFU"/>
+        <LenUnit Value="4.000000000000000000e+00" ID="BDREZRSYZFN"/>
+        <MergeLETE Value="0.000000000000000000e+00" ID="FXNQVFBHXUB"/>
+        <MergePoints Value="0.000000000000000000e+00" ID="WCYWAPRIFUZ"/>
+        <SplitSubSurfs Value="0.000000000000000000e+00" ID="YYIYZDOJUCD"/>
+        <SplitSurfs Value="1.000000000000000000e+00" ID="KCBZJKCTDJM"/>
+        <StructureExportIndex Value="0.000000000000000000e+00" ID="PBRCDDSKPZC"/>
+        <StructureLabelAirfoilPart Value="1.000000000000000000e+00" ID="MHPUMGKDLOD"/>
+        <StructureLabelDelim Value="0.000000000000000000e+00" ID="JWFOGOXWPMY"/>
+        <StructureLabelID Value="1.000000000000000000e+00" ID="YRGIDGRVXKT"/>
+        <StructureLabelName Value="1.000000000000000000e+00" ID="ZNIOIXMQOAM"/>
+        <StructureLabelSplitNo Value="1.000000000000000000e+00" ID="MRVTQEVZFET"/>
+        <StructureLabelSurfNo Value="1.000000000000000000e+00" ID="BMQYXHSDBMP"/>
+        <StructureMergePoints Value="0.000000000000000000e+00" ID="EYDGHRMWVYR"/>
+        <StructureSplitSurfs Value="1.000000000000000000e+00" ID="TRBWLINOVEI"/>
+        <StructureToCubic Value="0.000000000000000000e+00" ID="TSUONQGPKNO"/>
+        <StructureToCubicTol Value="9.999999999999999547e-07" ID="MRONLNEVJBE"/>
+        <StructureTolerance Value="9.999999999999999547e-07" ID="APAQCLQXCOD"/>
+        <ToCubic Value="0.000000000000000000e+00" ID="WUKAWNKHUPT"/>
+        <ToCubicTol Value="9.999999999999999547e-07" ID="RVEWIJMVCJH"/>
+        <Tolerance Value="9.999999999999999547e-07" ID="UQHNDCPAJRA"/>
+        <TrimTE Value="0.000000000000000000e+00" ID="TUDQRNALQWL"/>
+      </STEPSettings>
+      <STLSettings>
+        <ExportPropMainSurf Value="0.000000000000000000e+00" ID="DCTSVUZVFJS"/>
+        <MultiSolid Value="0.000000000000000000e+00" ID="SXERQDKYQPI"/>
+      </STLSettings>
+      <SVGSettings>
+        <BottomLeftRotation Value="0.000000000000000000e+00" ID="KKMYUSLSLPP"/>
+        <BottomLeftView Value="4.000000000000000000e+00" ID="PNCDTMVQWSB"/>
+        <BottomRightRotation Value="0.000000000000000000e+00" ID="UDPQVJWHJVB"/>
+        <BottomRightView Value="0.000000000000000000e+00" ID="AYJMFWSEOIY"/>
+        <LenUnit Value="4.000000000000000000e+00" ID="VQNSGMBRKSJ"/>
+        <SVGAllXSecFlag Value="0.000000000000000000e+00" ID="QCFMKNEGAVP"/>
+        <SVGProjectionFlag Value="0.000000000000000000e+00" ID="XDAKFZWAXLX"/>
+        <SVGSet Value="0.000000000000000000e+00" ID="DNKOJQPKPQA"/>
+        <SVGTessFactor Value="2.000000000000000000e+00" ID="ELNIAQSVUTU"/>
+        <Scale Value="0.000000000000000000e+00" ID="JMFOZSRMBBO"/>
+        <TopLeftRotation Value="1.000000000000000000e+00" ID="FCAFBPSSSFU"/>
+        <TopLeftView Value="2.000000000000000000e+00" ID="SIIUBZUFCEE"/>
+        <TopRightRotation Value="0.000000000000000000e+00" ID="CEOLFRSDLWL"/>
+        <TopRightView Value="6.000000000000000000e+00" ID="BEHOSUGRQCH"/>
+        <ViewType Value="3.000000000000000000e+00" ID="VLZMSROZJZO"/>
+      </SVGSettings>
+      <Screenshot>
+        <AutoCropFlag Value="0.000000000000000000e+00" ID="PBYYZKPTPCZ"/>
+        <Height Value="1.000000000000000000e+00" ID="NDINAVDNTBM"/>
+        <Ratio Value="1.000000000000000000e+00" ID="EWFNEMJZXYF"/>
+        <TransparentBGFlag Value="1.000000000000000000e+00" ID="RHZMOAPQEEY"/>
+        <Width Value="1.000000000000000000e+00" ID="QCMJWEGROCH"/>
+      </Screenshot>
+      <SetEditor>
+        <CopySetsWithGeomsFlag Value="1.000000000000000000e+00" ID="RPQXKLEPAOC"/>
+      </SetEditor>
+      <Sets>
+        <NumUserSets Value="2.000000000000000000e+01" ID="TFFOTDTCLUG"/>
+      </Sets>
+      <Text>
+        <TextSize Value="2.000000000000000000e+00" ID="MSUMPBPPHHL"/>
+      </Text>
+      <UserParm>
+        <Max Value="1.000000000000000000e+05" ID="FKWGIRMUECS"/>
+        <Min Value="-1.000000000000000000e+05" ID="KODUHJXQXJO"/>
+        <Val Value="0.000000000000000000e+00" ID="YXOZXEXLFYF"/>
+      </UserParm>
+    </ParmContainer>
+    <Lights>
+      <Num_of_Lights>8</Num_of_Lights>
+      <Light0>
+        <ParmContainer>
+          <ID>EDXFCOVEFC</ID>
+          <Name>Light</Name>
+          <Light_Parm>
+            <ActiveFlag Value="1.000000000000000000e+00" ID="SRHRHZJITFT"/>
+            <Ambient Value="5.000000000000000000e-01" ID="XWSPMGJLZAU"/>
+            <Diffuse Value="3.499999999999999778e-01" ID="DRKLWULVJNO"/>
+            <Specular Value="1.000000000000000000e+00" ID="QAKBHHUMDNU"/>
+            <X Value="1.000000000000000000e+01" ID="GCWEUGXESSB"/>
+            <Y Value="-5.000000000000000000e+01" ID="ADCQKTBNADQ"/>
+            <Z Value="2.000000000000000000e+01" ID="GOWSJIXOBHI"/>
+          </Light_Parm>
+        </ParmContainer>
+      </Light0>
+      <Light1>
+        <ParmContainer>
+          <ID>AFQBIZWTJK</ID>
+          <Name>Light</Name>
+          <Light_Parm>
+            <ActiveFlag Value="1.000000000000000000e+00" ID="PHUASOWYAJE"/>
+            <Ambient Value="5.000000000000000000e-01" ID="EZANTYJMEOF"/>
+            <Diffuse Value="5.000000000000000000e-01" ID="YTMQZMPUTIR"/>
+            <Specular Value="1.000000000000000000e+00" ID="UJHUAMQDUYN"/>
+            <X Value="1.000000000000000000e+01" ID="JKQTIFMCVNN"/>
+            <Y Value="1.500000000000000000e+01" ID="QFILSGHRRGP"/>
+            <Z Value="3.000000000000000000e+01" ID="EJQAJPVDFHG"/>
+          </Light_Parm>
+        </ParmContainer>
+      </Light1>
+      <Light2>
+        <ParmContainer>
+          <ID>CDBHHEFNYY</ID>
+          <Name>Light</Name>
+          <Light_Parm>
+            <ActiveFlag Value="1.000000000000000000e+00" ID="ZTYFWLKBJPI"/>
+            <Ambient Value="0.000000000000000000e+00" ID="WFZQRMYECTI"/>
+            <Diffuse Value="5.000000000000000000e-01" ID="NSEAKOVITNY"/>
+            <Specular Value="5.000000000000000000e-01" ID="NYZJSYWCGKB"/>
+            <X Value="-5.000000000000000000e+01" ID="ZFEFKUPVCPB"/>
+            <Y Value="3.000000000000000000e+01" ID="IAVLARJYYXZ"/>
+            <Z Value="1.000000000000000000e+01" ID="YWZJELHUORP"/>
+          </Light_Parm>
+        </ParmContainer>
+      </Light2>
+      <Light3>
+        <ParmContainer>
+          <ID>DKXWJEUAGB</ID>
+          <Name>Light</Name>
+          <Light_Parm>
+            <ActiveFlag Value="0.000000000000000000e+00" ID="IQLKFSJMBDT"/>
+            <Ambient Value="0.000000000000000000e+00" ID="XUXWATSJQVH"/>
+            <Diffuse Value="0.000000000000000000e+00" ID="GBZUPKEPNNQ"/>
+            <Specular Value="0.000000000000000000e+00" ID="IUKQJCSMLZI"/>
+            <X Value="0.000000000000000000e+00" ID="YXTCJOXLVBE"/>
+            <Y Value="0.000000000000000000e+00" ID="QLPDKECFRWB"/>
+            <Z Value="0.000000000000000000e+00" ID="QFWDVOWFQNQ"/>
+          </Light_Parm>
+        </ParmContainer>
+      </Light3>
+      <Light4>
+        <ParmContainer>
+          <ID>EXLIWFZZSI</ID>
+          <Name>Light</Name>
+          <Light_Parm>
+            <ActiveFlag Value="0.000000000000000000e+00" ID="RJPSGUWPHTH"/>
+            <Ambient Value="0.000000000000000000e+00" ID="QGXCSNPJFCV"/>
+            <Diffuse Value="0.000000000000000000e+00" ID="JMCJBQMOSNK"/>
+            <Specular Value="0.000000000000000000e+00" ID="KDPIADOWFTL"/>
+            <X Value="0.000000000000000000e+00" ID="DFQWNJOTWWY"/>
+            <Y Value="0.000000000000000000e+00" ID="ZLABAJZOLCQ"/>
+            <Z Value="0.000000000000000000e+00" ID="DYDRYQNFPCU"/>
+          </Light_Parm>
+        </ParmContainer>
+      </Light4>
+      <Light5>
+        <ParmContainer>
+          <ID>KVLUKUQEDX</ID>
+          <Name>Light</Name>
+          <Light_Parm>
+            <ActiveFlag Value="0.000000000000000000e+00" ID="QJXFWPCCAHS"/>
+            <Ambient Value="0.000000000000000000e+00" ID="IHLPEATPLQU"/>
+            <Diffuse Value="0.000000000000000000e+00" ID="SUAQHVEORRM"/>
+            <Specular Value="0.000000000000000000e+00" ID="OIUTBKXIOVE"/>
+            <X Value="0.000000000000000000e+00" ID="ONOIYYDSZXD"/>
+            <Y Value="0.000000000000000000e+00" ID="OXONGEBECYS"/>
+            <Z Value="0.000000000000000000e+00" ID="ZFQQARPPPMI"/>
+          </Light_Parm>
+        </ParmContainer>
+      </Light5>
+      <Light6>
+        <ParmContainer>
+          <ID>ROUIFNMGGY</ID>
+          <Name>Light</Name>
+          <Light_Parm>
+            <ActiveFlag Value="0.000000000000000000e+00" ID="VLKLIHYWWBS"/>
+            <Ambient Value="0.000000000000000000e+00" ID="IZAPRZZBLAA"/>
+            <Diffuse Value="0.000000000000000000e+00" ID="BUUZGWNKJXB"/>
+            <Specular Value="0.000000000000000000e+00" ID="TVQTXSHMDEO"/>
+            <X Value="0.000000000000000000e+00" ID="PQJWIFCWMJS"/>
+            <Y Value="0.000000000000000000e+00" ID="TNSTSDXATBT"/>
+            <Z Value="0.000000000000000000e+00" ID="HNBEJBVSPFM"/>
+          </Light_Parm>
+        </ParmContainer>
+      </Light6>
+      <Light7>
+        <ParmContainer>
+          <ID>ROIBNKEOVS</ID>
+          <Name>Light</Name>
+          <Light_Parm>
+            <ActiveFlag Value="0.000000000000000000e+00" ID="GUWFKMSEEWA"/>
+            <Ambient Value="0.000000000000000000e+00" ID="NOOHSPRHWFQ"/>
+            <Diffuse Value="0.000000000000000000e+00" ID="LAVDVLUBIXB"/>
+            <Specular Value="0.000000000000000000e+00" ID="PNLLBKLRHPT"/>
+            <X Value="0.000000000000000000e+00" ID="LFRSSXIAYOZ"/>
+            <Y Value="0.000000000000000000e+00" ID="NOWOLGQVGYY"/>
+            <Z Value="0.000000000000000000e+00" ID="VQRTOVSQKBJ"/>
+          </Light_Parm>
+        </ParmContainer>
+      </Light7>
+    </Lights>
+    <Measure>
+      <Num_of_Protractors>0</Num_of_Protractors>
+      <Num_of_Rulers>0</Num_of_Rulers>
+      <Num_of_Probes>0</Num_of_Probes>
+      <Num_of_RSTprobes>0</Num_of_RSTprobes>
+    </Measure>
+    <Geom>
+      <ParmContainer>
+        <ID>DFIDSNYVZN</ID>
+        <Name>MainWing</Name>
+        <Attach>
+          <Eta_Attach_Location Value="0.000000000000000000e+00" ID="HPNEUKTMBDX"/>
+          <L_01 Value="1.000000000000000000e+00" ID="UKAKNUGMGPV"/>
+          <L_Attach_Location Value="0.000000000000000000e+00" ID="QJVQSGMMRGF"/>
+          <L_Attach_Location0Len Value="0.000000000000000000e+00" ID="NGEQWKTEGTJ"/>
+          <M_Attach_Location Value="5.000000000000000000e-01" ID="OWXQMBXYEAI"/>
+          <N_Attach_Location Value="5.000000000000000000e-01" ID="YPADLXVJZOX"/>
+          <R_01 Value="1.000000000000000000e+00" ID="COWOGDDMVHL"/>
+          <R_Attach_Location Value="0.000000000000000000e+00" ID="XICWBOPHKLU"/>
+          <R_Attach_Location0N Value="0.000000000000000000e+00" ID="KKPOQRCZSZI"/>
+          <Rots_Attach_Flag Value="0.000000000000000000e+00" ID="ALBXOYAKGVJ"/>
+          <S_Attach_Location Value="5.000000000000000000e-01" ID="HMKUIYKGNUJ"/>
+          <T_Attach_Location Value="5.000000000000000000e-01" ID="GDSRHHESTCI"/>
+          <Trans_Attach_Flag Value="0.000000000000000000e+00" ID="VONWXKYDFKR"/>
+          <U_01 Value="1.000000000000000000e+00" ID="QRBNEJVJTQH"/>
+          <U_Attach_Location Value="0.000000000000000000e+00" ID="ENUBRZKMKQL"/>
+          <U_Attach_Location0N Value="0.000000000000000000e+00" ID="UEULIUJXGKQ"/>
+          <V_Attach_Location Value="0.000000000000000000e+00" ID="STIYHOKGHTV"/>
+        </Attach>
+        <BBox>
+          <X_Len Value="1.875000000000000000e+00" ID="SVMGRKONLPK"/>
+          <X_Min Value="0.000000000000000000e+00" ID="PLOXFSIUAYX"/>
+          <Y_Len Value="1.013384788939750791e+01" ID="IENWUIXURJD"/>
+          <Y_Min Value="-5.066923944698753957e+00" ID="AFQRCKFWBVU"/>
+          <Z_Len Value="2.251017716096268273e-01" ID="DVVOWGXWHZQ"/>
+          <Z_Min Value="-1.125508858048134275e-01" ID="CZWMAUBVYIM"/>
+        </BBox>
+        <EndCap>
+          <CapUMaxLength Value="1.000000000000000000e+00" ID="HWXDOUCYBRH"/>
+          <CapUMaxOffset Value="0.000000000000000000e+00" ID="EPAZGIMJDJQ"/>
+          <CapUMaxOption Value="2.000000000000000000e+00" ID="BZDAXGXMOJV"/>
+          <CapUMaxStrength Value="1.000000000000000000e+00" ID="EKCLPYVJQQR"/>
+          <CapUMaxSweepFlag Value="0.000000000000000000e+00" ID="IWBUKGISJMV"/>
+          <CapUMinLength Value="1.000000000000000000e+00" ID="JZQESXKCENU"/>
+          <CapUMinOffset Value="0.000000000000000000e+00" ID="ZHWVGRRTRBR"/>
+          <CapUMinOption Value="1.000000000000000000e+00" ID="IRTNUTRGZOP"/>
+          <CapUMinStrength Value="5.000000000000000000e-01" ID="LSAOUMJJEDR"/>
+          <CapUMinSweepFlag Value="0.000000000000000000e+00" ID="RDDDNSYSGYO"/>
+          <CapUMinTess Value="3.000000000000000000e+00" ID="NLVUIVAFWII"/>
+        </EndCap>
+        <Index>
+          <ActiveAirfoil Value="1.000000000000000000e+00" ID="SLCIJBVCMOS"/>
+          <ActiveXSec Value="0.000000000000000000e+00" ID="BVFREILHTXP"/>
+        </Index>
+        <Mass_Props>
+          <CGx Value="0.000000000000000000e+00" ID="TLUGSSTNWOX"/>
+          <CGy Value="0.000000000000000000e+00" ID="FNIVZXUHOWJ"/>
+          <CGz Value="0.000000000000000000e+00" ID="UPGUOOEAVZJ"/>
+          <Density Value="1.000000000000000000e+00" ID="SBYEYHOAFWZ"/>
+          <Ixx Value="0.000000000000000000e+00" ID="WVRUZRCDZAP"/>
+          <Ixy Value="0.000000000000000000e+00" ID="VWPZPKUDRZQ"/>
+          <Ixz Value="0.000000000000000000e+00" ID="YDLQFAQBLGK"/>
+          <Iyy Value="0.000000000000000000e+00" ID="ESERIIFADJQ"/>
+          <Iyz Value="0.000000000000000000e+00" ID="BCHAEQGRMMK"/>
+          <Izz Value="0.000000000000000000e+00" ID="NTFEPAIRRWO"/>
+          <Mass_Area Value="1.000000000000000000e+00" ID="XKMRWLHKWDK"/>
+          <Mass_Prior Value="0.000000000000000000e+00" ID="NKAPQXZZBAS"/>
+          <PointMass Value="0.000000000000000000e+00" ID="XGRQTHETIMO"/>
+          <Shell_Flag Value="0.000000000000000000e+00" ID="MVSSNXPKCVY"/>
+        </Mass_Props>
+        <Negative_Volume_Props>
+          <Negative_Volume_Flag Value="0.000000000000000000e+00" ID="XEAUUAAMTKB"/>
+        </Negative_Volume_Props>
+        <ParasiteDragProps>
+          <ExpandedList Value="0.000000000000000000e+00" ID="SVMGHSKDNET"/>
+          <FFBodyEqnType Value="3.000000000000000000e+00" ID="WJSBEBDXUHB"/>
+          <FFUser Value="1.000000000000000000e+00" ID="WNSGMPQAJAN"/>
+          <FFWingEqnType Value="3.000000000000000000e+00" ID="NNKEVQQJSHB"/>
+          <IncorporatedGen Value="0.000000000000000000e+00" ID="FPYFEXCCFVZ"/>
+          <PercLam Value="0.000000000000000000e+00" ID="UYKAWWOBBIC"/>
+          <Q Value="1.000000000000000000e+00" ID="LFOBAKTEGNY"/>
+          <Roughness Value="0.000000000000000000e+00" ID="XHZKPSYPNSI"/>
+          <TawTwRatio Value="1.000000000000000000e+00" ID="SSSERYVJZHJ"/>
+          <TeTwRatio Value="1.000000000000000000e+00" ID="CBFMIMHIRZA"/>
+        </ParasiteDragProps>
+        <Shape>
+          <Tess_U Value="1.600000000000000000e+01" ID="HTMOSEMSAGW"/>
+          <Tess_W Value="3.300000000000000000e+01" ID="NTRLDLPWGFO"/>
+          <Wake Value="0.000000000000000000e+00" ID="FQGYHLVQYCM"/>
+        </Shape>
+        <Sym>
+          <Sym_Ancestor Value="1.000000000000000000e+00" ID="ZCBQFRQAKZZ"/>
+          <Sym_Ancestor_Origin_Flag Value="1.000000000000000000e+00" ID="EXQQOVPAAMO"/>
+          <Sym_Axial_Flag Value="0.000000000000000000e+00" ID="VKWFFGJZDIT"/>
+          <Sym_Planar_Flag Value="2.000000000000000000e+00" ID="TJQBPWVSYYZ"/>
+          <Sym_Rot_N Value="2.000000000000000000e+00" ID="ITAKSYZKIGX"/>
+        </Sym>
+        <WakeSettings>
+          <WakeAngle Value="0.000000000000000000e+00" ID="JDLNBCQTRUI"/>
+          <WakeScale Value="2.000000000000000000e+00" ID="IEQYJVCZFUI"/>
+        </WakeSettings>
+        <WingGeom>
+          <CorrectAirfoilthicknessFlag Value="1.000000000000000000e+00" ID="FKUVMJDAYAP"/>
+          <CurvedArea Value="1.500000000000000000e+01" ID="JUUNJUZCESH"/>
+          <LECluster Value="2.500000000000000000e-01" ID="BWJTZQSAUIK"/>
+          <MAC Value="1.531250000000000000e+00" ID="NTHJLKIMTUM"/>
+          <MaxGrowth Value="1.437005756083839181e+00" ID="MOJSFNRZLBV"/>
+          <RelativeDihedralFlag Value="0.000000000000000000e+00" ID="MMIDGHCDLZF"/>
+          <RelativeTwistFlag Value="0.000000000000000000e+00" ID="CEOPPEOWPGF"/>
+          <RotateAirfoilMatchDideralFlag Value="0.000000000000000000e+00" ID="GSZYZUDFSJY"/>
+          <SmallPanelW Value="1.707275034885090415e-02" ID="FVMLWLSDVUD"/>
+          <TECluster Value="2.500000000000000000e-01" ID="ADUSEUOHFWM"/>
+          <TotalAR Value="6.666666666666666963e+00" ID="WFXKZHWREGU"/>
+          <TotalArea Value="1.500000000000000000e+01" ID="GQSCOIPGWBT"/>
+          <TotalChord Value="1.500000000000000000e+00" ID="KATUAZYWZQK"/>
+          <TotalProjectedSpan Value="1.000000000000000000e+01" ID="YKPDEKDCFEJ"/>
+          <TotalSpan Value="1.000000000000000000e+01" ID="RGCEWICZPCR"/>
+        </WingGeom>
+        <XForm>
+          <Abs_Or_Relitive_flag Value="1.000000000000000000e+00" ID="GYBFKSAVQQH"/>
+          <Last_Scale Value="1.000000000000000000e+00" ID="HFVFGKAYSVY"/>
+          <Origin Value="0.000000000000000000e+00" ID="ORMXULDMCDI"/>
+          <Scale Value="1.000000000000000000e+00" ID="WLBJNKIMOBM"/>
+          <X_Location Value="0.000000000000000000e+00" ID="LWNBZSWNISU"/>
+          <X_Rel_Location Value="0.000000000000000000e+00" ID="XAVVUHAYZNC"/>
+          <X_Rel_Rotation Value="0.000000000000000000e+00" ID="VINPRUSUJEB"/>
+          <X_Rotation Value="0.000000000000000000e+00" ID="NTBOBNGSVBU"/>
+          <Y_Location Value="0.000000000000000000e+00" ID="VKOCYFRBQKZ"/>
+          <Y_Rel_Location Value="0.000000000000000000e+00" ID="NYCGWFNUSSB"/>
+          <Y_Rel_Rotation Value="0.000000000000000000e+00" ID="XWNRPHMUWXB"/>
+          <Y_Rotation Value="0.000000000000000000e+00" ID="JEDWIUWAPPC"/>
+          <Z_Location Value="0.000000000000000000e+00" ID="DPXXGZFBCLQ"/>
+          <Z_Rel_Location Value="0.000000000000000000e+00" ID="LYUJXKWFRVN"/>
+          <Z_Rel_Rotation Value="0.000000000000000000e+00" ID="KACQLWTHTQD"/>
+          <Z_Rotation Value="0.000000000000000000e+00" ID="POLGFELSBZJ"/>
+        </XForm>
+      </ParmContainer>
+      <GeomBase>
+        <TypeName>Wing</TypeName>
+        <TypeID>5</TypeID>
+        <TypeFixed>0</TypeFixed>
+        <ParentID>NONE</ParentID>
+        <Child_List/>
+      </GeomBase>
+      <Material>
+        <Name>Default</Name>
+      </Material>
+      <Wire_Color>
+        <ParmContainer>
+          <ID>XEYINGKVTX</ID>
+          <Name>Default</Name>
+          <Color_Parm>
+            <Alpha Value="2.550000000000000000e+02" ID="QJMSIHRDGHU"/>
+            <Blue Value="2.550000000000000000e+02" ID="WUJXPQWVDWL"/>
+            <Green Value="0.000000000000000000e+00" ID="OYYXHDJNPHX"/>
+            <Red Value="0.000000000000000000e+00" ID="FJKLRFLSAPA"/>
+          </Color_Parm>
+        </ParmContainer>
+      </Wire_Color>
+      <Textures>
+        <Num_of_Tex>0</Num_of_Tex>
+      </Textures>
+      <Geom>
+        <Set_List>1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, </Set_List>
+        <SubSurfaces/>
+        <FeaStructures/>
+      </Geom>
+      <WingGeom>
+        <ParmContainer>
+          <ID>LTSDXKUVYP</ID>
+          <Name>Default</Name>
+        </ParmContainer>
+        <XSecSurf>
+          <XSec>
+            <ParmContainer>
+              <ID>ULELCZOUWL</ID>
+              <Name>XSec</Name>
+              <XSec>
+                <Area Value="1.437500000000000000e+00" ID="UTEKCLEZWYV"/>
+                <Aspect Value="6.956521739130434590e-01" ID="VCKSKPSAXVV"/>
+                <Avg_Chord Value="1.437500000000000000e+00" ID="ATHNDPJLPOV"/>
+                <Dihedral Value="0.000000000000000000e+00" ID="HIJODAQQMQH"/>
+                <InCluster Value="1.000000000000000000e+00" ID="GROQHOXEDNF"/>
+                <InLEDihedral Value="7.023421298344381141e-15" ID="SUFFTDLWWYL"/>
+                <InLEMode Value="0.000000000000000000e+00" ID="VEUKECVWKJK"/>
+                <InLEStrength Value="1.000000000000000000e+00" ID="CPVECOHMYCM"/>
+                <InLESweep Value="2.147585428298469878e+00" ID="FWBROVLQTKL"/>
+                <InTEDihedral Value="-7.222591237899946819e-15" ID="AIPFDFWMRHS"/>
+                <InTEMode Value="0.000000000000000000e+00" ID="BKYOFZPQLVQ"/>
+                <InTEStrength Value="1.000000000000000000e+00" ID="IBBEWWCHIJQ"/>
+                <InTESweep Value="-6.418786730238821292e+00" ID="QSTNFTJYIZL"/>
+                <OutCluster Value="1.000000000000000000e+00" ID="QCFVDZVMAER"/>
+                <OutLEDihedral Value="-7.023421298344381141e-15" ID="STWTQXLLXUL"/>
+                <OutLEMode Value="0.000000000000000000e+00" ID="PEUIFTJSQCS"/>
+                <OutLEStrength Value="1.000000000000000000e+00" ID="MNTGSVSBRTO"/>
+                <OutLESweep Value="2.147585428298469878e+00" ID="GNSEUBIMJOC"/>
+                <OutTEDihedral Value="7.222591237899946819e-15" ID="WTJDFVWWKRI"/>
+                <OutTEMode Value="0.000000000000000000e+00" ID="IPKYSMNBPIZ"/>
+                <OutTEStrength Value="1.000000000000000000e+00" ID="PONJMKKNVVL"/>
+                <OutTESweep Value="-6.418786730238821292e+00" ID="DKOQMHCUKTD"/>
+                <ProjectedSpan Value="0.000000000000000000e+00" ID="EDDPUAIULVS"/>
+                <Root_Chord Value="1.000000000000000000e+00" ID="BELMYTFMHIU"/>
+                <RotateMatchDideralFlag Value="0.000000000000000000e+00" ID="KFPHWCGGCIQ"/>
+                <Sec_Sweep Value="4.118592516570964790e+01" ID="HSGMTZDJBUB"/>
+                <Sec_Sweep_Location Value="1.000000000000000000e+00" ID="FXMOGEYWKKO"/>
+                <SectTess_U Value="6.000000000000000000e+00" ID="CVYXRBZQIFE"/>
+                <Span Value="1.000000000000000000e+00" ID="GZCLVYRFQEF"/>
+                <Sweep Value="0.000000000000000000e+00" ID="FBCZKEYJPLO"/>
+                <Sweep_Location Value="0.000000000000000000e+00" ID="AVJVHUKJXCD"/>
+                <Taper Value="1.875000000000000000e+00" ID="NEEDDIPHOMX"/>
+                <Tip_Chord Value="1.875000000000000000e+00" ID="NMPDRFRCKCZ"/>
+                <Twist Value="0.000000000000000000e+00" ID="NJYCGNZAKWN"/>
+                <Twist_Location Value="2.500000000000000000e-01" ID="YSELMQRPLQZ"/>
+              </XSec>
+            </ParmContainer>
+            <XSec>
+              <Type>2</Type>
+              <GroupName>XSec</GroupName>
+              <DriverGroup>
+                <NumVar>8</NumVar>
+                <NumChoices>3</NumChoices>
+                <ChoiceVec>1, 5, 6, </ChoiceVec>
+              </DriverGroup>
+              <XSecCurve>
+                <ParmContainer>
+                  <ID>ZJLYJZUYTI</ID>
+                  <Name>FourSeries</Name>
+                  <Cap>
+                    <LE_Cap_Length Value="1.000000000000000000e+00" ID="ABNQGSVIQNN"/>
+                    <LE_Cap_Offset Value="0.000000000000000000e+00" ID="YTHRWKRSRTC"/>
+                    <LE_Cap_Strength Value="5.000000000000000000e-01" ID="EXEMHMHCPRO"/>
+                    <LE_Cap_Type Value="1.000000000000000000e+00" ID="YWWHWCESXQO"/>
+                    <TE_Cap_Length Value="1.000000000000000000e+00" ID="CSLSKEBANCE"/>
+                    <TE_Cap_Offset Value="0.000000000000000000e+00" ID="GCALKLMUKDN"/>
+                    <TE_Cap_Strength Value="5.000000000000000000e-01" ID="YQEOFANYRVC"/>
+                    <TE_Cap_Type Value="1.000000000000000000e+00" ID="QKPDPKVHMVN"/>
+                  </Cap>
+                  <Chevron>
+                    <AllSym Value="1.000000000000000000e+00" ID="ZNNCCYRLISZ"/>
+                    <BottomAmplitude Value="1.000000000000000000e+00" ID="OOXXDMZMDUE"/>
+                    <Bottom_Angle Value="0.000000000000000000e+00" ID="NZRKFXTCKJU"/>
+                    <Bottom_Slew Value="0.000000000000000000e+00" ID="LKQLWOUCUMM"/>
+                    <Chevron_Type Value="0.000000000000000000e+00" ID="TWNOODGRQTQ"/>
+                    <LeftAmplitude Value="1.000000000000000000e+00" ID="PPSMMPPFRYD"/>
+                    <Left_Angle Value="0.000000000000000000e+00" ID="LWNMLYHZSUF"/>
+                    <Left_Slew Value="0.000000000000000000e+00" ID="ZVZTRBNHZKD"/>
+                    <Number Value="8.000000000000000000e+00" ID="GGEMOZFNZVH"/>
+                    <Off_Duty Value="0.000000000000000000e+00" ID="EXLKTFNXTAE"/>
+                    <On_Duty Value="0.000000000000000000e+00" ID="VZLFIYAWOIQ"/>
+                    <Peak_Radius Value="0.000000000000000000e+00" ID="ORSYWDYFQPO"/>
+                    <RLSym Value="1.000000000000000000e+00" ID="UCEDHSIQILA"/>
+                    <RightAmplitude Value="1.000000000000000000e+00" ID="NXVCPGIHPUI"/>
+                    <Right_Angle Value="0.000000000000000000e+00" ID="TPJBLUIOLQO"/>
+                    <Right_Slew Value="0.000000000000000000e+00" ID="XFHSMPUHSNZ"/>
+                    <TBSym Value="1.000000000000000000e+00" ID="WYEDSXNJVMV"/>
+                    <TopAmplitude Value="1.000000000000000000e+00" ID="AQWQRCOIQBQ"/>
+                    <Top_Angle Value="0.000000000000000000e+00" ID="PQZWLXIJBWX"/>
+                    <Top_Slew Value="0.000000000000000000e+00" ID="SQPECBFEWSS"/>
+                    <Valley_Radius Value="0.000000000000000000e+00" ID="UGJYJNEMKEX"/>
+                    <W01_Center Value="2.500000000000000000e-01" ID="RTWYHQGHERB"/>
+                    <W01_Center_Guide Value="5.000000000000000000e+00" ID="FSPQFXGQQAA"/>
+                    <W01_End Value="5.000000000000000000e-01" ID="OIHRIDLRIHP"/>
+                    <W01_End_Guide Value="5.000000000000000000e+00" ID="JISROYAATEK"/>
+                    <W01_Mode Value="0.000000000000000000e+00" ID="QTDIIJUHCKE"/>
+                    <W01_Start Value="0.000000000000000000e+00" ID="SLXSNRPEMED"/>
+                    <W01_Start_Guide Value="5.000000000000000000e+00" ID="WRMFDPAEZRI"/>
+                    <W01_Width Value="5.000000000000000000e-01" ID="TZLAJKDPBGG"/>
+                  </Chevron>
+                  <Close>
+                    <LE_Close_AbsRel Value="0.000000000000000000e+00" ID="NFNBCDAXNPY"/>
+                    <LE_Close_Thick Value="0.000000000000000000e+00" ID="CEEECOMBVKZ"/>
+                    <LE_Close_Thick_Chord Value="0.000000000000000000e+00" ID="OBLQCGNPGXT"/>
+                    <LE_Close_Type Value="0.000000000000000000e+00" ID="RDAOLAVVMLV"/>
+                    <TE_Close_AbsRel Value="0.000000000000000000e+00" ID="BISTBQLILWF"/>
+                    <TE_Close_Thick Value="0.000000000000000000e+00" ID="FPUUNHTMDJA"/>
+                    <TE_Close_Thick_Chord Value="0.000000000000000000e+00" ID="CHALSGJDYON"/>
+                    <TE_Close_Type Value="0.000000000000000000e+00" ID="UFHEKSJKTRK"/>
+                  </Close>
+                  <Trim>
+                    <LE_Trim_AbsRel Value="0.000000000000000000e+00" ID="HMFUCFLVQCM"/>
+                    <LE_Trim_Thick Value="0.000000000000000000e+00" ID="BISXSJPEKTT"/>
+                    <LE_Trim_Thick_Chord Value="0.000000000000000000e+00" ID="CJRBAACSLXG"/>
+                    <LE_Trim_Type Value="0.000000000000000000e+00" ID="DRKGHJGOXHW"/>
+                    <LE_Trim_X Value="0.000000000000000000e+00" ID="IEIVQZIUBYI"/>
+                    <LE_Trim_X_Chord Value="0.000000000000000000e+00" ID="NLGZSZWOLZY"/>
+                    <TE_Trim_AbsRel Value="0.000000000000000000e+00" ID="BYUZLHFSAAM"/>
+                    <TE_Trim_Thick Value="0.000000000000000000e+00" ID="XPZKFWBVYFZ"/>
+                    <TE_Trim_Thick_Chord Value="0.000000000000000000e+00" ID="OUOZEJHDQCB"/>
+                    <TE_Trim_Type Value="0.000000000000000000e+00" ID="YYZHASBMIEA"/>
+                    <TE_Trim_X Value="0.000000000000000000e+00" ID="LOHULQDCTKR"/>
+                    <TE_Trim_X_Chord Value="0.000000000000000000e+00" ID="YTVROAKSORZ"/>
+                  </Trim>
+                  <XSecCurve>
+                    <Area Value="2.863924272263776438e-01" ID="FCEAANCJXXQ"/>
+                    <Camber Value="0.000000000000000000e+00" ID="BFJPXVBEBXS"/>
+                    <CamberInputFlag Value="0.000000000000000000e+00" ID="EQDHSCPCOYM"/>
+                    <CamberLoc Value="2.000000000000000111e-01" ID="RAVRZONMMRG"/>
+                    <Chord Value="1.875000000000000000e+00" ID="RIHLJPPFGEH"/>
+                    <DeltaX Value="0.000000000000000000e+00" ID="GUHVORZDDBC"/>
+                    <DeltaY Value="0.000000000000000000e+00" ID="GNIJOKPGWHK"/>
+                    <FitDegree Value="7.000000000000000000e+00" ID="WRPNJHWXIWG"/>
+                    <HWRatio Value="1.199999999999999956e-01" ID="USABFSZUMGJ"/>
+                    <IdealCl Value="0.000000000000000000e+00" ID="RYNVRFZAPXR"/>
+                    <Invert Value="0.000000000000000000e+00" ID="OVFDLEYEHMT"/>
+                    <Scale Value="1.000000000000000000e+00" ID="KMREJSDQULV"/>
+                    <SharpTEFlag Value="1.000000000000000000e+00" ID="OFGNQLXFLUT"/>
+                    <ShiftLE Value="0.000000000000000000e+00" ID="ZXOSOXOVUQR"/>
+                    <Theta Value="0.000000000000000000e+00" ID="MXXNVFWEKPP"/>
+                    <ThickChord Value="1.199999999999999956e-01" ID="VSQBPMTVIST"/>
+                  </XSecCurve>
+                  <XSecCurve_Background>
+                    <XSecFlipImageFlag Value="0.000000000000000000e+00" ID="ITUZUYBIYJQ"/>
+                    <XSecImageFlag Value="0.000000000000000000e+00" ID="OOIFTJAHTJD"/>
+                    <XSecImageH Value="1.000000000000000000e+00" ID="EEIDBCCSFYT"/>
+                    <XSecImagePreserveAR Value="1.000000000000000000e+00" ID="VZGYOYCFHMI"/>
+                    <XSecImageW Value="1.000000000000000000e+00" ID="FVRPIUAOOKN"/>
+                    <XSecImageXOffset Value="0.000000000000000000e+00" ID="GRZBMKMQUPA"/>
+                    <XSecImageYOffset Value="0.000000000000000000e+00" ID="RBTPOVIIHLB"/>
+                    <XSecLockImageFlag Value="0.000000000000000000e+00" ID="DWYMFKTQBLN"/>
+                  </XSecCurve_Background>
+                </ParmContainer>
+                <XSecCurve>
+                  <Type>7</Type>
+                  <XSecCurveDriverGroup>
+                    <NumVar>4</NumVar>
+                    <NumChoices>2</NumChoices>
+                    <ChoiceVec>0, 2, </ChoiceVec>
+                  </XSecCurveDriverGroup>
+                </XSecCurve>
+              </XSecCurve>
+            </XSec>
+          </XSec>
+          <XSec>
+            <ParmContainer>
+              <ID>KDMXOFQBGD</ID>
+              <Name>XSec</Name>
+              <XSec>
+                <Area Value="7.500000000000000000e+00" ID="OVLZKSECOMX"/>
+                <Aspect Value="3.333333333333333481e+00" ID="KVKARTLPBDA"/>
+                <Avg_Chord Value="1.500000000000000000e+00" ID="MYKBWTRNPJY"/>
+                <Dihedral Value="0.000000000000000000e+00" ID="QJMQIZELXID"/>
+                <InCluster Value="1.000000000000000000e+00" ID="HVHGQRZQSWJ"/>
+                <InLEDihedral Value="7.023421298344381141e-15" ID="ITNKLYEIJVA"/>
+                <InLEMode Value="0.000000000000000000e+00" ID="ODRRNPBFBGJ"/>
+                <InLEStrength Value="1.000000000000000000e+00" ID="XPPSSUCPUMA"/>
+                <InLESweep Value="2.147585428298469878e+00" ID="AMGUOMCQBKK"/>
+                <InTEDihedral Value="-7.222591237899946819e-15" ID="NDZXUHLABKU"/>
+                <InTEMode Value="0.000000000000000000e+00" ID="CRGORCRTJXZ"/>
+                <InTEStrength Value="1.000000000000000000e+00" ID="ADZVEFFCNMI"/>
+                <InTESweep Value="-6.418786730238821292e+00" ID="JOAKHXYKYSJ"/>
+                <OutCluster Value="1.000000000000000000e+00" ID="LWOIDFHUBNS"/>
+                <OutLEDihedral Value="-7.023421298344381141e-15" ID="LWSISHBRSYB"/>
+                <OutLEMode Value="0.000000000000000000e+00" ID="FHVQFJJFYQS"/>
+                <OutLEStrength Value="1.000000000000000000e+00" ID="TBOSDXYLFKN"/>
+                <OutLESweep Value="2.147585428298469878e+00" ID="ALCSTACQPKU"/>
+                <OutTEDihedral Value="7.222591237899946819e-15" ID="TWAYRJWJFLU"/>
+                <OutTEMode Value="0.000000000000000000e+00" ID="GQZZCCJGMWH"/>
+                <OutTEStrength Value="1.000000000000000000e+00" ID="UFIFXOYITOU"/>
+                <OutTESweep Value="-6.418786730238821292e+00" ID="ORDZIIXBDIR"/>
+                <ProjectedSpan Value="5.000000000000000000e+00" ID="MZTCGPUKOIO"/>
+                <Root_Chord Value="1.875000000000000000e+00" ID="KWJLZTTEJOS"/>
+                <RotateMatchDideralFlag Value="0.000000000000000000e+00" ID="YENTXAPKNAV"/>
+                <Sec_Sweep Value="-6.418786730238785765e+00" ID="UDJHOLZMGLI"/>
+                <Sec_Sweep_Location Value="1.000000000000000000e+00" ID="QNFOFINCMRP"/>
+                <SectTess_U Value="6.000000000000000000e+00" ID="WEKGNVSJDAP"/>
+                <Span Value="5.000000000000000000e+00" ID="OIHPAHXRYAO"/>
+                <Sweep Value="0.000000000000000000e+00" ID="BPABPWPSRIA"/>
+                <Sweep_Location Value="2.500000000000000000e-01" ID="JSJXEBHYEEO"/>
+                <Taper Value="5.999999999999999778e-01" ID="TRGYQWVESKX"/>
+                <Tip_Chord Value="1.125000000000000000e+00" ID="ZKMOWMKLPSS"/>
+                <Twist Value="0.000000000000000000e+00" ID="KZQDJPYEGUV"/>
+                <Twist_Location Value="2.500000000000000000e-01" ID="MDOKORQESDY"/>
+              </XSec>
+            </ParmContainer>
+            <XSec>
+              <Type>2</Type>
+              <GroupName>XSec</GroupName>
+              <DriverGroup>
+                <NumVar>8</NumVar>
+                <NumChoices>3</NumChoices>
+                <ChoiceVec>1, 5, 6, </ChoiceVec>
+              </DriverGroup>
+              <XSecCurve>
+                <ParmContainer>
+                  <ID>ZUVKAMXXYZ</ID>
+                  <Name>FourSeries</Name>
+                  <Cap>
+                    <LE_Cap_Length Value="1.000000000000000000e+00" ID="PBIQFLNKMPC"/>
+                    <LE_Cap_Offset Value="0.000000000000000000e+00" ID="FPCDZKVLDVC"/>
+                    <LE_Cap_Strength Value="5.000000000000000000e-01" ID="XBWYURASQDP"/>
+                    <LE_Cap_Type Value="1.000000000000000000e+00" ID="VGNESVRUOJV"/>
+                    <TE_Cap_Length Value="1.000000000000000000e+00" ID="PDKFGPTJMRG"/>
+                    <TE_Cap_Offset Value="0.000000000000000000e+00" ID="KTSVQYZTMEW"/>
+                    <TE_Cap_Strength Value="5.000000000000000000e-01" ID="PMRSGYNYFDV"/>
+                    <TE_Cap_Type Value="1.000000000000000000e+00" ID="JFNUBDEXQCZ"/>
+                  </Cap>
+                  <Chevron>
+                    <AllSym Value="1.000000000000000000e+00" ID="QHGLBNBQRUA"/>
+                    <BottomAmplitude Value="1.000000000000000000e+00" ID="ZPMWJVKDRRH"/>
+                    <Bottom_Angle Value="0.000000000000000000e+00" ID="GTRTHQNZCSH"/>
+                    <Bottom_Slew Value="0.000000000000000000e+00" ID="IVXLSZKIYRP"/>
+                    <Chevron_Type Value="0.000000000000000000e+00" ID="GDVITMHOQKN"/>
+                    <LeftAmplitude Value="1.000000000000000000e+00" ID="CIFFTGELPYP"/>
+                    <Left_Angle Value="0.000000000000000000e+00" ID="FHOMITGKDWN"/>
+                    <Left_Slew Value="0.000000000000000000e+00" ID="NHHGRGFLWLA"/>
+                    <Number Value="8.000000000000000000e+00" ID="PFGPGBLJZOX"/>
+                    <Off_Duty Value="0.000000000000000000e+00" ID="HHLLPQNCGNH"/>
+                    <On_Duty Value="0.000000000000000000e+00" ID="OWCAAGTYTLF"/>
+                    <Peak_Radius Value="0.000000000000000000e+00" ID="JHMAGCTVCGW"/>
+                    <RLSym Value="1.000000000000000000e+00" ID="CQQMKHNLNZH"/>
+                    <RightAmplitude Value="1.000000000000000000e+00" ID="QXGWQCSOTFY"/>
+                    <Right_Angle Value="0.000000000000000000e+00" ID="KPVKTLIHSVM"/>
+                    <Right_Slew Value="0.000000000000000000e+00" ID="QYEPQZFGUEF"/>
+                    <TBSym Value="1.000000000000000000e+00" ID="BTWNOKZFVTR"/>
+                    <TopAmplitude Value="1.000000000000000000e+00" ID="GWBQLTKYJXA"/>
+                    <Top_Angle Value="0.000000000000000000e+00" ID="SRYJCGMTSPP"/>
+                    <Top_Slew Value="0.000000000000000000e+00" ID="SQIGIFUENRJ"/>
+                    <Valley_Radius Value="0.000000000000000000e+00" ID="WUVGBDAIKDC"/>
+                    <W01_Center Value="2.500000000000000000e-01" ID="KUWHKNQASSP"/>
+                    <W01_Center_Guide Value="5.000000000000000000e+00" ID="BYDMCTBTYKS"/>
+                    <W01_End Value="5.000000000000000000e-01" ID="MWIRIFVWUMP"/>
+                    <W01_End_Guide Value="5.000000000000000000e+00" ID="BXJWMPNSQDR"/>
+                    <W01_Mode Value="0.000000000000000000e+00" ID="NUWXYHNQAOI"/>
+                    <W01_Start Value="0.000000000000000000e+00" ID="BURSRQPIWWN"/>
+                    <W01_Start_Guide Value="5.000000000000000000e+00" ID="ZDGJDEDOCED"/>
+                    <W01_Width Value="5.000000000000000000e-01" ID="PCJZPTJSLBN"/>
+                  </Chevron>
+                  <Close>
+                    <LE_Close_AbsRel Value="0.000000000000000000e+00" ID="XVIRKGEMPVR"/>
+                    <LE_Close_Thick Value="0.000000000000000000e+00" ID="XZHVGVPIUEZ"/>
+                    <LE_Close_Thick_Chord Value="0.000000000000000000e+00" ID="OSTVXKWWAHE"/>
+                    <LE_Close_Type Value="0.000000000000000000e+00" ID="OVWOIYNFDLD"/>
+                    <TE_Close_AbsRel Value="0.000000000000000000e+00" ID="KZRKKAMBLDP"/>
+                    <TE_Close_Thick Value="0.000000000000000000e+00" ID="UHCCAPVHSSQ"/>
+                    <TE_Close_Thick_Chord Value="0.000000000000000000e+00" ID="JQGCKLEOKLN"/>
+                    <TE_Close_Type Value="0.000000000000000000e+00" ID="RNTNWRQPFRA"/>
+                  </Close>
+                  <Trim>
+                    <LE_Trim_AbsRel Value="0.000000000000000000e+00" ID="KSRYGAVLKUN"/>
+                    <LE_Trim_Thick Value="0.000000000000000000e+00" ID="ZNRFTCTLGWJ"/>
+                    <LE_Trim_Thick_Chord Value="0.000000000000000000e+00" ID="PWUHKWVWVFS"/>
+                    <LE_Trim_Type Value="0.000000000000000000e+00" ID="ISRTEESYQNW"/>
+                    <LE_Trim_X Value="0.000000000000000000e+00" ID="VTIINMVHRXI"/>
+                    <LE_Trim_X_Chord Value="0.000000000000000000e+00" ID="LQOZHCRKFNY"/>
+                    <TE_Trim_AbsRel Value="0.000000000000000000e+00" ID="ZJKZDXEOOKH"/>
+                    <TE_Trim_Thick Value="0.000000000000000000e+00" ID="DSUWZJLYBJO"/>
+                    <TE_Trim_Thick_Chord Value="0.000000000000000000e+00" ID="DLUNHUXLKWE"/>
+                    <TE_Trim_Type Value="0.000000000000000000e+00" ID="KGGTSDXTSVY"/>
+                    <TE_Trim_X Value="0.000000000000000000e+00" ID="YFHOFWBWGGS"/>
+                    <TE_Trim_X_Chord Value="0.000000000000000000e+00" ID="ZSXAXXCVYYB"/>
+                  </Trim>
+                  <XSecCurve>
+                    <Area Value="1.031012738014959879e-01" ID="HHFCTVFAVTU"/>
+                    <Camber Value="0.000000000000000000e+00" ID="ANSAMDPTSGW"/>
+                    <CamberInputFlag Value="0.000000000000000000e+00" ID="AVZQWFNFWQZ"/>
+                    <CamberLoc Value="2.000000000000000111e-01" ID="RDTNQTMSASY"/>
+                    <Chord Value="1.125000000000000000e+00" ID="MFPJVMMIUJA"/>
+                    <DeltaX Value="0.000000000000000000e+00" ID="NKOPIWRKPCO"/>
+                    <DeltaY Value="0.000000000000000000e+00" ID="NANLCKWUVIU"/>
+                    <FitDegree Value="7.000000000000000000e+00" ID="FEHQNWITTLK"/>
+                    <HWRatio Value="1.199999999999999956e-01" ID="VCCFQIELULH"/>
+                    <IdealCl Value="0.000000000000000000e+00" ID="XFADCVRWLGP"/>
+                    <Invert Value="0.000000000000000000e+00" ID="BRJIWLBPCVJ"/>
+                    <Scale Value="1.000000000000000000e+00" ID="RTBZJZRNMIK"/>
+                    <SharpTEFlag Value="1.000000000000000000e+00" ID="TZNBIPMGMHA"/>
+                    <ShiftLE Value="0.000000000000000000e+00" ID="OUSVQWBJEXA"/>
+                    <Theta Value="0.000000000000000000e+00" ID="OSAXMHCUBHL"/>
+                    <ThickChord Value="1.199999999999999956e-01" ID="RFPPGJMNRAD"/>
+                  </XSecCurve>
+                  <XSecCurve_Background>
+                    <XSecFlipImageFlag Value="0.000000000000000000e+00" ID="RPDWFORJYYY"/>
+                    <XSecImageFlag Value="0.000000000000000000e+00" ID="JMTRSTWOKTL"/>
+                    <XSecImageH Value="1.000000000000000000e+00" ID="SGMIGBVKYEC"/>
+                    <XSecImagePreserveAR Value="1.000000000000000000e+00" ID="NUYSJXRDXWA"/>
+                    <XSecImageW Value="1.000000000000000000e+00" ID="TECAHXBLKXP"/>
+                    <XSecImageXOffset Value="0.000000000000000000e+00" ID="MIPEBQYCRBP"/>
+                    <XSecImageYOffset Value="0.000000000000000000e+00" ID="FMXCPEBVIUK"/>
+                    <XSecLockImageFlag Value="0.000000000000000000e+00" ID="TAERIQKEJZW"/>
+                  </XSecCurve_Background>
+                </ParmContainer>
+                <XSecCurve>
+                  <Type>7</Type>
+                  <XSecCurveDriverGroup>
+                    <NumVar>4</NumVar>
+                    <NumChoices>2</NumChoices>
+                    <ChoiceVec>0, 2, </ChoiceVec>
+                  </XSecCurveDriverGroup>
+                </XSecCurve>
+              </XSecCurve>
+            </XSec>
+          </XSec>
+        </XSecSurf>
+      </WingGeom>
+    </Geom>
+    <Geom>
+      <ParmContainer>
+        <ID>NAJFAHCWMT</ID>
+        <Name>Fuselage</Name>
+        <Attach>
+          <Eta_Attach_Location Value="0.000000000000000000e+00" ID="XVIXPKBDBRF"/>
+          <L_01 Value="1.000000000000000000e+00" ID="NVOMSUZUROP"/>
+          <L_Attach_Location Value="0.000000000000000000e+00" ID="ALVIZZMLEQH"/>
+          <L_Attach_Location0Len Value="0.000000000000000000e+00" ID="LWGVYQPJTCC"/>
+          <M_Attach_Location Value="5.000000000000000000e-01" ID="OPLPGSFBEZU"/>
+          <N_Attach_Location Value="5.000000000000000000e-01" ID="FMWLQSEBVYL"/>
+          <R_01 Value="1.000000000000000000e+00" ID="WYGJJGSJAZI"/>
+          <R_Attach_Location Value="0.000000000000000000e+00" ID="PTQOMATNNYE"/>
+          <R_Attach_Location0N Value="0.000000000000000000e+00" ID="QFVVFPUDQHN"/>
+          <Rots_Attach_Flag Value="0.000000000000000000e+00" ID="SYHRODJBPBP"/>
+          <S_Attach_Location Value="5.000000000000000000e-01" ID="VVDAZPRLAZN"/>
+          <T_Attach_Location Value="5.000000000000000000e-01" ID="WUIVYPQEMDQ"/>
+          <Trans_Attach_Flag Value="0.000000000000000000e+00" ID="GUKPGFBDYDT"/>
+          <U_01 Value="1.000000000000000000e+00" ID="UNYHDZSGTCA"/>
+          <U_Attach_Location Value="0.000000000000000000e+00" ID="KPIXXZRHELJ"/>
+          <U_Attach_Location0N Value="0.000000000000000000e+00" ID="RZDUZRNAOOH"/>
+          <V_Attach_Location Value="0.000000000000000000e+00" ID="NXHJOJQDLEL"/>
+        </Attach>
+        <BBox>
+          <X_Len Value="5.336633983786426505e+00" ID="IVYAUMXWBRH"/>
+          <X_Min Value="-1.666666666666667407e-01" ID="JJFSWQEKLGR"/>
+          <Y_Len Value="1.000000000000000000e+00" ID="SEBOTQFUINH"/>
+          <Y_Min Value="-5.000000000000000000e-01" ID="MWQIEXZJKVO"/>
+          <Z_Len Value="1.000000000000000000e+00" ID="BXJBBXRUIAU"/>
+          <Z_Min Value="-5.000000000000000000e-01" ID="FWNIFGSGFOZ"/>
+        </BBox>
+        <Design>
+          <Length Value="5.000000000000000000e+00" ID="KXZNTWIPWUB"/>
+          <OrderPolicy Value="0.000000000000000000e+00" ID="OPYEUOXEYWF"/>
+        </Design>
+        <EndCap>
+          <CapUMaxLength Value="1.000000000000000000e+00" ID="MHRQRTZRDSF"/>
+          <CapUMaxOffset Value="0.000000000000000000e+00" ID="ONDFLVBOZTA"/>
+          <CapUMaxOption Value="0.000000000000000000e+00" ID="TQRUOSQRTCQ"/>
+          <CapUMaxStrength Value="5.000000000000000000e-01" ID="PRZVZLLOKFU"/>
+          <CapUMaxSweepFlag Value="0.000000000000000000e+00" ID="QCLKWZTYGED"/>
+          <CapUMinLength Value="1.000000000000000000e+00" ID="MNTGAECMAPL"/>
+          <CapUMinOffset Value="0.000000000000000000e+00" ID="XZCYZRMCQPV"/>
+          <CapUMinOption Value="0.000000000000000000e+00" ID="KSWNXHRFKLK"/>
+          <CapUMinStrength Value="5.000000000000000000e-01" ID="KPYAVVHXRZT"/>
+          <CapUMinSweepFlag Value="0.000000000000000000e+00" ID="RSYSYPZBPWS"/>
+          <CapUMinTess Value="3.000000000000000000e+00" ID="ASQKCEFPOPH"/>
+        </EndCap>
+        <EngineModel>
+          <AutoExtensionFlag Value="0.000000000000000000e+00" ID="ZJRBFBYNIDM"/>
+          <AutoExtensionSet Value="1.000000000000000000e+00" ID="PVFPCZJYKVL"/>
+          <ExtensionDistance Value="1.000000000000000000e+01" ID="YHZIJAAEFYG"/>
+          <GeomIOType Value="0.000000000000000000e+00" ID="QRHQTBGHWNC"/>
+          <GeomInType Value="0.000000000000000000e+00" ID="XJJZMONVWEB"/>
+          <GeomOutType Value="1.000000000000000000e+00" ID="YJSZSXFEVUA"/>
+          <InletFaceIndex Value="0.000000000000000000e+00" ID="SLDPBRRULBI"/>
+          <InletFaceMode Value="0.000000000000000000e+00" ID="ZIJAYUPIDYO"/>
+          <InletFaceU Value="0.000000000000000000e+00" ID="CTNJENXBLSJ"/>
+          <InletLipIndex Value="0.000000000000000000e+00" ID="NQJCTQHDGIX"/>
+          <InletLipMode Value="0.000000000000000000e+00" ID="HGKIMHKEOCS"/>
+          <InletLipU Value="0.000000000000000000e+00" ID="QWYBCFXYAVD"/>
+          <InletModeType Value="2.000000000000000000e+00" ID="FZWBMNNQPDQ"/>
+          <OutletFaceIndex Value="0.000000000000000000e+00" ID="DHUPUQEGTAA"/>
+          <OutletFaceMode Value="0.000000000000000000e+00" ID="ZXMBHORKGXB"/>
+          <OutletFaceU Value="0.000000000000000000e+00" ID="WBMJIBNSPHE"/>
+          <OutletLipIndex Value="0.000000000000000000e+00" ID="ZPUBGKQBOLO"/>
+          <OutletLipMode Value="0.000000000000000000e+00" ID="CVYYZRBHBBQ"/>
+          <OutletLipU Value="0.000000000000000000e+00" ID="KVCKNWUKAPC"/>
+          <OutletModeType Value="2.000000000000000000e+00" ID="ZNEFAFIGISB"/>
+        </EngineModel>
+        <Index>
+          <ActiveXSec Value="0.000000000000000000e+00" ID="HEOWLPKFCBG"/>
+        </Index>
+        <Mass_Props>
+          <CGx Value="0.000000000000000000e+00" ID="AZHIJNWXQHH"/>
+          <CGy Value="0.000000000000000000e+00" ID="BGGLSDZBCBR"/>
+          <CGz Value="0.000000000000000000e+00" ID="WXKTMBFGOGF"/>
+          <Density Value="1.000000000000000000e+00" ID="ZGOXQXJPQTY"/>
+          <Ixx Value="0.000000000000000000e+00" ID="KGBQGTIERXA"/>
+          <Ixy Value="0.000000000000000000e+00" ID="WFKQLADYSXP"/>
+          <Ixz Value="0.000000000000000000e+00" ID="OJOVUCXGWVN"/>
+          <Iyy Value="0.000000000000000000e+00" ID="OEVHHLMIFHE"/>
+          <Iyz Value="0.000000000000000000e+00" ID="THVKNZAAAJU"/>
+          <Izz Value="0.000000000000000000e+00" ID="CAYOLJPUYWO"/>
+          <Mass_Area Value="1.000000000000000000e+00" ID="EGSMKZWDZJY"/>
+          <Mass_Prior Value="0.000000000000000000e+00" ID="WVLDEOPSSZQ"/>
+          <PointMass Value="0.000000000000000000e+00" ID="VCXSUOVABDB"/>
+          <Shell_Flag Value="0.000000000000000000e+00" ID="ZNIZQAICBJI"/>
+        </Mass_Props>
+        <Negative_Volume_Props>
+          <Negative_Volume_Flag Value="0.000000000000000000e+00" ID="REDDHEZEILM"/>
+        </Negative_Volume_Props>
+        <ParasiteDragProps>
+          <ExpandedList Value="0.000000000000000000e+00" ID="ZOHGOIRFCNM"/>
+          <FFBodyEqnType Value="3.000000000000000000e+00" ID="HIZYVYDGNII"/>
+          <FFUser Value="1.000000000000000000e+00" ID="NFIIBTIANKF"/>
+          <FFWingEqnType Value="3.000000000000000000e+00" ID="KNHZYEILFWK"/>
+          <IncorporatedGen Value="0.000000000000000000e+00" ID="GSXQTCQTUOY"/>
+          <PercLam Value="0.000000000000000000e+00" ID="GUIDEVUHBCY"/>
+          <Q Value="1.000000000000000000e+00" ID="XTEYUACMYSU"/>
+          <Roughness Value="0.000000000000000000e+00" ID="RPHGLECEYQE"/>
+          <TawTwRatio Value="1.000000000000000000e+00" ID="DGIAYJYNKPU"/>
+          <TeTwRatio Value="1.000000000000000000e+00" ID="FBMLJBFUVIR"/>
+        </ParasiteDragProps>
+        <Shape>
+          <Tess_U Value="1.600000000000000000e+01" ID="SKTRVWUSUSY"/>
+          <Tess_W Value="1.700000000000000000e+01" ID="SYFILNLRCHJ"/>
+          <Wake Value="0.000000000000000000e+00" ID="UHMRRGRLDFG"/>
+        </Shape>
+        <Sym>
+          <Sym_Ancestor Value="1.000000000000000000e+00" ID="QSZDLUEKCBA"/>
+          <Sym_Ancestor_Origin_Flag Value="1.000000000000000000e+00" ID="ZLLHZKGLVMX"/>
+          <Sym_Axial_Flag Value="0.000000000000000000e+00" ID="CUSAFSFQEGS"/>
+          <Sym_Planar_Flag Value="0.000000000000000000e+00" ID="USLKKHJEMOQ"/>
+          <Sym_Rot_N Value="2.000000000000000000e+00" ID="TQAIHJSNCYU"/>
+        </Sym>
+        <WakeSettings>
+          <WakeAngle Value="0.000000000000000000e+00" ID="LGBRGSOOLYV"/>
+          <WakeScale Value="2.000000000000000000e+00" ID="JJJXACZJZPZ"/>
+        </WakeSettings>
+        <XForm>
+          <Abs_Or_Relitive_flag Value="1.000000000000000000e+00" ID="QCHNZPBSKTW"/>
+          <Last_Scale Value="1.000000000000000000e+00" ID="SYVVJYOJLWY"/>
+          <Origin Value="0.000000000000000000e+00" ID="AZJQDEMWZQG"/>
+          <Scale Value="1.000000000000000000e+00" ID="HPDDBAORVIB"/>
+          <X_Location Value="0.000000000000000000e+00" ID="RNZVXZUABLP"/>
+          <X_Rel_Location Value="0.000000000000000000e+00" ID="YVAHHZFDFAO"/>
+          <X_Rel_Rotation Value="0.000000000000000000e+00" ID="TOKIEGHNVFF"/>
+          <X_Rotation Value="0.000000000000000000e+00" ID="DTRKYEKDNDD"/>
+          <Y_Location Value="0.000000000000000000e+00" ID="FLHCGCJXQLL"/>
+          <Y_Rel_Location Value="0.000000000000000000e+00" ID="EHLWFAGWDQV"/>
+          <Y_Rel_Rotation Value="0.000000000000000000e+00" ID="OKTPUEALMPO"/>
+          <Y_Rotation Value="0.000000000000000000e+00" ID="PDEHXXRWNNL"/>
+          <Z_Location Value="0.000000000000000000e+00" ID="ACERCUGDNKV"/>
+          <Z_Rel_Location Value="0.000000000000000000e+00" ID="GJFWVYBOKYY"/>
+          <Z_Rel_Rotation Value="0.000000000000000000e+00" ID="YSCRHUCUUCW"/>
+          <Z_Rotation Value="0.000000000000000000e+00" ID="QHVRTLMEEYR"/>
+        </XForm>
+      </ParmContainer>
+      <GeomBase>
+        <TypeName>Fuselage</TypeName>
+        <TypeID>4</TypeID>
+        <TypeFixed>0</TypeFixed>
+        <ParentID>NONE</ParentID>
+        <Child_List/>
+      </GeomBase>
+      <Material>
+        <Name>Default</Name>
+      </Material>
+      <Wire_Color>
+        <ParmContainer>
+          <ID>FIDIWTXTMC</ID>
+          <Name>Default</Name>
+          <Color_Parm>
+            <Alpha Value="2.550000000000000000e+02" ID="DDVVTIKEAFE"/>
+            <Blue Value="2.550000000000000000e+02" ID="RFJKXBLTORQ"/>
+            <Green Value="0.000000000000000000e+00" ID="BRZVZAYSLKU"/>
+            <Red Value="0.000000000000000000e+00" ID="DINRMFURPQW"/>
+          </Color_Parm>
+        </ParmContainer>
+      </Wire_Color>
+      <Textures>
+        <Num_of_Tex>0</Num_of_Tex>
+      </Textures>
+      <Geom>
+        <Set_List>1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, </Set_List>
+        <SubSurfaces/>
+        <FeaStructures/>
+      </Geom>
+      <FuselageGeom>
+        <ParmContainer>
+          <ID>JPZCFIGGTR</ID>
+          <Name>Default</Name>
+        </ParmContainer>
+        <XSecSurf>
+          <XSec>
+            <ParmContainer>
+              <ID>NCBITOSPIW</ID>
+              <Name>SkinXSec</Name>
+              <XSec>
+                <AftCluster Value="1.000000000000000000e+00" ID="BOFWKBZEQVP"/>
+                <AllSym Value="0.000000000000000000e+00" ID="RVOVALARLTV"/>
+                <BottomLAngle Value="4.500000000000000000e+01" ID="RTIJFNEOPKP"/>
+                <BottomLAngleSet Value="1.000000000000000000e+00" ID="XIVZNRGXRPV"/>
+                <BottomLCurve Value="-5.659455561405430934e+00" ID="TWBWQVTLPII"/>
+                <BottomLCurveSet Value="0.000000000000000000e+00" ID="MVEYZZVMHWU"/>
+                <BottomLRAngleEq Value="1.000000000000000000e+00" ID="GSRJCYRQSUH"/>
+                <BottomLRCurveEq Value="0.000000000000000000e+00" ID="CIIUESJKMFY"/>
+                <BottomLRSlewEq Value="0.000000000000000000e+00" ID="ETSCNOKJXTQ"/>
+                <BottomLRStrengthEq Value="0.000000000000000000e+00" ID="LAAMIVQCNJX"/>
+                <BottomLSlew Value="0.000000000000000000e+00" ID="HJPRYDBXKSP"/>
+                <BottomLSlewSet Value="1.000000000000000000e+00" ID="TNPZIDMRVRQ"/>
+                <BottomLStrength Value="7.500000000000000000e-01" ID="PKHJIMHKVDU"/>
+                <BottomLStrengthSet Value="1.000000000000000000e+00" ID="HZJLWZDGSYS"/>
+                <BottomRAngle Value="4.500000000000000000e+01" ID="ZTOUKWEMVUF"/>
+                <BottomRAngleSet Value="1.000000000000000000e+00" ID="JHJVFVSRNCH"/>
+                <BottomRCurve Value="-5.659455548675557779e+00" ID="ZKWRQZWPEDM"/>
+                <BottomRCurveSet Value="0.000000000000000000e+00" ID="BEDQCMNKIIT"/>
+                <BottomRSlew Value="0.000000000000000000e+00" ID="VZKJTODXUPX"/>
+                <BottomRSlewSet Value="1.000000000000000000e+00" ID="CWMPDKCSPVH"/>
+                <BottomRStrength Value="1.000000000000000000e+00" ID="DUHQTUKRCDF"/>
+                <BottomRStrengthSet Value="1.000000000000000000e+00" ID="SIFYOYKIUJU"/>
+                <ContinuityBottom Value="0.000000000000000000e+00" ID="RFZHPRXFVJE"/>
+                <ContinuityLeft Value="0.000000000000000000e+00" ID="MEOQZJSPWDW"/>
+                <ContinuityRight Value="0.000000000000000000e+00" ID="OARFHCIGEWM"/>
+                <ContinuityTop Value="0.000000000000000000e+00" ID="KNKKSXNZSPL"/>
+                <FwdCluster Value="1.000000000000000000e+00" ID="MAFPYBDYOVN"/>
+                <LeftLAngle Value="4.500000000000000000e+01" ID="WIQGCJZXGQX"/>
+                <LeftLAngleSet Value="1.000000000000000000e+00" ID="BCKEXFULBDY"/>
+                <LeftLCurve Value="-5.659455561405430934e+00" ID="QFAQQHBSJNB"/>
+                <LeftLCurveSet Value="0.000000000000000000e+00" ID="HZHSFSWNRSP"/>
+                <LeftLRAngleEq Value="1.000000000000000000e+00" ID="SZHEQVFHLEX"/>
+                <LeftLRCurveEq Value="0.000000000000000000e+00" ID="UPAJMHYZTWI"/>
+                <LeftLRSlewEq Value="0.000000000000000000e+00" ID="ZXIPVUHKNWK"/>
+                <LeftLRStrengthEq Value="0.000000000000000000e+00" ID="IAQKSQHWAKG"/>
+                <LeftLSlew Value="0.000000000000000000e+00" ID="HFVXGPAFIFY"/>
+                <LeftLSlewSet Value="1.000000000000000000e+00" ID="ZQAXGLACSUN"/>
+                <LeftLStrength Value="7.500000000000000000e-01" ID="JNVPXRWKANP"/>
+                <LeftLStrengthSet Value="1.000000000000000000e+00" ID="UFALYOKVALJ"/>
+                <LeftRAngle Value="4.500000000000000000e+01" ID="DLYDOHSJVUX"/>
+                <LeftRAngleSet Value="1.000000000000000000e+00" ID="CCSTXLFEGJZ"/>
+                <LeftRCurve Value="-5.659455548675556891e+00" ID="LHOLKMRFQVQ"/>
+                <LeftRCurveSet Value="0.000000000000000000e+00" ID="WDVXPDVNVEI"/>
+                <LeftRSlew Value="0.000000000000000000e+00" ID="XBRMMVCKSYF"/>
+                <LeftRSlewSet Value="1.000000000000000000e+00" ID="NLAYVIXIRKC"/>
+                <LeftRStrength Value="1.000000000000000000e+00" ID="CMFOFVHBAPV"/>
+                <LeftRStrengthSet Value="1.000000000000000000e+00" ID="QJMLKIJJMEB"/>
+                <RLSym Value="1.000000000000000000e+00" ID="DRPMUVHDXJK"/>
+                <RefLength Value="5.000000000000000000e+00" ID="NNSABSYIDFL"/>
+                <RightLAngle Value="4.500000000000000000e+01" ID="ZKJDSOTSXBT"/>
+                <RightLAngleSet Value="1.000000000000000000e+00" ID="DCZTZNEDJXB"/>
+                <RightLCurve Value="-5.659455561405430934e+00" ID="QMNXLBPZXJG"/>
+                <RightLCurveSet Value="0.000000000000000000e+00" ID="JHZBJAXXLFJ"/>
+                <RightLRAngleEq Value="1.000000000000000000e+00" ID="YRRVUFHDLDN"/>
+                <RightLRCurveEq Value="0.000000000000000000e+00" ID="BJXSVDPGRJM"/>
+                <RightLRSlewEq Value="0.000000000000000000e+00" ID="LFNBLAYPVCC"/>
+                <RightLRStrengthEq Value="0.000000000000000000e+00" ID="CJSUMCEEXYU"/>
+                <RightLSlew Value="0.000000000000000000e+00" ID="PWAUGTJVSFE"/>
+                <RightLSlewSet Value="1.000000000000000000e+00" ID="OUYICAGVJHO"/>
+                <RightLStrength Value="7.500000000000000000e-01" ID="XOEZJFOKUIX"/>
+                <RightLStrengthSet Value="1.000000000000000000e+00" ID="TGABCULJPFG"/>
+                <RightRAngle Value="4.500000000000000000e+01" ID="CXKLGOQILEB"/>
+                <RightRAngleSet Value="1.000000000000000000e+00" ID="KTMAYNQBXPJ"/>
+                <RightRCurve Value="-5.659455548675556891e+00" ID="PXQUIMMIPUZ"/>
+                <RightRCurveSet Value="0.000000000000000000e+00" ID="FZJQHIXVDQD"/>
+                <RightRSlew Value="0.000000000000000000e+00" ID="SPFTPEJXLQD"/>
+                <RightRSlewSet Value="1.000000000000000000e+00" ID="UIBFQXYINKY"/>
+                <RightRStrength Value="1.000000000000000000e+00" ID="CSAOYNDNHYY"/>
+                <RightRStrengthSet Value="1.000000000000000000e+00" ID="NDCIJKXIASA"/>
+                <SectTess_U Value="6.000000000000000000e+00" ID="SSUJPTAIOLC"/>
+                <Spin Value="0.000000000000000000e+00" ID="HLQSVHGLQUE"/>
+                <TBSym Value="1.000000000000000000e+00" ID="UFNOMLVEDVN"/>
+                <TopLAngle Value="4.500000000000000000e+01" ID="LLYHNDERDPA"/>
+                <TopLAngleSet Value="1.000000000000000000e+00" ID="VJOFGGMDSXF"/>
+                <TopLCurve Value="-5.659455561405430934e+00" ID="ZKUBHIVCGAR"/>
+                <TopLCurveSet Value="0.000000000000000000e+00" ID="GSVWVYSERTO"/>
+                <TopLRAngleEq Value="1.000000000000000000e+00" ID="QDPTVXUUKCB"/>
+                <TopLRCurveEq Value="0.000000000000000000e+00" ID="FCMPNVOCQLX"/>
+                <TopLRSlewEq Value="0.000000000000000000e+00" ID="WZLYMUASJYH"/>
+                <TopLRStrengthEq Value="0.000000000000000000e+00" ID="NTBFZTCBIOP"/>
+                <TopLSlew Value="0.000000000000000000e+00" ID="TGQTODTVSZK"/>
+                <TopLSlewSet Value="1.000000000000000000e+00" ID="BCQJJNYLDXK"/>
+                <TopLStrength Value="7.500000000000000000e-01" ID="LJAJTDXNNVS"/>
+                <TopLStrengthSet Value="1.000000000000000000e+00" ID="FPKAKXVFBQF"/>
+                <TopRAngle Value="4.500000000000000000e+01" ID="UFUKLOPIUJQ"/>
+                <TopRAngleSet Value="1.000000000000000000e+00" ID="JTWLDXLLSSA"/>
+                <TopRCurve Value="-5.659455548675556891e+00" ID="YXICKBCQCCO"/>
+                <TopRCurveSet Value="0.000000000000000000e+00" ID="MCQMGFNPMFX"/>
+                <TopRSlew Value="0.000000000000000000e+00" ID="RYFUTMAMCXS"/>
+                <TopRSlewSet Value="1.000000000000000000e+00" ID="SANYDWUCUYT"/>
+                <TopRStrength Value="1.000000000000000000e+00" ID="MWGUWINOWRE"/>
+                <TopRStrengthSet Value="1.000000000000000000e+00" ID="KRNUCBTZRHI"/>
+                <XLocPercent Value="0.000000000000000000e+00" ID="UWGTGLJSUQH"/>
+                <XRotate Value="0.000000000000000000e+00" ID="TLOIJRKHMCA"/>
+                <YLocPercent Value="0.000000000000000000e+00" ID="FVXVXMGGFRP"/>
+                <YRotate Value="0.000000000000000000e+00" ID="BCZGKEESVQQ"/>
+                <ZLocPercent Value="0.000000000000000000e+00" ID="MNEODBALDQV"/>
+                <ZRotate Value="0.000000000000000000e+00" ID="QXQDUYCMZYS"/>
+              </XSec>
+            </ParmContainer>
+            <XSec>
+              <Type>0</Type>
+              <GroupName>XSec</GroupName>
+              <XSecCurve>
+                <ParmContainer>
+                  <ID>PCKJHOOMTQ</ID>
+                  <Name>Point</Name>
+                  <Cap>
+                    <LE_Cap_Length Value="1.000000000000000000e+00" ID="ZLNHFCIHHFI"/>
+                    <LE_Cap_Offset Value="0.000000000000000000e+00" ID="IELYIQOMVSW"/>
+                    <LE_Cap_Strength Value="5.000000000000000000e-01" ID="JZLJHZCCWYN"/>
+                    <LE_Cap_Type Value="1.000000000000000000e+00" ID="BRGBMFAOHNS"/>
+                    <TE_Cap_Length Value="1.000000000000000000e+00" ID="QIONNAUNZGP"/>
+                    <TE_Cap_Offset Value="0.000000000000000000e+00" ID="RAGUPXVBXFX"/>
+                    <TE_Cap_Strength Value="5.000000000000000000e-01" ID="QHVETJONARN"/>
+                    <TE_Cap_Type Value="1.000000000000000000e+00" ID="BGTGFDWFOUM"/>
+                  </Cap>
+                  <Chevron>
+                    <AllSym Value="1.000000000000000000e+00" ID="UPDFUXGJFDP"/>
+                    <BottomAmplitude Value="1.000000000000000000e+00" ID="QDONPRDAZPA"/>
+                    <Bottom_Angle Value="0.000000000000000000e+00" ID="CGJTANGDTPQ"/>
+                    <Bottom_Slew Value="0.000000000000000000e+00" ID="KFEMZKFDRNT"/>
+                    <Chevron_Type Value="0.000000000000000000e+00" ID="MSFHTOTOWRI"/>
+                    <LeftAmplitude Value="1.000000000000000000e+00" ID="WEJGZGYASXX"/>
+                    <Left_Angle Value="0.000000000000000000e+00" ID="PAEANHWGRZZ"/>
+                    <Left_Slew Value="0.000000000000000000e+00" ID="ZLZOKPDVQNM"/>
+                    <Number Value="8.000000000000000000e+00" ID="IUHREGKKYJT"/>
+                    <Off_Duty Value="0.000000000000000000e+00" ID="WPXAESRBUUE"/>
+                    <On_Duty Value="0.000000000000000000e+00" ID="SJSZSNOBLYR"/>
+                    <Peak_Radius Value="0.000000000000000000e+00" ID="ATPJYYJXYBC"/>
+                    <RLSym Value="1.000000000000000000e+00" ID="WHSKLLVUGQK"/>
+                    <RightAmplitude Value="1.000000000000000000e+00" ID="NLAWDZSELKB"/>
+                    <Right_Angle Value="0.000000000000000000e+00" ID="XJOPLRATBKO"/>
+                    <Right_Slew Value="0.000000000000000000e+00" ID="XXJLQYFOUAA"/>
+                    <TBSym Value="1.000000000000000000e+00" ID="BOVHEDTHCUE"/>
+                    <TopAmplitude Value="1.000000000000000000e+00" ID="HUMGPDMCRMC"/>
+                    <Top_Angle Value="0.000000000000000000e+00" ID="RMEYPRKHXOY"/>
+                    <Top_Slew Value="0.000000000000000000e+00" ID="EXHWWWNMDMY"/>
+                    <Valley_Radius Value="0.000000000000000000e+00" ID="OXUPPXZBVFS"/>
+                    <W01_Center Value="2.500000000000000000e-01" ID="XTMGNKTQMJH"/>
+                    <W01_Center_Guide Value="5.000000000000000000e+00" ID="NLSOPMZLTFR"/>
+                    <W01_End Value="5.000000000000000000e-01" ID="ZVGNQNTEEGS"/>
+                    <W01_End_Guide Value="5.000000000000000000e+00" ID="ELUTIJSDRDI"/>
+                    <W01_Mode Value="0.000000000000000000e+00" ID="CNAHMQPZDQZ"/>
+                    <W01_Start Value="0.000000000000000000e+00" ID="PPYTMCPNYJP"/>
+                    <W01_Start_Guide Value="5.000000000000000000e+00" ID="SAFDHERRNYR"/>
+                    <W01_Width Value="5.000000000000000000e-01" ID="QGUBWNTICWZ"/>
+                  </Chevron>
+                  <Close>
+                    <LE_Close_AbsRel Value="0.000000000000000000e+00" ID="DMMFMKJZNCH"/>
+                    <LE_Close_Thick Value="0.000000000000000000e+00" ID="HPQKGIKDIUT"/>
+                    <LE_Close_Thick_Chord Value="0.000000000000000000e+00" ID="YSMDKHYMPDM"/>
+                    <LE_Close_Type Value="0.000000000000000000e+00" ID="XPZFKRCJZCM"/>
+                    <TE_Close_AbsRel Value="0.000000000000000000e+00" ID="WRIZYXMYNPH"/>
+                    <TE_Close_Thick Value="0.000000000000000000e+00" ID="EVQUNOFFHGI"/>
+                    <TE_Close_Thick_Chord Value="0.000000000000000000e+00" ID="QTPHBZTHXFN"/>
+                    <TE_Close_Type Value="0.000000000000000000e+00" ID="ASGJQWSDMKN"/>
+                  </Close>
+                  <Trim>
+                    <LE_Trim_AbsRel Value="0.000000000000000000e+00" ID="GEQBPVUJLFG"/>
+                    <LE_Trim_Thick Value="0.000000000000000000e+00" ID="RSDEKHJTQQK"/>
+                    <LE_Trim_Thick_Chord Value="0.000000000000000000e+00" ID="HWXIUXJMCVV"/>
+                    <LE_Trim_Type Value="0.000000000000000000e+00" ID="OFZTAUGKATH"/>
+                    <LE_Trim_X Value="0.000000000000000000e+00" ID="YCEUGIZAECB"/>
+                    <LE_Trim_X_Chord Value="0.000000000000000000e+00" ID="PMWHZDJVZLP"/>
+                    <TE_Trim_AbsRel Value="0.000000000000000000e+00" ID="FGFOJNYYSWI"/>
+                    <TE_Trim_Thick Value="0.000000000000000000e+00" ID="JZQWNIEAMOY"/>
+                    <TE_Trim_Thick_Chord Value="0.000000000000000000e+00" ID="AUJAIYNXHAO"/>
+                    <TE_Trim_Type Value="0.000000000000000000e+00" ID="ZHAMPRTOLUK"/>
+                    <TE_Trim_X Value="0.000000000000000000e+00" ID="YVEEIHQBJWQ"/>
+                    <TE_Trim_X_Chord Value="0.000000000000000000e+00" ID="LEVULCCWAJX"/>
+                  </Trim>
+                  <XSecCurve>
+                    <Area Value="0.000000000000000000e+00" ID="KAJJKEWKSPP"/>
+                    <DeltaX Value="0.000000000000000000e+00" ID="JGDTCUPNUZV"/>
+                    <DeltaY Value="0.000000000000000000e+00" ID="FCZRISMYNDY"/>
+                    <HWRatio Value="1.000000000000000000e+00" ID="UPFHPTYNVNH"/>
+                    <Scale Value="1.000000000000000000e+00" ID="XHEALKKTUMH"/>
+                    <ShiftLE Value="0.000000000000000000e+00" ID="BITBNNQLFYC"/>
+                    <Theta Value="0.000000000000000000e+00" ID="WQKEHLZWCMF"/>
+                  </XSecCurve>
+                  <XSecCurve_Background>
+                    <XSecFlipImageFlag Value="0.000000000000000000e+00" ID="SAMHKSDWDFR"/>
+                    <XSecImageFlag Value="0.000000000000000000e+00" ID="LAADGQVFMXZ"/>
+                    <XSecImageH Value="1.000000000000000000e+00" ID="YRZPSOPYTTV"/>
+                    <XSecImagePreserveAR Value="1.000000000000000000e+00" ID="JCEUZDLLVZY"/>
+                    <XSecImageW Value="1.000000000000000000e+00" ID="UMFPTXAVWWA"/>
+                    <XSecImageXOffset Value="0.000000000000000000e+00" ID="XZCMUIJSSUW"/>
+                    <XSecImageYOffset Value="0.000000000000000000e+00" ID="SVGQLTRXZAQ"/>
+                    <XSecLockImageFlag Value="0.000000000000000000e+00" ID="DTQTRLUSQFF"/>
+                  </XSecCurve_Background>
+                </ParmContainer>
+                <XSecCurve>
+                  <Type>0</Type>
+                  <XSecCurveDriverGroup>
+                    <NumVar>4</NumVar>
+                    <NumChoices>2</NumChoices>
+                    <ChoiceVec>0, 2, </ChoiceVec>
+                  </XSecCurveDriverGroup>
+                </XSecCurve>
+              </XSecCurve>
+            </XSec>
+          </XSec>
+          <XSec>
+            <ParmContainer>
+              <ID>SUESVRNCOI</ID>
+              <Name>SkinXSec</Name>
+              <XSec>
+                <AftCluster Value="1.000000000000000000e+00" ID="HSDJWDHIEQO"/>
+                <AllSym Value="0.000000000000000000e+00" ID="ZQDQYUXAQLF"/>
+                <BottomLAngle Value="0.000000000000000000e+00" ID="GBZOZXDJSOO"/>
+                <BottomLAngleSet Value="1.000000000000000000e+00" ID="QSJNXBJWNPA"/>
+                <BottomLCurve Value="-7.071588161992790056e+00" ID="ONNHFGFOMEV"/>
+                <BottomLCurveSet Value="0.000000000000000000e+00" ID="CPYAQYDGNKG"/>
+                <BottomLRAngleEq Value="1.000000000000000000e+00" ID="WDBPSRIYKOI"/>
+                <BottomLRCurveEq Value="0.000000000000000000e+00" ID="NYCUXUMPOBS"/>
+                <BottomLRSlewEq Value="0.000000000000000000e+00" ID="NOGAKXABNVA"/>
+                <BottomLRStrengthEq Value="0.000000000000000000e+00" ID="LBYUMDWMXOR"/>
+                <BottomLSlew Value="0.000000000000000000e+00" ID="QQMWXKVYNZH"/>
+                <BottomLSlewSet Value="1.000000000000000000e+00" ID="BCMUIDNYEGI"/>
+                <BottomLStrength Value="1.000000000000000000e+00" ID="HIASOKDJXCT"/>
+                <BottomLStrengthSet Value="1.000000000000000000e+00" ID="DXXNXSJOLVR"/>
+                <BottomRAngle Value="0.000000000000000000e+00" ID="ONFHYECYCAD"/>
+                <BottomRAngleSet Value="1.000000000000000000e+00" ID="AAXMDZLXEXV"/>
+                <BottomRCurve Value="0.000000000000000000e+00" ID="LBPYXRGYUZB"/>
+                <BottomRCurveSet Value="0.000000000000000000e+00" ID="CDOKKKSLSRD"/>
+                <BottomRSlew Value="0.000000000000000000e+00" ID="NMAVWRDCUIP"/>
+                <BottomRSlewSet Value="1.000000000000000000e+00" ID="ZAYDSQUEEYI"/>
+                <BottomRStrength Value="1.000000000000000000e+00" ID="UBLBCCYGBFJ"/>
+                <BottomRStrengthSet Value="1.000000000000000000e+00" ID="BXWHYHKDDLP"/>
+                <ContinuityBottom Value="0.000000000000000000e+00" ID="QCUEBOTOBMC"/>
+                <ContinuityLeft Value="0.000000000000000000e+00" ID="UHRNMCNUDQI"/>
+                <ContinuityRight Value="0.000000000000000000e+00" ID="YPAYURWBKXJ"/>
+                <ContinuityTop Value="0.000000000000000000e+00" ID="KXZPQTUJOJX"/>
+                <FwdCluster Value="1.000000000000000000e+00" ID="VOXQDGBIRKX"/>
+                <LeftLAngle Value="0.000000000000000000e+00" ID="CANSVVBPSWF"/>
+                <LeftLAngleSet Value="1.000000000000000000e+00" ID="STPWAPYJXPE"/>
+                <LeftLCurve Value="-7.071588161992790056e+00" ID="MLBYDMIDCWL"/>
+                <LeftLCurveSet Value="0.000000000000000000e+00" ID="IGIDPWOQBBY"/>
+                <LeftLRAngleEq Value="1.000000000000000000e+00" ID="FEIPMHNJYDS"/>
+                <LeftLRCurveEq Value="0.000000000000000000e+00" ID="RVNJFEWSMNW"/>
+                <LeftLRSlewEq Value="0.000000000000000000e+00" ID="RLPDYUNRZUX"/>
+                <LeftLRStrengthEq Value="0.000000000000000000e+00" ID="CIMRFRWORCA"/>
+                <LeftLSlew Value="0.000000000000000000e+00" ID="PGBMFZSTPQZ"/>
+                <LeftLSlewSet Value="1.000000000000000000e+00" ID="XKRYZQWQVLT"/>
+                <LeftLStrength Value="1.000000000000000000e+00" ID="JQXHGNFXLNB"/>
+                <LeftLStrengthSet Value="1.000000000000000000e+00" ID="BNVSNKMGNZI"/>
+                <LeftRAngle Value="0.000000000000000000e+00" ID="APEIMZTACLB"/>
+                <LeftRAngleSet Value="1.000000000000000000e+00" ID="QFTSDFAAVBS"/>
+                <LeftRCurve Value="0.000000000000000000e+00" ID="RMZLSTDJAGK"/>
+                <LeftRCurveSet Value="0.000000000000000000e+00" ID="CUMTUVDWIOP"/>
+                <LeftRSlew Value="0.000000000000000000e+00" ID="TRMWGVQNZWT"/>
+                <LeftRSlewSet Value="1.000000000000000000e+00" ID="LBZXRVRHZNB"/>
+                <LeftRStrength Value="1.000000000000000000e+00" ID="HXRDTEYKZAS"/>
+                <LeftRStrengthSet Value="1.000000000000000000e+00" ID="PITWQJKMWGD"/>
+                <RLSym Value="1.000000000000000000e+00" ID="SOZOTAFHREX"/>
+                <RefLength Value="5.000000000000000000e+00" ID="ZIGAATOUGLU"/>
+                <RightLAngle Value="0.000000000000000000e+00" ID="ONQGQYQULUM"/>
+                <RightLAngleSet Value="1.000000000000000000e+00" ID="HWKEJORKRYT"/>
+                <RightLCurve Value="-7.071588161992790056e+00" ID="DBHQGXHUAHM"/>
+                <RightLCurveSet Value="0.000000000000000000e+00" ID="GYXVMZDZGAX"/>
+                <RightLRAngleEq Value="1.000000000000000000e+00" ID="ZKICNTXVJBH"/>
+                <RightLRCurveEq Value="0.000000000000000000e+00" ID="YRFNMHBJGQQ"/>
+                <RightLRSlewEq Value="0.000000000000000000e+00" ID="XSMQTGQDEEL"/>
+                <RightLRStrengthEq Value="0.000000000000000000e+00" ID="DLDSVPKFJUO"/>
+                <RightLSlew Value="0.000000000000000000e+00" ID="XHQWGMTFDBV"/>
+                <RightLSlewSet Value="1.000000000000000000e+00" ID="YWSYKXPFGHW"/>
+                <RightLStrength Value="1.000000000000000000e+00" ID="DRKVBMXCOHD"/>
+                <RightLStrengthSet Value="1.000000000000000000e+00" ID="XTOXARWYODI"/>
+                <RightRAngle Value="0.000000000000000000e+00" ID="ZJVGNAQYMZP"/>
+                <RightRAngleSet Value="1.000000000000000000e+00" ID="GFUVJZRIUIO"/>
+                <RightRCurve Value="0.000000000000000000e+00" ID="VGJMWRAZZYP"/>
+                <RightRCurveSet Value="0.000000000000000000e+00" ID="EZLFOZUSAHM"/>
+                <RightRSlew Value="0.000000000000000000e+00" ID="JVTESSFZDOE"/>
+                <RightRSlewSet Value="1.000000000000000000e+00" ID="JNITPEAEDVI"/>
+                <RightRStrength Value="1.000000000000000000e+00" ID="DBPNYEFBAIZ"/>
+                <RightRStrengthSet Value="1.000000000000000000e+00" ID="KGWUPQVFSHP"/>
+                <SectTess_U Value="6.000000000000000000e+00" ID="TSTIVUQWAZJ"/>
+                <Spin Value="0.000000000000000000e+00" ID="DQNGLASGDPD"/>
+                <TBSym Value="1.000000000000000000e+00" ID="OLWRUYGUDJR"/>
+                <TopLAngle Value="0.000000000000000000e+00" ID="KLPIHKPCPGG"/>
+                <TopLAngleSet Value="1.000000000000000000e+00" ID="YRYPKMMUAIK"/>
+                <TopLCurve Value="-7.071588161992790056e+00" ID="YFMFYJVVZTE"/>
+                <TopLCurveSet Value="0.000000000000000000e+00" ID="MBJAYHQNBQR"/>
+                <TopLRAngleEq Value="1.000000000000000000e+00" ID="EKXYAKRHLBO"/>
+                <TopLRCurveEq Value="0.000000000000000000e+00" ID="WLAOQFGJSLU"/>
+                <TopLRSlewEq Value="0.000000000000000000e+00" ID="DSLZLHIVXRJ"/>
+                <TopLRStrengthEq Value="0.000000000000000000e+00" ID="RDAREVZACZL"/>
+                <TopLSlew Value="0.000000000000000000e+00" ID="CTYOMPKNPSH"/>
+                <TopLSlewSet Value="1.000000000000000000e+00" ID="NCBERGPCNJO"/>
+                <TopLStrength Value="1.000000000000000000e+00" ID="GHZFAKUVBPH"/>
+                <TopLStrengthSet Value="1.000000000000000000e+00" ID="OZCCUIQGIHJ"/>
+                <TopRAngle Value="0.000000000000000000e+00" ID="HBDGTSTOFWQ"/>
+                <TopRAngleSet Value="1.000000000000000000e+00" ID="IHDBGHCHPEE"/>
+                <TopRCurve Value="0.000000000000000000e+00" ID="XAAHAKBTIZO"/>
+                <TopRCurveSet Value="0.000000000000000000e+00" ID="YLBKFOLSGOH"/>
+                <TopRSlew Value="0.000000000000000000e+00" ID="FAAYMMCLAFM"/>
+                <TopRSlewSet Value="1.000000000000000000e+00" ID="IPGRDHDPGGP"/>
+                <TopRStrength Value="1.000000000000000000e+00" ID="KHDEEUPTKGD"/>
+                <TopRStrengthSet Value="1.000000000000000000e+00" ID="XRLHAMTMQIO"/>
+                <XLocPercent Value="0.000000000000000000e+00" ID="QCKGYESNNNS"/>
+                <XRotate Value="0.000000000000000000e+00" ID="LJNAAEAIPWN"/>
+                <YLocPercent Value="0.000000000000000000e+00" ID="JTQXQFEMHIK"/>
+                <YRotate Value="0.000000000000000000e+00" ID="VJGMVSXDQRW"/>
+                <ZLocPercent Value="0.000000000000000000e+00" ID="YZJVNNPCVGH"/>
+                <ZRotate Value="0.000000000000000000e+00" ID="AWSLUNLYCZU"/>
+              </XSec>
+            </ParmContainer>
+            <XSec>
+              <Type>0</Type>
+              <GroupName>XSec</GroupName>
+              <XSecCurve>
+                <ParmContainer>
+                  <ID>BLJOQDISYF</ID>
+                  <Name>Ellipse</Name>
+                  <Cap>
+                    <LE_Cap_Length Value="1.000000000000000000e+00" ID="XDEPFAMMQHZ"/>
+                    <LE_Cap_Offset Value="0.000000000000000000e+00" ID="HEOHMZSSRZJ"/>
+                    <LE_Cap_Strength Value="5.000000000000000000e-01" ID="LRVIOSOWBPE"/>
+                    <LE_Cap_Type Value="1.000000000000000000e+00" ID="CSWYLJGLPCS"/>
+                    <TE_Cap_Length Value="1.000000000000000000e+00" ID="XTPIZOPAEVT"/>
+                    <TE_Cap_Offset Value="0.000000000000000000e+00" ID="DIYXABGPHMQ"/>
+                    <TE_Cap_Strength Value="5.000000000000000000e-01" ID="QLLAQHBEKYI"/>
+                    <TE_Cap_Type Value="1.000000000000000000e+00" ID="ECKGWZHKDJW"/>
+                  </Cap>
+                  <Chevron>
+                    <AllSym Value="1.000000000000000000e+00" ID="KXZNOVENGDR"/>
+                    <BottomAmplitude Value="1.000000000000000000e+00" ID="WFQYSAUBDDK"/>
+                    <Bottom_Angle Value="0.000000000000000000e+00" ID="ECHUYMBRCQB"/>
+                    <Bottom_Slew Value="0.000000000000000000e+00" ID="DXTAHFVZMAY"/>
+                    <Chevron_Type Value="0.000000000000000000e+00" ID="NNUEQLXIZIW"/>
+                    <LeftAmplitude Value="1.000000000000000000e+00" ID="QKIAWBQLOSX"/>
+                    <Left_Angle Value="0.000000000000000000e+00" ID="JKBXDAPEZWH"/>
+                    <Left_Slew Value="0.000000000000000000e+00" ID="NGJQTULCOKS"/>
+                    <Number Value="8.000000000000000000e+00" ID="NTQPYTNJFPB"/>
+                    <Off_Duty Value="0.000000000000000000e+00" ID="PRIFPYDVNZP"/>
+                    <On_Duty Value="0.000000000000000000e+00" ID="TTJSPKDCDZA"/>
+                    <Peak_Radius Value="0.000000000000000000e+00" ID="TRWVSJMIBXF"/>
+                    <RLSym Value="1.000000000000000000e+00" ID="CLGLKBJRWTJ"/>
+                    <RightAmplitude Value="1.000000000000000000e+00" ID="MPLTRPVUTGO"/>
+                    <Right_Angle Value="0.000000000000000000e+00" ID="EDPEIWJJFMB"/>
+                    <Right_Slew Value="0.000000000000000000e+00" ID="MXORHZMZXTJ"/>
+                    <TBSym Value="1.000000000000000000e+00" ID="MYFZEOEMOTB"/>
+                    <TopAmplitude Value="1.000000000000000000e+00" ID="FNDLIHDYUXE"/>
+                    <Top_Angle Value="0.000000000000000000e+00" ID="ADTVIZLOBCA"/>
+                    <Top_Slew Value="0.000000000000000000e+00" ID="TSPCXUHPPHT"/>
+                    <Valley_Radius Value="0.000000000000000000e+00" ID="QPLOOXLRPWM"/>
+                    <W01_Center Value="2.500000000000000000e-01" ID="FWYPJYAVOGM"/>
+                    <W01_Center_Guide Value="5.000000000000000000e+00" ID="URECOJKGLIN"/>
+                    <W01_End Value="5.000000000000000000e-01" ID="KCUMDEAMDDO"/>
+                    <W01_End_Guide Value="5.000000000000000000e+00" ID="WAZDROHHLMM"/>
+                    <W01_Mode Value="0.000000000000000000e+00" ID="DARYKSDCSGS"/>
+                    <W01_Start Value="0.000000000000000000e+00" ID="VCOYEUISAZX"/>
+                    <W01_Start_Guide Value="5.000000000000000000e+00" ID="MIPKJENMNKY"/>
+                    <W01_Width Value="5.000000000000000000e-01" ID="LWVZLZILSCK"/>
+                  </Chevron>
+                  <Close>
+                    <LE_Close_AbsRel Value="0.000000000000000000e+00" ID="WWKLTTEAPQP"/>
+                    <LE_Close_Thick Value="0.000000000000000000e+00" ID="BIPIHWWCBHI"/>
+                    <LE_Close_Thick_Chord Value="0.000000000000000000e+00" ID="IROHIQSCBUX"/>
+                    <LE_Close_Type Value="0.000000000000000000e+00" ID="UEDIGCAVWPE"/>
+                    <TE_Close_AbsRel Value="0.000000000000000000e+00" ID="YWUXYJUCTUE"/>
+                    <TE_Close_Thick Value="0.000000000000000000e+00" ID="SCWYLGRWKJD"/>
+                    <TE_Close_Thick_Chord Value="0.000000000000000000e+00" ID="QLMTFDNVEIT"/>
+                    <TE_Close_Type Value="0.000000000000000000e+00" ID="PQKIKTRLUMJ"/>
+                  </Close>
+                  <Trim>
+                    <LE_Trim_AbsRel Value="0.000000000000000000e+00" ID="AYQDFKVWFRL"/>
+                    <LE_Trim_Thick Value="0.000000000000000000e+00" ID="DZDRCBVHSLC"/>
+                    <LE_Trim_Thick_Chord Value="0.000000000000000000e+00" ID="AMBYRJWFNFV"/>
+                    <LE_Trim_Type Value="0.000000000000000000e+00" ID="GKWGGDRQLSG"/>
+                    <LE_Trim_X Value="0.000000000000000000e+00" ID="YFMHBNPCNVQ"/>
+                    <LE_Trim_X_Chord Value="0.000000000000000000e+00" ID="YITLTJCYNIB"/>
+                    <TE_Trim_AbsRel Value="0.000000000000000000e+00" ID="NDUYGGPYZLO"/>
+                    <TE_Trim_Thick Value="0.000000000000000000e+00" ID="JSLVBSSWTHQ"/>
+                    <TE_Trim_Thick_Chord Value="0.000000000000000000e+00" ID="KONHRXSIPDL"/>
+                    <TE_Trim_Type Value="0.000000000000000000e+00" ID="COQWHBSTYDC"/>
+                    <TE_Trim_X Value="0.000000000000000000e+00" ID="QNFUGHQXIEN"/>
+                    <TE_Trim_X_Chord Value="0.000000000000000000e+00" ID="PCGFKQCXOZL"/>
+                  </Trim>
+                  <XSecCurve>
+                    <Area Value="7.854574855568554614e-01" ID="RIKLBSTDHCK"/>
+                    <DeltaX Value="0.000000000000000000e+00" ID="PSWEDZKXAXN"/>
+                    <DeltaY Value="0.000000000000000000e+00" ID="AOLKJZWPYZZ"/>
+                    <Ellipse_Height Value="1.000000000000000000e+00" ID="VNSPRCIACYC"/>
+                    <Ellipse_Width Value="1.000000000000000000e+00" ID="EERCBXLSXQT"/>
+                    <HWRatio Value="1.000000000000000000e+00" ID="CMQETRPNHGT"/>
+                    <Scale Value="1.000000000000000000e+00" ID="IGPQTSIXWAJ"/>
+                    <ShiftLE Value="0.000000000000000000e+00" ID="ESLTXZHSJKR"/>
+                    <Theta Value="0.000000000000000000e+00" ID="YUHYYUEFQME"/>
+                  </XSecCurve>
+                  <XSecCurve_Background>
+                    <XSecFlipImageFlag Value="0.000000000000000000e+00" ID="NYHVUBYVJFW"/>
+                    <XSecImageFlag Value="0.000000000000000000e+00" ID="MOZMSBWERGG"/>
+                    <XSecImageH Value="1.000000000000000000e+00" ID="LHRNEMSMBAH"/>
+                    <XSecImagePreserveAR Value="1.000000000000000000e+00" ID="MGRBVXSMZZM"/>
+                    <XSecImageW Value="1.000000000000000000e+00" ID="XHGRGGSUCBI"/>
+                    <XSecImageXOffset Value="0.000000000000000000e+00" ID="CMYTFPVDBOV"/>
+                    <XSecImageYOffset Value="0.000000000000000000e+00" ID="AAZDKMXQIRS"/>
+                    <XSecLockImageFlag Value="0.000000000000000000e+00" ID="YCPVSACLRLH"/>
+                  </XSecCurve_Background>
+                </ParmContainer>
+                <XSecCurve>
+                  <Type>2</Type>
+                  <XSecCurveDriverGroup>
+                    <NumVar>4</NumVar>
+                    <NumChoices>2</NumChoices>
+                    <ChoiceVec>0, 2, </ChoiceVec>
+                  </XSecCurveDriverGroup>
+                </XSecCurve>
+              </XSecCurve>
+            </XSec>
+          </XSec>
+          <XSec>
+            <ParmContainer>
+              <ID>XRMSTRPLWK</ID>
+              <Name>SkinXSec</Name>
+              <XSec>
+                <AftCluster Value="1.000000000000000000e+00" ID="CMUHJQPJSNG"/>
+                <AllSym Value="0.000000000000000000e+00" ID="CZQSZNZKLDW"/>
+                <BottomLAngle Value="0.000000000000000000e+00" ID="KGTVFORXTYH"/>
+                <BottomLAngleSet Value="1.000000000000000000e+00" ID="NEJWXIRGQPA"/>
+                <BottomLCurve Value="0.000000000000000000e+00" ID="HAUGRXEUNEV"/>
+                <BottomLCurveSet Value="0.000000000000000000e+00" ID="UXRHHKOKSII"/>
+                <BottomLRAngleEq Value="1.000000000000000000e+00" ID="RQMLDRNKNLX"/>
+                <BottomLRCurveEq Value="0.000000000000000000e+00" ID="AHYUFIAPSYX"/>
+                <BottomLRSlewEq Value="0.000000000000000000e+00" ID="IPCLUTZSIRF"/>
+                <BottomLRStrengthEq Value="0.000000000000000000e+00" ID="HMGCWRBGMXR"/>
+                <BottomLSlew Value="0.000000000000000000e+00" ID="JWEYVGLMBAM"/>
+                <BottomLSlewSet Value="1.000000000000000000e+00" ID="JFGMZEVYIIU"/>
+                <BottomLStrength Value="1.000000000000000000e+00" ID="TAEZETLYNZZ"/>
+                <BottomLStrengthSet Value="1.000000000000000000e+00" ID="ZCYQUQMQYQK"/>
+                <BottomRAngle Value="0.000000000000000000e+00" ID="AMWTWLRWDHG"/>
+                <BottomRAngleSet Value="1.000000000000000000e+00" ID="VPCULQGDOFQ"/>
+                <BottomRCurve Value="0.000000000000000000e+00" ID="UWDVWUIWJXR"/>
+                <BottomRCurveSet Value="0.000000000000000000e+00" ID="EMMKBAOUVGN"/>
+                <BottomRSlew Value="0.000000000000000000e+00" ID="MWQVYVGGZMY"/>
+                <BottomRSlewSet Value="1.000000000000000000e+00" ID="KTASMAHBLDK"/>
+                <BottomRStrength Value="1.000000000000000000e+00" ID="CUICDATUEEK"/>
+                <BottomRStrengthSet Value="1.000000000000000000e+00" ID="BOWBOTAROFK"/>
+                <ContinuityBottom Value="0.000000000000000000e+00" ID="OQNJBRROSFK"/>
+                <ContinuityLeft Value="0.000000000000000000e+00" ID="NALDCHARLSS"/>
+                <ContinuityRight Value="0.000000000000000000e+00" ID="GHILRGMOFSZ"/>
+                <ContinuityTop Value="0.000000000000000000e+00" ID="CHEWFBKUTTF"/>
+                <FwdCluster Value="1.000000000000000000e+00" ID="HKMKGXUQFVG"/>
+                <LeftLAngle Value="0.000000000000000000e+00" ID="YKZVHBZZWHQ"/>
+                <LeftLAngleSet Value="1.000000000000000000e+00" ID="UKARSXGAGNU"/>
+                <LeftLCurve Value="0.000000000000000000e+00" ID="NVKSBJEWKJF"/>
+                <LeftLCurveSet Value="0.000000000000000000e+00" ID="YMTPGQYFOIQ"/>
+                <LeftLRAngleEq Value="1.000000000000000000e+00" ID="BAANXGZNQTR"/>
+                <LeftLRCurveEq Value="0.000000000000000000e+00" ID="RGUYQHNWMUI"/>
+                <LeftLRSlewEq Value="0.000000000000000000e+00" ID="BEUEAPLPAVZ"/>
+                <LeftLRStrengthEq Value="0.000000000000000000e+00" ID="RTTWSJSLIRQ"/>
+                <LeftLSlew Value="0.000000000000000000e+00" ID="BSMDTRUTUUT"/>
+                <LeftLSlewSet Value="1.000000000000000000e+00" ID="ZGDIDPINUNP"/>
+                <LeftLStrength Value="1.000000000000000000e+00" ID="NFTQFOCHGOX"/>
+                <LeftLStrengthSet Value="1.000000000000000000e+00" ID="BKQNPMLGGYW"/>
+                <LeftRAngle Value="0.000000000000000000e+00" ID="DZWUXIKOTJH"/>
+                <LeftRAngleSet Value="1.000000000000000000e+00" ID="NAJUNCLKTWB"/>
+                <LeftRCurve Value="0.000000000000000000e+00" ID="ZJBQQTRMVNS"/>
+                <LeftRCurveSet Value="0.000000000000000000e+00" ID="SAKUMHOITEE"/>
+                <LeftRSlew Value="0.000000000000000000e+00" ID="LNEHZTPVCZB"/>
+                <LeftRSlewSet Value="1.000000000000000000e+00" ID="FJUYWMAJUTY"/>
+                <LeftRStrength Value="1.000000000000000000e+00" ID="BUBXLDERRSZ"/>
+                <LeftRStrengthSet Value="1.000000000000000000e+00" ID="NLGASKEQIVS"/>
+                <RLSym Value="1.000000000000000000e+00" ID="QHKBUQKBAKD"/>
+                <RefLength Value="5.000000000000000000e+00" ID="JLLWXIMTSXE"/>
+                <RightLAngle Value="0.000000000000000000e+00" ID="ZSRKVNIYXMT"/>
+                <RightLAngleSet Value="1.000000000000000000e+00" ID="UHIRUYBISUD"/>
+                <RightLCurve Value="0.000000000000000000e+00" ID="PPCVRLAPTYS"/>
+                <RightLCurveSet Value="0.000000000000000000e+00" ID="BIRKYEYLBUM"/>
+                <RightLRAngleEq Value="1.000000000000000000e+00" ID="RMTAMQOHFOY"/>
+                <RightLRCurveEq Value="0.000000000000000000e+00" ID="GVYJVNLEBNX"/>
+                <RightLRSlewEq Value="0.000000000000000000e+00" ID="GHDQWYSFACN"/>
+                <RightLRStrengthEq Value="0.000000000000000000e+00" ID="UWMRWYSFXPX"/>
+                <RightLSlew Value="0.000000000000000000e+00" ID="IDYFIAENHAN"/>
+                <RightLSlewSet Value="1.000000000000000000e+00" ID="AUMOPQEXPKB"/>
+                <RightLStrength Value="1.000000000000000000e+00" ID="PBXUDPIPFUY"/>
+                <RightLStrengthSet Value="1.000000000000000000e+00" ID="CEKLKDNIYTS"/>
+                <RightRAngle Value="0.000000000000000000e+00" ID="JGXFVFBQWGV"/>
+                <RightRAngleSet Value="1.000000000000000000e+00" ID="HXXOZSFVWBU"/>
+                <RightRCurve Value="0.000000000000000000e+00" ID="MNYLYMVUJQR"/>
+                <RightRCurveSet Value="0.000000000000000000e+00" ID="GXHBFNUJOVN"/>
+                <RightRSlew Value="0.000000000000000000e+00" ID="IOKLYEEPDSC"/>
+                <RightRSlewSet Value="1.000000000000000000e+00" ID="DFFUWCFJKNB"/>
+                <RightRStrength Value="1.000000000000000000e+00" ID="KIPMVFRTUXP"/>
+                <RightRStrengthSet Value="1.000000000000000000e+00" ID="MQVYAIXVSWX"/>
+                <SectTess_U Value="6.000000000000000000e+00" ID="GNAJHQDWNYM"/>
+                <Spin Value="0.000000000000000000e+00" ID="BUFLNIBORXF"/>
+                <TBSym Value="1.000000000000000000e+00" ID="MVXKQUEZLVJ"/>
+                <TopLAngle Value="0.000000000000000000e+00" ID="HUMWHZIURGF"/>
+                <TopLAngleSet Value="1.000000000000000000e+00" ID="MVCAVLJBDTQ"/>
+                <TopLCurve Value="0.000000000000000000e+00" ID="IBANMQRMJJW"/>
+                <TopLCurveSet Value="0.000000000000000000e+00" ID="JCVBRAMVLEC"/>
+                <TopLRAngleEq Value="1.000000000000000000e+00" ID="TPRRMGSWLHT"/>
+                <TopLRCurveEq Value="0.000000000000000000e+00" ID="SRDRTXOCGCR"/>
+                <TopLRSlewEq Value="0.000000000000000000e+00" ID="WBZYDPHOGXI"/>
+                <TopLRStrengthEq Value="0.000000000000000000e+00" ID="TCNZHCNQWMM"/>
+                <TopLSlew Value="0.000000000000000000e+00" ID="AVHHPYEYBBF"/>
+                <TopLSlewSet Value="1.000000000000000000e+00" ID="PNAAVHBLMPK"/>
+                <TopLStrength Value="1.000000000000000000e+00" ID="RHYAZXDQTEZ"/>
+                <TopLStrengthSet Value="1.000000000000000000e+00" ID="EEJSYPHIWNU"/>
+                <TopRAngle Value="0.000000000000000000e+00" ID="WBLKQCOOMKY"/>
+                <TopRAngleSet Value="1.000000000000000000e+00" ID="LIIRFQMUVTF"/>
+                <TopRCurve Value="0.000000000000000000e+00" ID="LULIKKHUFXS"/>
+                <TopRCurveSet Value="0.000000000000000000e+00" ID="ICYWQPGCHEI"/>
+                <TopRSlew Value="0.000000000000000000e+00" ID="GLBFYPPCKKE"/>
+                <TopRSlewSet Value="1.000000000000000000e+00" ID="WBGEXBBAADS"/>
+                <TopRStrength Value="1.000000000000000000e+00" ID="OUYTIKPATIF"/>
+                <TopRStrengthSet Value="1.000000000000000000e+00" ID="CSUSYKCXOEQ"/>
+                <XLocPercent Value="2.500000000000000000e-01" ID="UOVALALSJVS"/>
+                <XRotate Value="0.000000000000000000e+00" ID="DYJCAVLMDKF"/>
+                <YLocPercent Value="0.000000000000000000e+00" ID="UJXFSILYKCO"/>
+                <YRotate Value="0.000000000000000000e+00" ID="QHQJVRTLEMU"/>
+                <ZLocPercent Value="0.000000000000000000e+00" ID="XERKZRQBBON"/>
+                <ZRotate Value="0.000000000000000000e+00" ID="YBNAWWGBGGQ"/>
+              </XSec>
+            </ParmContainer>
+            <XSec>
+              <Type>0</Type>
+              <GroupName>XSec</GroupName>
+              <XSecCurve>
+                <ParmContainer>
+                  <ID>GIFJHEYMXI</ID>
+                  <Name>Ellipse</Name>
+                  <Cap>
+                    <LE_Cap_Length Value="1.000000000000000000e+00" ID="HRWVKSMVSKF"/>
+                    <LE_Cap_Offset Value="0.000000000000000000e+00" ID="IMGVMMMRNJL"/>
+                    <LE_Cap_Strength Value="5.000000000000000000e-01" ID="GCRPUZTWWRM"/>
+                    <LE_Cap_Type Value="1.000000000000000000e+00" ID="SSNLMAPRDJE"/>
+                    <TE_Cap_Length Value="1.000000000000000000e+00" ID="LDIYZCZQSRA"/>
+                    <TE_Cap_Offset Value="0.000000000000000000e+00" ID="HRBBHHCVTJE"/>
+                    <TE_Cap_Strength Value="5.000000000000000000e-01" ID="NMXHFFPYKYN"/>
+                    <TE_Cap_Type Value="1.000000000000000000e+00" ID="VUHWJCOUSPU"/>
+                  </Cap>
+                  <Chevron>
+                    <AllSym Value="1.000000000000000000e+00" ID="VJLOMEKIUSM"/>
+                    <BottomAmplitude Value="1.000000000000000000e+00" ID="MYMRNTRMOBW"/>
+                    <Bottom_Angle Value="0.000000000000000000e+00" ID="TKLKBRYWFIH"/>
+                    <Bottom_Slew Value="0.000000000000000000e+00" ID="FZMRQBXKFAN"/>
+                    <Chevron_Type Value="0.000000000000000000e+00" ID="DYYRIUJYDJI"/>
+                    <LeftAmplitude Value="1.000000000000000000e+00" ID="RAJYOAXBMUN"/>
+                    <Left_Angle Value="0.000000000000000000e+00" ID="JUPDVZKHGEN"/>
+                    <Left_Slew Value="0.000000000000000000e+00" ID="CWIYESVWGFS"/>
+                    <Number Value="8.000000000000000000e+00" ID="WZCXQDZHYKZ"/>
+                    <Off_Duty Value="0.000000000000000000e+00" ID="QYBDTNCRTMD"/>
+                    <On_Duty Value="0.000000000000000000e+00" ID="UCCOZXIUYZG"/>
+                    <Peak_Radius Value="0.000000000000000000e+00" ID="TBDHJNIHIQV"/>
+                    <RLSym Value="1.000000000000000000e+00" ID="WYJYTPGCLXA"/>
+                    <RightAmplitude Value="1.000000000000000000e+00" ID="IVERHITQYNS"/>
+                    <Right_Angle Value="0.000000000000000000e+00" ID="FAWGKTWNKHK"/>
+                    <Right_Slew Value="0.000000000000000000e+00" ID="GRZMZDUQCBF"/>
+                    <TBSym Value="1.000000000000000000e+00" ID="QLHHAYNKVIA"/>
+                    <TopAmplitude Value="1.000000000000000000e+00" ID="XXFJMWCOYAG"/>
+                    <Top_Angle Value="0.000000000000000000e+00" ID="GCARCZPSVRO"/>
+                    <Top_Slew Value="0.000000000000000000e+00" ID="WCAVNWSCPYE"/>
+                    <Valley_Radius Value="0.000000000000000000e+00" ID="CKCBBGATWZE"/>
+                    <W01_Center Value="2.500000000000000000e-01" ID="VXEMLWSTZHZ"/>
+                    <W01_Center_Guide Value="5.000000000000000000e+00" ID="UZIXTOMDWXO"/>
+                    <W01_End Value="5.000000000000000000e-01" ID="CTQPUOFMCTF"/>
+                    <W01_End_Guide Value="5.000000000000000000e+00" ID="AVWSPODLJJY"/>
+                    <W01_Mode Value="0.000000000000000000e+00" ID="GHQVLKNCWHQ"/>
+                    <W01_Start Value="0.000000000000000000e+00" ID="SGYAZKKFXWX"/>
+                    <W01_Start_Guide Value="5.000000000000000000e+00" ID="KBRJTEYTPQP"/>
+                    <W01_Width Value="5.000000000000000000e-01" ID="OKGIRUKEYRH"/>
+                  </Chevron>
+                  <Close>
+                    <LE_Close_AbsRel Value="0.000000000000000000e+00" ID="WAKWTOEQFOD"/>
+                    <LE_Close_Thick Value="0.000000000000000000e+00" ID="YHLYKMWVBBG"/>
+                    <LE_Close_Thick_Chord Value="0.000000000000000000e+00" ID="CQJILLSLVHZ"/>
+                    <LE_Close_Type Value="0.000000000000000000e+00" ID="QLSCEZGUCTQ"/>
+                    <TE_Close_AbsRel Value="0.000000000000000000e+00" ID="CGFIMYGIBBI"/>
+                    <TE_Close_Thick Value="0.000000000000000000e+00" ID="FCEQFOFKUEB"/>
+                    <TE_Close_Thick_Chord Value="0.000000000000000000e+00" ID="DEFJKPJUODU"/>
+                    <TE_Close_Type Value="0.000000000000000000e+00" ID="AZJWNGZZZCQ"/>
+                  </Close>
+                  <Trim>
+                    <LE_Trim_AbsRel Value="0.000000000000000000e+00" ID="IYFLPEKWLXP"/>
+                    <LE_Trim_Thick Value="0.000000000000000000e+00" ID="LKEZJOGKSSI"/>
+                    <LE_Trim_Thick_Chord Value="0.000000000000000000e+00" ID="AVCPJXQJWJH"/>
+                    <LE_Trim_Type Value="0.000000000000000000e+00" ID="PKRVFJODOTD"/>
+                    <LE_Trim_X Value="0.000000000000000000e+00" ID="JODTDFQMSCH"/>
+                    <LE_Trim_X_Chord Value="0.000000000000000000e+00" ID="LIOFNPGESVO"/>
+                    <TE_Trim_AbsRel Value="0.000000000000000000e+00" ID="EDQPIBUWKYH"/>
+                    <TE_Trim_Thick Value="0.000000000000000000e+00" ID="VXOZCBZVQCW"/>
+                    <TE_Trim_Thick_Chord Value="0.000000000000000000e+00" ID="ZHFJGIVVLDV"/>
+                    <TE_Trim_Type Value="0.000000000000000000e+00" ID="DPTYSBUFPSK"/>
+                    <TE_Trim_X Value="0.000000000000000000e+00" ID="NOVTGJDOVET"/>
+                    <TE_Trim_X_Chord Value="0.000000000000000000e+00" ID="SPSRQVMQAJX"/>
+                  </Trim>
+                  <XSecCurve>
+                    <Area Value="7.854574855568554614e-01" ID="IUPZWLXAGHI"/>
+                    <DeltaX Value="0.000000000000000000e+00" ID="XCQWIXUINSZ"/>
+                    <DeltaY Value="0.000000000000000000e+00" ID="PNMAMHCBAEG"/>
+                    <Ellipse_Height Value="1.000000000000000000e+00" ID="SIJZAAWTYGH"/>
+                    <Ellipse_Width Value="1.000000000000000000e+00" ID="RMCYLSHOZBL"/>
+                    <HWRatio Value="1.000000000000000000e+00" ID="UGCJRFTLOHD"/>
+                    <Scale Value="1.000000000000000000e+00" ID="PVZACNOFIBS"/>
+                    <ShiftLE Value="0.000000000000000000e+00" ID="ZXJOGAGRNWN"/>
+                    <Theta Value="0.000000000000000000e+00" ID="ZBTIUWQYFEX"/>
+                  </XSecCurve>
+                  <XSecCurve_Background>
+                    <XSecFlipImageFlag Value="0.000000000000000000e+00" ID="GRDOLMUOOCM"/>
+                    <XSecImageFlag Value="0.000000000000000000e+00" ID="DEQFTEMCUYX"/>
+                    <XSecImageH Value="1.000000000000000000e+00" ID="JRQSOXFGJLO"/>
+                    <XSecImagePreserveAR Value="1.000000000000000000e+00" ID="CXDIRRYGOIA"/>
+                    <XSecImageW Value="1.000000000000000000e+00" ID="HRKMRXJBZLF"/>
+                    <XSecImageXOffset Value="0.000000000000000000e+00" ID="SYGJGZAEFVL"/>
+                    <XSecImageYOffset Value="0.000000000000000000e+00" ID="ULMICJLJOGF"/>
+                    <XSecLockImageFlag Value="0.000000000000000000e+00" ID="RCQHURDDUCH"/>
+                  </XSecCurve_Background>
+                </ParmContainer>
+                <XSecCurve>
+                  <Type>2</Type>
+                  <XSecCurveDriverGroup>
+                    <NumVar>4</NumVar>
+                    <NumChoices>2</NumChoices>
+                    <ChoiceVec>0, 2, </ChoiceVec>
+                  </XSecCurveDriverGroup>
+                </XSecCurve>
+              </XSecCurve>
+            </XSec>
+          </XSec>
+          <XSec>
+            <ParmContainer>
+              <ID>HNAKKFNPUC</ID>
+              <Name>SkinXSec</Name>
+              <XSec>
+                <AftCluster Value="1.000000000000000000e+00" ID="VRPJGYXVJXJ"/>
+                <AllSym Value="0.000000000000000000e+00" ID="MCTLYSUPEUZ"/>
+                <BottomLAngle Value="0.000000000000000000e+00" ID="YFAXDVHPZPC"/>
+                <BottomLAngleSet Value="1.000000000000000000e+00" ID="IAOSBAKEZZM"/>
+                <BottomLCurve Value="0.000000000000000000e+00" ID="TURSBOSUKUR"/>
+                <BottomLCurveSet Value="0.000000000000000000e+00" ID="CHUFBDQHVLP"/>
+                <BottomLRAngleEq Value="1.000000000000000000e+00" ID="FUIPMHVBKQQ"/>
+                <BottomLRCurveEq Value="0.000000000000000000e+00" ID="APUPNDUMCNE"/>
+                <BottomLRSlewEq Value="0.000000000000000000e+00" ID="GADFDDXHIKX"/>
+                <BottomLRStrengthEq Value="0.000000000000000000e+00" ID="QYVRPWWASEW"/>
+                <BottomLSlew Value="0.000000000000000000e+00" ID="KYPOXOLJARA"/>
+                <BottomLSlewSet Value="1.000000000000000000e+00" ID="LOGKNTSNNYX"/>
+                <BottomLStrength Value="1.000000000000000000e+00" ID="JHJHJGJTZWO"/>
+                <BottomLStrengthSet Value="1.000000000000000000e+00" ID="OTQQLEAGSUE"/>
+                <BottomRAngle Value="0.000000000000000000e+00" ID="LURQJUIOXHC"/>
+                <BottomRAngleSet Value="1.000000000000000000e+00" ID="VETAOWGAKBG"/>
+                <BottomRCurve Value="-7.848855311325807271e+00" ID="QPLLIAJDMMY"/>
+                <BottomRCurveSet Value="0.000000000000000000e+00" ID="GKPXAYKAIAY"/>
+                <BottomRSlew Value="0.000000000000000000e+00" ID="QMZDMWRGJUE"/>
+                <BottomRSlewSet Value="1.000000000000000000e+00" ID="SJVMMBMRWTR"/>
+                <BottomRStrength Value="1.000000000000000000e+00" ID="PUILIOLTOMV"/>
+                <BottomRStrengthSet Value="1.000000000000000000e+00" ID="XHXANKDRXGB"/>
+                <ContinuityBottom Value="0.000000000000000000e+00" ID="MJFHWVNTAGB"/>
+                <ContinuityLeft Value="0.000000000000000000e+00" ID="WXCAQKVVCFD"/>
+                <ContinuityRight Value="0.000000000000000000e+00" ID="LGLIHUDBWYY"/>
+                <ContinuityTop Value="0.000000000000000000e+00" ID="VPXIKJLWRQY"/>
+                <FwdCluster Value="1.000000000000000000e+00" ID="WKMSNJDGBNG"/>
+                <LeftLAngle Value="0.000000000000000000e+00" ID="KXESELDEQXJ"/>
+                <LeftLAngleSet Value="1.000000000000000000e+00" ID="VHKOUHLJASB"/>
+                <LeftLCurve Value="0.000000000000000000e+00" ID="MPZPIUMOVWD"/>
+                <LeftLCurveSet Value="0.000000000000000000e+00" ID="BTIXHCMNAKQ"/>
+                <LeftLRAngleEq Value="1.000000000000000000e+00" ID="SUCZFZZNOOQ"/>
+                <LeftLRCurveEq Value="0.000000000000000000e+00" ID="AQBJYGBDGUL"/>
+                <LeftLRSlewEq Value="0.000000000000000000e+00" ID="GGHMTQSYZAI"/>
+                <LeftLRStrengthEq Value="0.000000000000000000e+00" ID="YSORPYPHLRH"/>
+                <LeftLSlew Value="0.000000000000000000e+00" ID="RPDQKBWEAWP"/>
+                <LeftLSlewSet Value="1.000000000000000000e+00" ID="TCLWIEWUZWV"/>
+                <LeftLStrength Value="1.000000000000000000e+00" ID="VIQSOSGLYXH"/>
+                <LeftLStrengthSet Value="1.000000000000000000e+00" ID="LQHHVGXOANF"/>
+                <LeftRAngle Value="0.000000000000000000e+00" ID="LGBUFCDOXEF"/>
+                <LeftRAngleSet Value="1.000000000000000000e+00" ID="WGCOIMVQRWP"/>
+                <LeftRCurve Value="-7.089042726482247758e+00" ID="FFSJVVOJQJO"/>
+                <LeftRCurveSet Value="0.000000000000000000e+00" ID="IVBPHFTSZMI"/>
+                <LeftRSlew Value="0.000000000000000000e+00" ID="JZWBPOYAQFE"/>
+                <LeftRSlewSet Value="1.000000000000000000e+00" ID="ENUDFEVWPRJ"/>
+                <LeftRStrength Value="1.000000000000000000e+00" ID="LGWVJDKTBBE"/>
+                <LeftRStrengthSet Value="1.000000000000000000e+00" ID="BHALDUTHPSY"/>
+                <RLSym Value="1.000000000000000000e+00" ID="SWHCBILTDTR"/>
+                <RefLength Value="5.000000000000000000e+00" ID="RZAJNKFGMBH"/>
+                <RightLAngle Value="0.000000000000000000e+00" ID="FROSFBUAWSR"/>
+                <RightLAngleSet Value="1.000000000000000000e+00" ID="JAALACKSMQO"/>
+                <RightLCurve Value="0.000000000000000000e+00" ID="NONIVFTBFGL"/>
+                <RightLCurveSet Value="0.000000000000000000e+00" ID="VQOYLQVRTKH"/>
+                <RightLRAngleEq Value="1.000000000000000000e+00" ID="YRCDJGXRJAW"/>
+                <RightLRCurveEq Value="0.000000000000000000e+00" ID="ILDKBARISLR"/>
+                <RightLRSlewEq Value="0.000000000000000000e+00" ID="ENHAFRWBOPU"/>
+                <RightLRStrengthEq Value="0.000000000000000000e+00" ID="NXOCHLUTJVE"/>
+                <RightLSlew Value="0.000000000000000000e+00" ID="BRBYCYFGJLH"/>
+                <RightLSlewSet Value="1.000000000000000000e+00" ID="RNNVCTDLSJO"/>
+                <RightLStrength Value="1.000000000000000000e+00" ID="MVTTBCYWGNV"/>
+                <RightLStrengthSet Value="1.000000000000000000e+00" ID="IVYMFOOVEQQ"/>
+                <RightRAngle Value="0.000000000000000000e+00" ID="VCBFGDKCSYM"/>
+                <RightRAngleSet Value="1.000000000000000000e+00" ID="PQJFKZVMJFF"/>
+                <RightRCurve Value="-7.089042726482248646e+00" ID="RZMLJMIBLSJ"/>
+                <RightRCurveSet Value="0.000000000000000000e+00" ID="UOKWPDLDSDJ"/>
+                <RightRSlew Value="0.000000000000000000e+00" ID="HBIUVMDMTLX"/>
+                <RightRSlewSet Value="1.000000000000000000e+00" ID="WHNSCQQMBAG"/>
+                <RightRStrength Value="1.000000000000000000e+00" ID="OAAWKWOKBGJ"/>
+                <RightRStrengthSet Value="1.000000000000000000e+00" ID="FLFNJGDFXKC"/>
+                <SectTess_U Value="6.000000000000000000e+00" ID="WMEQNLAMZVF"/>
+                <Spin Value="0.000000000000000000e+00" ID="DASLKTSZWXC"/>
+                <TBSym Value="1.000000000000000000e+00" ID="HHFQAXGCNBU"/>
+                <TopLAngle Value="0.000000000000000000e+00" ID="KLEJZHLBZAU"/>
+                <TopLAngleSet Value="1.000000000000000000e+00" ID="VPTZFLATGPN"/>
+                <TopLCurve Value="0.000000000000000000e+00" ID="AGNCYEYLBJE"/>
+                <TopLCurveSet Value="0.000000000000000000e+00" ID="AHGCKJAYUVH"/>
+                <TopLRAngleEq Value="1.000000000000000000e+00" ID="NFIMIYEBCNR"/>
+                <TopLRCurveEq Value="0.000000000000000000e+00" ID="QKMAKJCUZNM"/>
+                <TopLRSlewEq Value="0.000000000000000000e+00" ID="LEEXJPZDHVC"/>
+                <TopLRStrengthEq Value="0.000000000000000000e+00" ID="MXDTNGJOXRE"/>
+                <TopLSlew Value="0.000000000000000000e+00" ID="RYTUDGJQTMJ"/>
+                <TopLSlewSet Value="1.000000000000000000e+00" ID="YTDFTGGZOZU"/>
+                <TopLStrength Value="1.000000000000000000e+00" ID="TZRYTTDKVCG"/>
+                <TopLStrengthSet Value="1.000000000000000000e+00" ID="HJCKGSNOOZY"/>
+                <TopRAngle Value="0.000000000000000000e+00" ID="WSPUBJAKZWB"/>
+                <TopRAngleSet Value="1.000000000000000000e+00" ID="VVFDOEWRDVB"/>
+                <TopRCurve Value="-6.237349105000812521e+00" ID="BSCSFQGJACS"/>
+                <TopRCurveSet Value="0.000000000000000000e+00" ID="ZWSCLNXGUKF"/>
+                <TopRSlew Value="0.000000000000000000e+00" ID="PFKIZZUMOIK"/>
+                <TopRSlewSet Value="1.000000000000000000e+00" ID="TMJVIAGPHUA"/>
+                <TopRStrength Value="1.000000000000000000e+00" ID="PUSRWAHLDZU"/>
+                <TopRStrengthSet Value="1.000000000000000000e+00" ID="MGZXHXABERK"/>
+                <XLocPercent Value="1.000000000000000000e+00" ID="YXEBPVICFQU"/>
+                <XRotate Value="0.000000000000000000e+00" ID="PAGEAFTKIFA"/>
+                <YLocPercent Value="0.000000000000000000e+00" ID="WCZODLSPTZP"/>
+                <YRotate Value="0.000000000000000000e+00" ID="QYEVTOSRGTB"/>
+                <ZLocPercent Value="0.000000000000000000e+00" ID="HUUNYEOBLAV"/>
+                <ZRotate Value="0.000000000000000000e+00" ID="RYSQIQQOUTW"/>
+              </XSec>
+            </ParmContainer>
+            <XSec>
+              <Type>0</Type>
+              <GroupName>XSec</GroupName>
+              <XSecCurve>
+                <ParmContainer>
+                  <ID>LFQMVKDKDG</ID>
+                  <Name>Ellipse</Name>
+                  <Cap>
+                    <LE_Cap_Length Value="1.000000000000000000e+00" ID="NSUUBJBSQCI"/>
+                    <LE_Cap_Offset Value="0.000000000000000000e+00" ID="AEJXNPVYQGW"/>
+                    <LE_Cap_Strength Value="5.000000000000000000e-01" ID="SDJZNWYKGWC"/>
+                    <LE_Cap_Type Value="1.000000000000000000e+00" ID="KDEJMJTADOW"/>
+                    <TE_Cap_Length Value="1.000000000000000000e+00" ID="ECCKYJHBYDC"/>
+                    <TE_Cap_Offset Value="0.000000000000000000e+00" ID="GEZYYOFVBZN"/>
+                    <TE_Cap_Strength Value="5.000000000000000000e-01" ID="VGWZSEBLEHU"/>
+                    <TE_Cap_Type Value="1.000000000000000000e+00" ID="BZSFOTGAZVR"/>
+                  </Cap>
+                  <Chevron>
+                    <AllSym Value="1.000000000000000000e+00" ID="HWIMHWEUXZP"/>
+                    <BottomAmplitude Value="1.000000000000000000e+00" ID="IUSPZQXHIPK"/>
+                    <Bottom_Angle Value="0.000000000000000000e+00" ID="IKQNDRMYMTB"/>
+                    <Bottom_Slew Value="0.000000000000000000e+00" ID="MVELKYVMLKM"/>
+                    <Chevron_Type Value="0.000000000000000000e+00" ID="RMMBPUWEIOA"/>
+                    <LeftAmplitude Value="1.000000000000000000e+00" ID="UEEGHEVUNLK"/>
+                    <Left_Angle Value="0.000000000000000000e+00" ID="FQTVQYQGHKV"/>
+                    <Left_Slew Value="0.000000000000000000e+00" ID="PANEXXRBEHE"/>
+                    <Number Value="8.000000000000000000e+00" ID="OIOSASMASLW"/>
+                    <Off_Duty Value="0.000000000000000000e+00" ID="WWWBTHMFEGT"/>
+                    <On_Duty Value="0.000000000000000000e+00" ID="EQMFFUOABKY"/>
+                    <Peak_Radius Value="0.000000000000000000e+00" ID="KMGSFVEOCMH"/>
+                    <RLSym Value="1.000000000000000000e+00" ID="IUFXIJXENCH"/>
+                    <RightAmplitude Value="1.000000000000000000e+00" ID="MSDRRXMCZGK"/>
+                    <Right_Angle Value="0.000000000000000000e+00" ID="LAYTQVCAPVS"/>
+                    <Right_Slew Value="0.000000000000000000e+00" ID="EFYKTUMVAHI"/>
+                    <TBSym Value="1.000000000000000000e+00" ID="XBTYUMXFGHR"/>
+                    <TopAmplitude Value="1.000000000000000000e+00" ID="MDXYBROWZUS"/>
+                    <Top_Angle Value="0.000000000000000000e+00" ID="FROBXDKMNOI"/>
+                    <Top_Slew Value="0.000000000000000000e+00" ID="LLURDTJKQIO"/>
+                    <Valley_Radius Value="0.000000000000000000e+00" ID="YQIGBWXXXAY"/>
+                    <W01_Center Value="2.500000000000000000e-01" ID="GBZIUBPKQRA"/>
+                    <W01_Center_Guide Value="5.000000000000000000e+00" ID="YBGBAEJGLUD"/>
+                    <W01_End Value="5.000000000000000000e-01" ID="LEHIQJQCXGS"/>
+                    <W01_End_Guide Value="5.000000000000000000e+00" ID="MFEZBIUGXHT"/>
+                    <W01_Mode Value="0.000000000000000000e+00" ID="PHTLVZDMNCL"/>
+                    <W01_Start Value="0.000000000000000000e+00" ID="QWTQRQSYIHM"/>
+                    <W01_Start_Guide Value="5.000000000000000000e+00" ID="ROGXEAUNXLM"/>
+                    <W01_Width Value="5.000000000000000000e-01" ID="MXWMKYFHQJP"/>
+                  </Chevron>
+                  <Close>
+                    <LE_Close_AbsRel Value="0.000000000000000000e+00" ID="CYLERFKTXKC"/>
+                    <LE_Close_Thick Value="0.000000000000000000e+00" ID="NFMNBCWHMXT"/>
+                    <LE_Close_Thick_Chord Value="0.000000000000000000e+00" ID="CKAXROMXMYV"/>
+                    <LE_Close_Type Value="0.000000000000000000e+00" ID="XBHGCBUQFWB"/>
+                    <TE_Close_AbsRel Value="0.000000000000000000e+00" ID="MOEYQLLHMEN"/>
+                    <TE_Close_Thick Value="0.000000000000000000e+00" ID="LQTYVPARTBE"/>
+                    <TE_Close_Thick_Chord Value="0.000000000000000000e+00" ID="DBNLATXKZAF"/>
+                    <TE_Close_Type Value="0.000000000000000000e+00" ID="OULMQCYFKCK"/>
+                  </Close>
+                  <Trim>
+                    <LE_Trim_AbsRel Value="0.000000000000000000e+00" ID="CINVVYXLNNQ"/>
+                    <LE_Trim_Thick Value="0.000000000000000000e+00" ID="BQKYTBGUHGR"/>
+                    <LE_Trim_Thick_Chord Value="0.000000000000000000e+00" ID="SPGEOIDKJIA"/>
+                    <LE_Trim_Type Value="0.000000000000000000e+00" ID="WOAPHVUTBGJ"/>
+                    <LE_Trim_X Value="0.000000000000000000e+00" ID="SWTFKLAMULG"/>
+                    <LE_Trim_X_Chord Value="0.000000000000000000e+00" ID="WGQZEZKDNKM"/>
+                    <TE_Trim_AbsRel Value="0.000000000000000000e+00" ID="GEOCVJCGQEU"/>
+                    <TE_Trim_Thick Value="0.000000000000000000e+00" ID="MFDVAAOUSEG"/>
+                    <TE_Trim_Thick_Chord Value="0.000000000000000000e+00" ID="TZKJPZJLXYT"/>
+                    <TE_Trim_Type Value="0.000000000000000000e+00" ID="QCCUQYCHYAV"/>
+                    <TE_Trim_X Value="0.000000000000000000e+00" ID="XQRWCKPONYZ"/>
+                    <TE_Trim_X_Chord Value="0.000000000000000000e+00" ID="JHQCKKSTOSG"/>
+                  </Trim>
+                  <XSecCurve>
+                    <Area Value="7.854574855568554614e-01" ID="NJDVIYGALVL"/>
+                    <DeltaX Value="0.000000000000000000e+00" ID="SZEZZTEUNZD"/>
+                    <DeltaY Value="0.000000000000000000e+00" ID="XBZMRYTQMCU"/>
+                    <Ellipse_Height Value="1.000000000000000000e+00" ID="EMLZSUVKLKO"/>
+                    <Ellipse_Width Value="1.000000000000000000e+00" ID="GUNZMGYHWQD"/>
+                    <HWRatio Value="1.000000000000000000e+00" ID="XNSORKSFGYQ"/>
+                    <Scale Value="1.000000000000000000e+00" ID="LGAPTNUARFN"/>
+                    <ShiftLE Value="0.000000000000000000e+00" ID="VZSNDFNBYNR"/>
+                    <Theta Value="0.000000000000000000e+00" ID="UHWQTVTKBHO"/>
+                  </XSecCurve>
+                  <XSecCurve_Background>
+                    <XSecFlipImageFlag Value="0.000000000000000000e+00" ID="WVQTXRNPBLV"/>
+                    <XSecImageFlag Value="0.000000000000000000e+00" ID="WQQKROMZMQX"/>
+                    <XSecImageH Value="1.000000000000000000e+00" ID="UMQDPQTSEQJ"/>
+                    <XSecImagePreserveAR Value="1.000000000000000000e+00" ID="IDDUDLOZEOW"/>
+                    <XSecImageW Value="1.000000000000000000e+00" ID="FIHYADJEULH"/>
+                    <XSecImageXOffset Value="0.000000000000000000e+00" ID="ZTXRLDGRYRB"/>
+                    <XSecImageYOffset Value="0.000000000000000000e+00" ID="UCQVNBIQJVK"/>
+                    <XSecLockImageFlag Value="0.000000000000000000e+00" ID="OHOXEUYMHAP"/>
+                  </XSecCurve_Background>
+                </ParmContainer>
+                <XSecCurve>
+                  <Type>2</Type>
+                  <XSecCurveDriverGroup>
+                    <NumVar>4</NumVar>
+                    <NumChoices>2</NumChoices>
+                    <ChoiceVec>0, 2, </ChoiceVec>
+                  </XSecCurveDriverGroup>
+                </XSecCurve>
+              </XSecCurve>
+            </XSec>
+          </XSec>
+          <XSec>
+            <ParmContainer>
+              <ID>MEDCKHHLBO</ID>
+              <Name>SkinXSec</Name>
+              <XSec>
+                <AftCluster Value="1.000000000000000000e+00" ID="VDPTGJMNENE"/>
+                <AllSym Value="0.000000000000000000e+00" ID="RNBPFQQDJXV"/>
+                <BottomLAngle Value="-4.500000000000000000e+01" ID="FZNISLOMMSN"/>
+                <BottomLAngleSet Value="1.000000000000000000e+00" ID="VRBJXRMVIJP"/>
+                <BottomLCurve Value="6.432544165452728890e+00" ID="QYVGCZHSNBH"/>
+                <BottomLCurveSet Value="0.000000000000000000e+00" ID="QGMINPYFDQC"/>
+                <BottomLRAngleEq Value="1.000000000000000000e+00" ID="YKBAPHXTLTY"/>
+                <BottomLRCurveEq Value="0.000000000000000000e+00" ID="MPPLUCTQLGD"/>
+                <BottomLRSlewEq Value="0.000000000000000000e+00" ID="IVJYHDLHMSY"/>
+                <BottomLRStrengthEq Value="0.000000000000000000e+00" ID="ICGWKLAPBXL"/>
+                <BottomLSlew Value="0.000000000000000000e+00" ID="MNIIZCPAIHM"/>
+                <BottomLSlewSet Value="1.000000000000000000e+00" ID="NVSIBKRIJRF"/>
+                <BottomLStrength Value="7.500000000000000000e-01" ID="YLHGVBJJUCN"/>
+                <BottomLStrengthSet Value="1.000000000000000000e+00" ID="FZYTEWHLOQH"/>
+                <BottomRAngle Value="-4.500000000000000000e+01" ID="LBDFVQBUYZX"/>
+                <BottomRAngleSet Value="1.000000000000000000e+00" ID="OQMECPWNYBP"/>
+                <BottomRCurve Value="6.432544179734019707e+00" ID="YJWWEJFMQLC"/>
+                <BottomRCurveSet Value="0.000000000000000000e+00" ID="IFUMBCGKWWY"/>
+                <BottomRSlew Value="0.000000000000000000e+00" ID="DUEOMEUHWUF"/>
+                <BottomRSlewSet Value="1.000000000000000000e+00" ID="WSMFJFLUITY"/>
+                <BottomRStrength Value="1.000000000000000000e+00" ID="CJQEOORKYPL"/>
+                <BottomRStrengthSet Value="1.000000000000000000e+00" ID="FHWGDNAJFYO"/>
+                <ContinuityBottom Value="0.000000000000000000e+00" ID="JYLMYOVJVXH"/>
+                <ContinuityLeft Value="0.000000000000000000e+00" ID="PRWMTGSPYSD"/>
+                <ContinuityRight Value="0.000000000000000000e+00" ID="GMBGTNWJVKL"/>
+                <ContinuityTop Value="0.000000000000000000e+00" ID="LONYGPESNNM"/>
+                <FwdCluster Value="1.000000000000000000e+00" ID="SOPBOZCQUDG"/>
+                <LeftLAngle Value="-4.500000000000000000e+01" ID="ZRYLTFPJUJD"/>
+                <LeftLAngleSet Value="1.000000000000000000e+00" ID="PKCBOLCXAVZ"/>
+                <LeftLCurve Value="-5.702961721621907287e+00" ID="SHDPKWKFCED"/>
+                <LeftLCurveSet Value="0.000000000000000000e+00" ID="TRGOHKVKLCL"/>
+                <LeftLRAngleEq Value="1.000000000000000000e+00" ID="KJJXBHRQNXZ"/>
+                <LeftLRCurveEq Value="0.000000000000000000e+00" ID="DREDXVFTXFO"/>
+                <LeftLRSlewEq Value="0.000000000000000000e+00" ID="YTEMUXZXKTN"/>
+                <LeftLRStrengthEq Value="0.000000000000000000e+00" ID="ASUGYYFODBL"/>
+                <LeftLSlew Value="0.000000000000000000e+00" ID="WCIAYEDIYDX"/>
+                <LeftLSlewSet Value="1.000000000000000000e+00" ID="FPWCFJUFZRK"/>
+                <LeftLStrength Value="7.500000000000000000e-01" ID="FLJEICYGAMN"/>
+                <LeftLStrengthSet Value="1.000000000000000000e+00" ID="BLGVGUZHQYX"/>
+                <LeftRAngle Value="-4.500000000000000000e+01" ID="UOSQLCWOLKC"/>
+                <LeftRAngleSet Value="1.000000000000000000e+00" ID="AAZFQVLGTUN"/>
+                <LeftRCurve Value="-5.702961734406359895e+00" ID="VRBQHHELUQZ"/>
+                <LeftRCurveSet Value="0.000000000000000000e+00" ID="VQOEWELKYFH"/>
+                <LeftRSlew Value="0.000000000000000000e+00" ID="KRYZQDHBYFA"/>
+                <LeftRSlewSet Value="1.000000000000000000e+00" ID="DEEDWNHJIPK"/>
+                <LeftRStrength Value="1.000000000000000000e+00" ID="DQVQKVVKATD"/>
+                <LeftRStrengthSet Value="1.000000000000000000e+00" ID="DXPONKEPFPJ"/>
+                <RLSym Value="1.000000000000000000e+00" ID="SEJUWCDTCYA"/>
+                <RefLength Value="5.000000000000000000e+00" ID="SSNHIEHWCDH"/>
+                <RightLAngle Value="-4.500000000000000000e+01" ID="FIKWVUFPYNA"/>
+                <RightLAngleSet Value="1.000000000000000000e+00" ID="TDVNDVFJUEC"/>
+                <RightLCurve Value="-5.702961721621908175e+00" ID="ZETSCDSWNOL"/>
+                <RightLCurveSet Value="0.000000000000000000e+00" ID="UAXNCYISITP"/>
+                <RightLRAngleEq Value="1.000000000000000000e+00" ID="NOCGUWTMSPZ"/>
+                <RightLRCurveEq Value="0.000000000000000000e+00" ID="MKFARZQLKXM"/>
+                <RightLRSlewEq Value="0.000000000000000000e+00" ID="RCXDPWIRWRH"/>
+                <RightLRStrengthEq Value="0.000000000000000000e+00" ID="AYKYRJWMRVI"/>
+                <RightLSlew Value="0.000000000000000000e+00" ID="RUJKATKFVBA"/>
+                <RightLSlewSet Value="1.000000000000000000e+00" ID="HUKERWKQCHU"/>
+                <RightLStrength Value="7.500000000000000000e-01" ID="MNGOVHKNTRN"/>
+                <RightLStrengthSet Value="1.000000000000000000e+00" ID="ASXSIMCXACC"/>
+                <RightRAngle Value="-4.500000000000000000e+01" ID="CXQHJSFFBHU"/>
+                <RightRAngleSet Value="1.000000000000000000e+00" ID="GLAPWBJSNSC"/>
+                <RightRCurve Value="-5.702961734406361671e+00" ID="PACPYRMYQAM"/>
+                <RightRCurveSet Value="0.000000000000000000e+00" ID="JDLCNOJPQHM"/>
+                <RightRSlew Value="0.000000000000000000e+00" ID="DFPTMTCTWDZ"/>
+                <RightRSlewSet Value="1.000000000000000000e+00" ID="GWJUUCUHYWF"/>
+                <RightRStrength Value="1.000000000000000000e+00" ID="HLMHHQWXQMR"/>
+                <RightRStrengthSet Value="1.000000000000000000e+00" ID="HXJKNVFMKCT"/>
+                <SectTess_U Value="6.000000000000000000e+00" ID="FHTGSEJTGDU"/>
+                <Spin Value="0.000000000000000000e+00" ID="OHYGSISHFZH"/>
+                <TBSym Value="1.000000000000000000e+00" ID="MFHDEFJZBCJ"/>
+                <TopLAngle Value="-4.500000000000000000e+01" ID="OKJZGLGGIQF"/>
+                <TopLAngleSet Value="1.000000000000000000e+00" ID="MRBJSOZVNQP"/>
+                <TopLCurve Value="-4.865174236969267874e+00" ID="KKFNYDRXNIU"/>
+                <TopLCurveSet Value="0.000000000000000000e+00" ID="OOXHUEAKUCW"/>
+                <TopLRAngleEq Value="1.000000000000000000e+00" ID="DSMBALQBNPA"/>
+                <TopLRCurveEq Value="0.000000000000000000e+00" ID="CFXIESQVWZV"/>
+                <TopLRSlewEq Value="0.000000000000000000e+00" ID="ULQKPXXCJNT"/>
+                <TopLRStrengthEq Value="0.000000000000000000e+00" ID="HNFHPLIDNUJ"/>
+                <TopLSlew Value="0.000000000000000000e+00" ID="OTDKVDKXUFD"/>
+                <TopLSlewSet Value="1.000000000000000000e+00" ID="TLRJAUEIOGO"/>
+                <TopLStrength Value="7.500000000000000000e-01" ID="VCQRUKGRIOV"/>
+                <TopLStrengthSet Value="1.000000000000000000e+00" ID="LNJKJECGXDK"/>
+                <TopRAngle Value="-4.500000000000000000e+01" ID="AUEUEBFOGNF"/>
+                <TopRAngleSet Value="1.000000000000000000e+00" ID="NBUGVWCUUHZ"/>
+                <TopRCurve Value="-4.865174248058997897e+00" ID="HKNVDFWTUBA"/>
+                <TopRCurveSet Value="0.000000000000000000e+00" ID="STBBQUYMVWA"/>
+                <TopRSlew Value="0.000000000000000000e+00" ID="JZZSSNONMNL"/>
+                <TopRSlewSet Value="1.000000000000000000e+00" ID="QDHUUHFSHML"/>
+                <TopRStrength Value="1.000000000000000000e+00" ID="LSQGJWNPVYP"/>
+                <TopRStrengthSet Value="1.000000000000000000e+00" ID="DYCSZDCBSNE"/>
+                <XLocPercent Value="1.000000000000000000e+00" ID="ASQMVZSQYOD"/>
+                <XRotate Value="0.000000000000000000e+00" ID="OKIXURJQNMB"/>
+                <YLocPercent Value="0.000000000000000000e+00" ID="JRNYCSRVIGY"/>
+                <YRotate Value="0.000000000000000000e+00" ID="OFQBUFSPPDQ"/>
+                <ZLocPercent Value="2.000000000000000042e-02" ID="ZBXJIFXOLFC"/>
+                <ZRotate Value="0.000000000000000000e+00" ID="HWWFAWVOUGK"/>
+              </XSec>
+            </ParmContainer>
+            <XSec>
+              <Type>0</Type>
+              <GroupName>XSec</GroupName>
+              <XSecCurve>
+                <ParmContainer>
+                  <ID>GRFJGHFDKB</ID>
+                  <Name>Point</Name>
+                  <Cap>
+                    <LE_Cap_Length Value="1.000000000000000000e+00" ID="DGBDSDRPTPB"/>
+                    <LE_Cap_Offset Value="0.000000000000000000e+00" ID="AJFNPBMBNTH"/>
+                    <LE_Cap_Strength Value="5.000000000000000000e-01" ID="XNSJTQPOPQJ"/>
+                    <LE_Cap_Type Value="1.000000000000000000e+00" ID="OCXSLMLXXJF"/>
+                    <TE_Cap_Length Value="1.000000000000000000e+00" ID="IXNXDQKOZYT"/>
+                    <TE_Cap_Offset Value="0.000000000000000000e+00" ID="ZGDYXCLTNNT"/>
+                    <TE_Cap_Strength Value="5.000000000000000000e-01" ID="HCCDNTEDOQW"/>
+                    <TE_Cap_Type Value="1.000000000000000000e+00" ID="PMRLTQOVFTP"/>
+                  </Cap>
+                  <Chevron>
+                    <AllSym Value="1.000000000000000000e+00" ID="GXFPALXBUWZ"/>
+                    <BottomAmplitude Value="1.000000000000000000e+00" ID="AZCOOMTETYK"/>
+                    <Bottom_Angle Value="0.000000000000000000e+00" ID="GSSMCMDEHCX"/>
+                    <Bottom_Slew Value="0.000000000000000000e+00" ID="SBECLNMHBVJ"/>
+                    <Chevron_Type Value="0.000000000000000000e+00" ID="DWICHWNJKET"/>
+                    <LeftAmplitude Value="1.000000000000000000e+00" ID="XSUUZDBJINA"/>
+                    <Left_Angle Value="0.000000000000000000e+00" ID="HQZXPWVVBNE"/>
+                    <Left_Slew Value="0.000000000000000000e+00" ID="DLUOHJGFNMC"/>
+                    <Number Value="8.000000000000000000e+00" ID="MJGIHRUKYSN"/>
+                    <Off_Duty Value="0.000000000000000000e+00" ID="JXSPIRUFRKK"/>
+                    <On_Duty Value="0.000000000000000000e+00" ID="RZTAYMMZCEI"/>
+                    <Peak_Radius Value="0.000000000000000000e+00" ID="NNHCOVBYCPZ"/>
+                    <RLSym Value="1.000000000000000000e+00" ID="KIKJUJHFKOH"/>
+                    <RightAmplitude Value="1.000000000000000000e+00" ID="CPRKFUPBDFX"/>
+                    <Right_Angle Value="0.000000000000000000e+00" ID="LDZSQKBYLIM"/>
+                    <Right_Slew Value="0.000000000000000000e+00" ID="LGISEQBKHCT"/>
+                    <TBSym Value="1.000000000000000000e+00" ID="PQINNSZZFGV"/>
+                    <TopAmplitude Value="1.000000000000000000e+00" ID="YRXLQWIKTTI"/>
+                    <Top_Angle Value="0.000000000000000000e+00" ID="JMYFLJPYHMQ"/>
+                    <Top_Slew Value="0.000000000000000000e+00" ID="QLXSCVGRKIH"/>
+                    <Valley_Radius Value="0.000000000000000000e+00" ID="CKCFIFXYUDC"/>
+                    <W01_Center Value="2.500000000000000000e-01" ID="FKVMAVDDGYN"/>
+                    <W01_Center_Guide Value="5.000000000000000000e+00" ID="TYFQDMHRYQQ"/>
+                    <W01_End Value="5.000000000000000000e-01" ID="SPBNVZVEWHX"/>
+                    <W01_End_Guide Value="5.000000000000000000e+00" ID="XIISHTYMPHX"/>
+                    <W01_Mode Value="0.000000000000000000e+00" ID="NKWXHPVHTSL"/>
+                    <W01_Start Value="0.000000000000000000e+00" ID="EQYBEVDCWEY"/>
+                    <W01_Start_Guide Value="5.000000000000000000e+00" ID="JMONUYNCDTZ"/>
+                    <W01_Width Value="5.000000000000000000e-01" ID="QJUAFMYGEUB"/>
+                  </Chevron>
+                  <Close>
+                    <LE_Close_AbsRel Value="0.000000000000000000e+00" ID="UWRLWWQSMZW"/>
+                    <LE_Close_Thick Value="0.000000000000000000e+00" ID="GAKPJPTWCYX"/>
+                    <LE_Close_Thick_Chord Value="0.000000000000000000e+00" ID="BLIKSHLUWVH"/>
+                    <LE_Close_Type Value="0.000000000000000000e+00" ID="NXCDHNHHRTG"/>
+                    <TE_Close_AbsRel Value="0.000000000000000000e+00" ID="XUEXMFZDPWO"/>
+                    <TE_Close_Thick Value="0.000000000000000000e+00" ID="LYDTCTNQIXA"/>
+                    <TE_Close_Thick_Chord Value="0.000000000000000000e+00" ID="GSBQFWNVJVA"/>
+                    <TE_Close_Type Value="0.000000000000000000e+00" ID="XKLZFTOIKCH"/>
+                  </Close>
+                  <Trim>
+                    <LE_Trim_AbsRel Value="0.000000000000000000e+00" ID="XWQUOBVENSJ"/>
+                    <LE_Trim_Thick Value="0.000000000000000000e+00" ID="TXFVSQGJJWM"/>
+                    <LE_Trim_Thick_Chord Value="0.000000000000000000e+00" ID="IHHZNICNDUZ"/>
+                    <LE_Trim_Type Value="0.000000000000000000e+00" ID="ZEOGUSZLKAE"/>
+                    <LE_Trim_X Value="0.000000000000000000e+00" ID="PLSSYIWZFDI"/>
+                    <LE_Trim_X_Chord Value="0.000000000000000000e+00" ID="PTFAQMYTSQX"/>
+                    <TE_Trim_AbsRel Value="0.000000000000000000e+00" ID="JIVVGDESWMP"/>
+                    <TE_Trim_Thick Value="0.000000000000000000e+00" ID="SILYCXGQTWT"/>
+                    <TE_Trim_Thick_Chord Value="0.000000000000000000e+00" ID="PZKRBCQRVXU"/>
+                    <TE_Trim_Type Value="0.000000000000000000e+00" ID="MXMIROGVISG"/>
+                    <TE_Trim_X Value="0.000000000000000000e+00" ID="SMEXXXCRXCB"/>
+                    <TE_Trim_X_Chord Value="0.000000000000000000e+00" ID="XKIFXPWXVOX"/>
+                  </Trim>
+                  <XSecCurve>
+                    <Area Value="0.000000000000000000e+00" ID="XSCIXRJJLJH"/>
+                    <DeltaX Value="0.000000000000000000e+00" ID="NMXXMMSIOCC"/>
+                    <DeltaY Value="0.000000000000000000e+00" ID="ZCROMVQGHDV"/>
+                    <HWRatio Value="1.000000000000000000e+00" ID="UHJTKKUULNL"/>
+                    <Scale Value="1.000000000000000000e+00" ID="WJIYWBMVBGT"/>
+                    <ShiftLE Value="0.000000000000000000e+00" ID="PQDDBKKBAGN"/>
+                    <Theta Value="0.000000000000000000e+00" ID="AAANXDSJREL"/>
+                  </XSecCurve>
+                  <XSecCurve_Background>
+                    <XSecFlipImageFlag Value="0.000000000000000000e+00" ID="LMPUMJLLJRX"/>
+                    <XSecImageFlag Value="0.000000000000000000e+00" ID="EOZPDMNTISQ"/>
+                    <XSecImageH Value="1.000000000000000000e+00" ID="JODEFSAZEKC"/>
+                    <XSecImagePreserveAR Value="1.000000000000000000e+00" ID="RAUIBLLUIGB"/>
+                    <XSecImageW Value="1.000000000000000000e+00" ID="BOQWINZOGKY"/>
+                    <XSecImageXOffset Value="0.000000000000000000e+00" ID="GEIJGJGEKXR"/>
+                    <XSecImageYOffset Value="0.000000000000000000e+00" ID="JDJZAWMMBTL"/>
+                    <XSecLockImageFlag Value="0.000000000000000000e+00" ID="DTMAPXXXASG"/>
+                  </XSecCurve_Background>
+                </ParmContainer>
+                <XSecCurve>
+                  <Type>0</Type>
+                  <XSecCurveDriverGroup>
+                    <NumVar>4</NumVar>
+                    <NumChoices>2</NumChoices>
+                    <ChoiceVec>0, 2, </ChoiceVec>
+                  </XSecCurveDriverGroup>
+                </XSecCurve>
+              </XSecCurve>
+            </XSec>
+          </XSec>
+        </XSecSurf>
+      </FuselageGeom>
+    </Geom>
+  </Vehicle>
+  <Materials/>
+  <UserParmContainer>
+    <NumUserParms>16</NumUserParms>
+    <UserParm Value="0.000000000000000000e+00" ID="User_0" Name="User_0" GroupName="User_Group" GroupDisplaySuffix="-1" Descript="Default Description" Type="0" UpperLimit="1.000000000000000000e+12" LowerLimit="-1.000000000000000000e+12"/>
+    <UserParm Value="0.000000000000000000e+00" ID="User_1" Name="User_1" GroupName="User_Group" GroupDisplaySuffix="-1" Descript="Default Description" Type="0" UpperLimit="1.000000000000000000e+12" LowerLimit="-1.000000000000000000e+12"/>
+    <UserParm Value="0.000000000000000000e+00" ID="User_2" Name="User_2" GroupName="User_Group" GroupDisplaySuffix="-1" Descript="Default Description" Type="0" UpperLimit="1.000000000000000000e+12" LowerLimit="-1.000000000000000000e+12"/>
+    <UserParm Value="0.000000000000000000e+00" ID="User_3" Name="User_3" GroupName="User_Group" GroupDisplaySuffix="-1" Descript="Default Description" Type="0" UpperLimit="1.000000000000000000e+12" LowerLimit="-1.000000000000000000e+12"/>
+    <UserParm Value="0.000000000000000000e+00" ID="User_4" Name="User_4" GroupName="User_Group" GroupDisplaySuffix="-1" Descript="Default Description" Type="0" UpperLimit="1.000000000000000000e+12" LowerLimit="-1.000000000000000000e+12"/>
+    <UserParm Value="0.000000000000000000e+00" ID="User_5" Name="User_5" GroupName="User_Group" GroupDisplaySuffix="-1" Descript="Default Description" Type="0" UpperLimit="1.000000000000000000e+12" LowerLimit="-1.000000000000000000e+12"/>
+    <UserParm Value="0.000000000000000000e+00" ID="User_6" Name="User_6" GroupName="User_Group" GroupDisplaySuffix="-1" Descript="Default Description" Type="0" UpperLimit="1.000000000000000000e+12" LowerLimit="-1.000000000000000000e+12"/>
+    <UserParm Value="0.000000000000000000e+00" ID="User_7" Name="User_7" GroupName="User_Group" GroupDisplaySuffix="-1" Descript="Default Description" Type="0" UpperLimit="1.000000000000000000e+12" LowerLimit="-1.000000000000000000e+12"/>
+    <UserParm Value="0.000000000000000000e+00" ID="User_8" Name="User_8" GroupName="User_Group" GroupDisplaySuffix="-1" Descript="Default Description" Type="0" UpperLimit="1.000000000000000000e+12" LowerLimit="-1.000000000000000000e+12"/>
+    <UserParm Value="0.000000000000000000e+00" ID="User_9" Name="User_9" GroupName="User_Group" GroupDisplaySuffix="-1" Descript="Default Description" Type="0" UpperLimit="1.000000000000000000e+12" LowerLimit="-1.000000000000000000e+12"/>
+    <UserParm Value="0.000000000000000000e+00" ID="User_10" Name="User_10" GroupName="User_Group" GroupDisplaySuffix="-1" Descript="Default Description" Type="0" UpperLimit="1.000000000000000000e+12" LowerLimit="-1.000000000000000000e+12"/>
+    <UserParm Value="0.000000000000000000e+00" ID="User_11" Name="User_11" GroupName="User_Group" GroupDisplaySuffix="-1" Descript="Default Description" Type="0" UpperLimit="1.000000000000000000e+12" LowerLimit="-1.000000000000000000e+12"/>
+    <UserParm Value="0.000000000000000000e+00" ID="User_12" Name="User_12" GroupName="User_Group" GroupDisplaySuffix="-1" Descript="Default Description" Type="0" UpperLimit="1.000000000000000000e+12" LowerLimit="-1.000000000000000000e+12"/>
+    <UserParm Value="0.000000000000000000e+00" ID="User_13" Name="User_13" GroupName="User_Group" GroupDisplaySuffix="-1" Descript="Default Description" Type="0" UpperLimit="1.000000000000000000e+12" LowerLimit="-1.000000000000000000e+12"/>
+    <UserParm Value="0.000000000000000000e+00" ID="User_14" Name="User_14" GroupName="User_Group" GroupDisplaySuffix="-1" Descript="Default Description" Type="0" UpperLimit="1.000000000000000000e+12" LowerLimit="-1.000000000000000000e+12"/>
+    <UserParm Value="0.000000000000000000e+00" ID="User_15" Name="User_15" GroupName="User_Group" GroupDisplaySuffix="-1" Descript="Default Description" Type="0" UpperLimit="1.000000000000000000e+12" LowerLimit="-1.000000000000000000e+12"/>
+  </UserParmContainer>
+  <LinkMgr/>
+  <AdvLinkMgr/>
+  <VSPAEROSettings>
+    <ParmContainer>
+      <ID>KIZLMHBJVQ</ID>
+      <Name>VSPAEROSettings</Name>
+      <VSPAERO>
+        <ActuatorDiskFlag Value="0.000000000000000000e+00" ID="HQSWLXGEZHF"/>
+        <AlphaEnd Value="1.000000000000000000e+01" ID="HRKARJAKYVB"/>
+        <AlphaNpts Value="3.000000000000000000e+00" ID="EIRRJYJCSPO"/>
+        <AlphaStart Value="1.000000000000000000e+00" ID="OKNYYLSYKVX"/>
+        <AlternateInputFormatFlag Value="0.000000000000000000e+00" ID="BWFOFKJPFAX"/>
+        <AnalysisMethod Value="0.000000000000000000e+00" ID="MCYKACIXSFE"/>
+        <AutoTimeNumRevs Value="5.000000000000000000e+00" ID="HYCSYHYVFAD"/>
+        <AutoTimeStepFlag Value="1.000000000000000000e+00" ID="GRDDUMSNFKG"/>
+        <BetaEnd Value="0.000000000000000000e+00" ID="YUDIMIEKZQU"/>
+        <BetaNpts Value="1.000000000000000000e+00" ID="WNCEOTOLLEQ"/>
+        <BetaStart Value="0.000000000000000000e+00" ID="HRRYWHVBWHK"/>
+        <CGUseMode Value="0.000000000000000000e+00" ID="OFQPLEOAKSR"/>
+        <Clmax Value="-1.000000000000000000e+00" ID="WQGMHEPFLKC"/>
+        <ClmaxToggle Value="0.000000000000000000e+00" ID="DNEDEIWOVKQ"/>
+        <CpSliceFlag Value="1.000000000000000000e+00" ID="ONYNTCHLTZZ"/>
+        <CpSlicePlotLinesFlag Value="1.000000000000000000e+00" ID="KDKUJJBBFSU"/>
+        <CpSliceYAxisFlipFlag Value="0.000000000000000000e+00" ID="NVGELOSCVJE"/>
+        <FarDist Value="-1.000000000000000000e+00" ID="KULSWGGRTFC"/>
+        <FarDistToggle Value="0.000000000000000000e+00" ID="ZOQWNCTTMYN"/>
+        <FixedWakeFlag Value="0.000000000000000000e+00" ID="QIROETPOTTG"/>
+        <FromSteadyState Value="0.000000000000000000e+00" ID="XTFVVXTNNZW"/>
+        <GeomSet Value="1.000000000000000000e+00" ID="NQUJAXRGRNA"/>
+        <GroundEffect Value="-1.000000000000000000e+00" ID="KRQLTJCUFIE"/>
+        <GroundEffectToggle Value="0.000000000000000000e+00" ID="YMEACPXQCXV"/>
+        <HoverRamp Value="0.000000000000000000e+00" ID="LYRNIOLJKQZ"/>
+        <HoverRampFlag Value="0.000000000000000000e+00" ID="AUAWXAIDDNY"/>
+        <KTCorrection Value="0.000000000000000000e+00" ID="YHZEHRWXJIE"/>
+        <LoadDistSelectType Value="0.000000000000000000e+00" ID="CCRBCOFHHAU"/>
+        <MACFlag Value="0.000000000000000000e+00" ID="AXZJRQGVYTY"/>
+        <MachEnd Value="0.000000000000000000e+00" ID="ZFIAUJZGEUX"/>
+        <MachNpts Value="1.000000000000000000e+00" ID="BEXYMCLUACG"/>
+        <MachStart Value="0.000000000000000000e+00" ID="LDAGICRQAXA"/>
+        <Machref Value="2.999999999999999889e-01" ID="YFYIBASMCTU"/>
+        <ManualVrefFlag Value="0.000000000000000000e+00" ID="JIULMLPCQPI"/>
+        <MassDegenSet Value="-1.000000000000000000e+00" ID="BJEUYRXAZTF"/>
+        <MassSet Value="1.000000000000000000e+00" ID="FMXGVYHVUWO"/>
+        <MassSliceDir Value="0.000000000000000000e+00" ID="MAKGVUIREZF"/>
+        <MaxTurnAngle Value="-1.000000000000000000e+00" ID="AOWFDSYQYEJ"/>
+        <MaxTurnToggle Value="0.000000000000000000e+00" ID="QERKHTAQLNX"/>
+        <NCPU Value="4.000000000000000000e+00" ID="BUTMVQHMQLJ"/>
+        <NoiseCalcFlag Value="0.000000000000000000e+00" ID="LFFIIVXWICJ"/>
+        <NoiseCalcType Value="0.000000000000000000e+00" ID="TOTFNFZDBBB"/>
+        <NoiseUnits Value="0.000000000000000000e+00" ID="VJBBVRUIFOR"/>
+        <NumMassSlice Value="1.000000000000000000e+01" ID="KWKFHOLKZZA"/>
+        <NumTimeSteps Value="2.500000000000000000e+01" ID="XAJWOKSJPTU"/>
+        <Precondition Value="0.000000000000000000e+00" ID="MIOQATCEXLX"/>
+        <ReCref Value="1.000000000000000000e+07" ID="BOSENUJVWII"/>
+        <ReCrefEnd Value="2.000000000000000000e+07" ID="JHTIFIHODLT"/>
+        <ReCrefNpts Value="1.000000000000000000e+00" ID="AUMEUPDJQLZ"/>
+        <RefFlag Value="0.000000000000000000e+00" ID="XASYXKRVXBM"/>
+        <Rho Value="2.377000000000000206e-03" ID="BZABKOHIEBJ"/>
+        <RootWakeNodes Value="6.400000000000000000e+01" ID="CSTGDUJAHZL"/>
+        <RotateBladesFlag Value="0.000000000000000000e+00" ID="ZPHJRNQNUOW"/>
+        <SCurveFlag Value="0.000000000000000000e+00" ID="BHNTJDZHOLF"/>
+        <Sref Value="1.000000000000000000e+02" ID="MVFHLVWFIBN"/>
+        <Symmetry Value="0.000000000000000000e+00" ID="IKDHTDPPQBU"/>
+        <TimeStepSize Value="1.000000000000000021e-03" ID="SMLDCOSAQYF"/>
+        <UniformPropRPMFlag Value="1.000000000000000000e+00" ID="AOPVVNFOLDV"/>
+        <UnsteadyGroupSelectType Value="0.000000000000000000e+00" ID="QPVXLYOFSLG"/>
+        <UnsteadyType Value="0.000000000000000000e+00" ID="OQPHSGNUDSP"/>
+        <UseMode Value="0.000000000000000000e+00" ID="QLJISZMNSQL"/>
+        <Vinf Value="1.000000000000000000e+02" ID="JSMBNKSJHAQ"/>
+        <Vref Value="1.000000000000000000e+02" ID="AVCIJCUATQL"/>
+        <WakeNumIter Value="5.000000000000000000e+00" ID="WFQSPGRJJIG"/>
+        <Write2DFEMFlag Value="0.000000000000000000e+00" ID="FAQUWHIVHAB"/>
+        <Xcg Value="0.000000000000000000e+00" ID="TCGDAGRHBKT"/>
+        <Ycg Value="0.000000000000000000e+00" ID="BIVTOJOUTKD"/>
+        <Zcg Value="0.000000000000000000e+00" ID="QEEXZCOXCCX"/>
+        <bref Value="1.000000000000000000e+00" ID="UJAHMLVTJLR"/>
+        <cref Value="1.000000000000000000e+00" ID="QGMWUDIBIDM"/>
+        <m_ConvergenceXMax Value="1.000000000000000000e+00" ID="LWAZIMNUZRX"/>
+        <m_ConvergenceXMaxIsManual Value="0.000000000000000000e+00" ID="ZQYKFGGLIUY"/>
+        <m_ConvergenceXMin Value="-1.000000000000000000e+00" ID="XKYWLITMFEH"/>
+        <m_ConvergenceXMinIsManual Value="0.000000000000000000e+00" ID="SBTSMGSOAGV"/>
+        <m_ConvergenceYMax Value="1.000000000000000000e+00" ID="MEWKJZVOGSF"/>
+        <m_ConvergenceYMaxIsManual Value="0.000000000000000000e+00" ID="SXKDWTHSOQC"/>
+        <m_ConvergenceYMin Value="-1.000000000000000000e+00" ID="QAAANHEZULK"/>
+        <m_ConvergenceYMinIsManual Value="0.000000000000000000e+00" ID="NZFBDDBNZFB"/>
+        <m_CpSliceXMax Value="1.000000000000000000e+00" ID="NHJBSLPVCGC"/>
+        <m_CpSliceXMaxIsManual Value="0.000000000000000000e+00" ID="TWOTVZOLDWR"/>
+        <m_CpSliceXMin Value="-1.000000000000000000e+00" ID="YTTAOEUIRIO"/>
+        <m_CpSliceXMinIsManual Value="0.000000000000000000e+00" ID="DSWBJRSNTGN"/>
+        <m_CpSliceYMax Value="1.000000000000000000e+00" ID="ZOAFWKLJUKG"/>
+        <m_CpSliceYMaxIsManual Value="0.000000000000000000e+00" ID="YJTDRYKZBIN"/>
+        <m_CpSliceYMin Value="-1.000000000000000000e+00" ID="TBXTLOUDMPV"/>
+        <m_CpSliceYMinIsManual Value="0.000000000000000000e+00" ID="PWTZHCIKKUG"/>
+        <m_LoadDistXMax Value="1.000000000000000000e+00" ID="QMSFAXJQWCF"/>
+        <m_LoadDistXMaxIsManual Value="0.000000000000000000e+00" ID="XJMHVQVIMEH"/>
+        <m_LoadDistXMin Value="-1.000000000000000000e+00" ID="SSHUETDPQNZ"/>
+        <m_LoadDistXMinIsManual Value="0.000000000000000000e+00" ID="JODQRFJETMH"/>
+        <m_LoadDistYMax Value="1.000000000000000000e+00" ID="RTCHEFBQWSW"/>
+        <m_LoadDistYMaxIsManual Value="0.000000000000000000e+00" ID="EFOKOWSUNOV"/>
+        <m_LoadDistYMin Value="-1.000000000000000000e+00" ID="AXTOXMBVGWT"/>
+        <m_LoadDistYMinIsManual Value="0.000000000000000000e+00" ID="ENNVSXFHMTF"/>
+        <m_SweepXMax Value="1.000000000000000000e+00" ID="CFIMHSBAXDW"/>
+        <m_SweepXMaxIsManual Value="0.000000000000000000e+00" ID="IETSOKLHHDH"/>
+        <m_SweepXMin Value="-1.000000000000000000e+00" ID="ROLNODHIPRY"/>
+        <m_SweepXMinIsManual Value="0.000000000000000000e+00" ID="XGNEFOBTMZB"/>
+        <m_SweepYMax Value="1.000000000000000000e+00" ID="HZDNIBBTLNB"/>
+        <m_SweepYMaxIsManual Value="0.000000000000000000e+00" ID="PCKJSRJHYNJ"/>
+        <m_SweepYMin Value="-1.000000000000000000e+00" ID="GHAUEOVGNDQ"/>
+        <m_SweepYMinIsManual Value="0.000000000000000000e+00" ID="ARVNROXLUIV"/>
+        <m_UnsteadyXMax Value="1.000000000000000000e+00" ID="PXAQUSNTLZI"/>
+        <m_UnsteadyXMaxIsManual Value="0.000000000000000000e+00" ID="SZURGSOECNY"/>
+        <m_UnsteadyXMin Value="-1.000000000000000000e+00" ID="MRRQIITDQVQ"/>
+        <m_UnsteadyXMinIsManual Value="0.000000000000000000e+00" ID="PYSGYEXSVNT"/>
+        <m_UnsteadyYMax Value="1.000000000000000000e+00" ID="SPHXXBPKTZX"/>
+        <m_UnsteadyYMaxIsManual Value="0.000000000000000000e+00" ID="CFHUIGXBJKQ"/>
+        <m_UnsteadyYMin Value="-1.000000000000000000e+00" ID="HACIJMBBWDU"/>
+        <m_UnsteadyYMinIsManual Value="0.000000000000000000e+00" ID="MDTERZXKNSO"/>
+      </VSPAERO>
+    </ParmContainer>
+    <RefGeomID/>
+    <ModeID/>
+    <CGModeID/>
+    <ControlSurfaceGroupCount>0</ControlSurfaceGroupCount>
+    <RotorDiskCount>0</RotorDiskCount>
+    <CpSliceCount>1</CpSliceCount>
+    <CpSlice>
+      <ParmContainer>
+        <ID>YKSKYMHQZW</ID>
+        <Name>Y = 0</Name>
+        <CpSlice>
+          <CutPosition Value="0.000000000000000000e+00" ID="IWUWYKJXCDJ"/>
+          <CutType Value="1.000000000000000000e+00" ID="YYRSOVOEKSF"/>
+          <DrawCutFlag Value="1.000000000000000000e+00" ID="POJMHMDNNFC"/>
+        </CpSlice>
+      </ParmContainer>
+    </CpSlice>
+    <UnsteadyGroupCount>1</UnsteadyGroupCount>
+    <Unsteady_Group>
+      <NumberOfComponents>2</NumberOfComponents>
+      <Component>
+        <CompID>DFIDSNYVZN</CompID>
+        <SurfIndex>1</SurfIndex>
+      </Component>
+      <Component>
+        <CompID>NAJFAHCWMT</CompID>
+        <SurfIndex>1</SurfIndex>
+      </Component>
+      <ParmContainer>
+        <ID>CQFKDLFVCH</ID>
+        <Name>Fixed_Group</Name>
+        <UnsteadyGroup>
+          <Ax Value="0.000000000000000000e+00" ID="DAQRIUSHNML"/>
+          <Ay Value="0.000000000000000000e+00" ID="FNNVYOSTFUO"/>
+          <Az Value="0.000000000000000000e+00" ID="VEFLNHAQNQV"/>
+          <GeomPropertyType Value="0.000000000000000000e+00" ID="FNBSMASYHGM"/>
+          <Ixx Value="0.000000000000000000e+00" ID="EIEJPKWVQSP"/>
+          <Ixy Value="0.000000000000000000e+00" ID="XYTPNLQFYJW"/>
+          <Ixz Value="0.000000000000000000e+00" ID="XGTIIIQWPAG"/>
+          <Iyy Value="0.000000000000000000e+00" ID="VKQFNFQTFAB"/>
+          <Iyz Value="0.000000000000000000e+00" ID="VWGFXSQCUEC"/>
+          <Izz Value="0.000000000000000000e+00" ID="YIWACOSIIEI"/>
+          <Mass Value="0.000000000000000000e+00" ID="CQGUHWNRJVW"/>
+          <Ox Value="0.000000000000000000e+00" ID="JVRVZJZVEEU"/>
+          <Oy Value="0.000000000000000000e+00" ID="RUMADWWPIFE"/>
+          <Oz Value="0.000000000000000000e+00" ID="HOPOWWFSWDE"/>
+          <RPM Value="0.000000000000000000e+00" ID="ANWVEPLMHVK"/>
+          <RotorDia Value="0.000000000000000000e+00" ID="XTXVOSREMZB"/>
+          <Rx Value="0.000000000000000000e+00" ID="IQXLUMZUGFM"/>
+          <Ry Value="0.000000000000000000e+00" ID="DTDVJOTHFZJ"/>
+          <Rz Value="0.000000000000000000e+00" ID="KCPBQTLNFVM"/>
+          <Vx Value="0.000000000000000000e+00" ID="NUPSYSGKEHZ"/>
+          <Vy Value="0.000000000000000000e+00" ID="DQPZFSYIPMA"/>
+          <Vz Value="0.000000000000000000e+00" ID="ZUKDYRNZPNM"/>
+        </UnsteadyGroup>
+      </ParmContainer>
+    </Unsteady_Group>
+  </VSPAEROSettings>
+  <VariablePresets/>
+  <Modes/>
+  <CFDMeshSettings>
+    <FarGeomID/>
+    <ModeID/>
+    <ParmContainer>
+      <ID>UTVLJZIPBE</ID>
+      <Name>CFDMeshSettings</Name>
+      <DrawMesh>
+        <ColorReasonFlag Value="0.000000000000000000e+00" ID="PUKMLOJUWKU"/>
+        <ColorTagsFlag Value="1.000000000000000000e+00" ID="HMDQVHTZXYQ"/>
+        <DrawBadElementsFlag Value="1.000000000000000000e+00" ID="FVKYMFBMRUS"/>
+        <DrawBinAdaptFlag Value="1.000000000000000000e+00" ID="QGNIMYIDSYX"/>
+        <DrawBorderFlag Value="0.000000000000000000e+00" ID="BFGBMEDFGZK"/>
+        <DrawCurveFlag Value="1.000000000000000000e+00" ID="GAWDCWFTDRI"/>
+        <DrawFarField Value="1.000000000000000000e+00" ID="MACQDXJUUQH"/>
+        <DrawFarFieldPreview Value="1.000000000000000000e+00" ID="RBMWLMHSNEM"/>
+        <DrawIsectFlag Value="0.000000000000000000e+00" ID="ZUKDLHXWMPW"/>
+        <DrawMeshFlag Value="1.000000000000000000e+00" ID="RCQITLHHYVN"/>
+        <DrawPntsFlag Value="1.000000000000000000e+00" ID="UHCWNMDFYXF"/>
+        <DrawRawFlag Value="0.000000000000000000e+00" ID="VLEIMRMLRFK"/>
+        <DrawSourceWake Value="1.000000000000000000e+00" ID="VTGOCZZFPSO"/>
+        <DrawSymmetryPlane Value="1.000000000000000000e+00" ID="DZWPKTUTOGI"/>
+        <DrawWake Value="1.000000000000000000e+00" ID="CFQWDQOULQT"/>
+      </DrawMesh>
+      <ExportCFD>
+        <DAT_Export Value="1.000000000000000000e+00" ID="NBQBVJZJIDE"/>
+        <ExportRawFlag Value="0.000000000000000000e+00" ID="VUCKDLTZIFY"/>
+        <FACET_Export Value="1.000000000000000000e+00" ID="HWZLSLLPGVY"/>
+        <GMSH_Export Value="1.000000000000000000e+00" ID="CKJHVTFINLY"/>
+        <KEY_Export Value="1.000000000000000000e+00" ID="MSNMWEVSTIH"/>
+        <OBJ_Export Value="1.000000000000000000e+00" ID="HZWRIBZXSDO"/>
+        <POLY_Export Value="1.000000000000000000e+00" ID="WGVCIGXPREN"/>
+        <SRF_XYZIntCurve Value="0.000000000000000000e+00" ID="FEVECFREHNP"/>
+        <STL_Export Value="1.000000000000000000e+00" ID="HYSOMBHQAOA"/>
+        <TKEY_Export Value="1.000000000000000000e+00" ID="FDNFYRREFPI"/>
+        <TRI_Export Value="1.000000000000000000e+00" ID="JEMNQAFWOVV"/>
+        <VSPGEOM_Export Value="1.000000000000000000e+00" ID="AWRCCJPURLY"/>
+      </ExportCFD>
+      <FarField>
+        <FarAbsSize Value="0.000000000000000000e+00" ID="SWATZWWDIOT"/>
+        <FarComp Value="0.000000000000000000e+00" ID="LJUABMLROIZ"/>
+        <FarHeight Value="4.000000000000000000e+00" ID="GCWKBASPKOS"/>
+        <FarLength Value="4.000000000000000000e+00" ID="BTYOCMDJPFQ"/>
+        <FarManualLoc Value="0.000000000000000000e+00" ID="HAXEVPVSEGB"/>
+        <FarMesh Value="0.000000000000000000e+00" ID="EYZQVQVXNXU"/>
+        <FarWidth Value="4.000000000000000000e+00" ID="THISJGDBKDH"/>
+        <FarXLocation Value="0.000000000000000000e+00" ID="GWCRPQSRNKI"/>
+        <FarXScale Value="4.000000000000000000e+00" ID="USIIOEYZNMV"/>
+        <FarYLocation Value="0.000000000000000000e+00" ID="ZAOYDEESAGZ"/>
+        <FarYScale Value="4.000000000000000000e+00" ID="DXRNKEFZKUU"/>
+        <FarZLocation Value="0.000000000000000000e+00" ID="VDCEZCYCRTO"/>
+        <FarZScale Value="4.000000000000000000e+00" ID="LGLNKUETBPC"/>
+        <HalfMesh Value="0.000000000000000000e+00" ID="WJRZPJLXOPK"/>
+        <SymmetrySplitting Value="0.000000000000000000e+00" ID="OGQJGNLDTOV"/>
+      </FarField>
+      <Global>
+        <ConvertToQuadsFlag Value="0.000000000000000000e+00" ID="COVDZDYKPXP"/>
+        <CubicSurfTolerance Value="9.999999999999999547e-07" ID="OFTRBCSBHXS"/>
+        <DegenSet Value="-1.000000000000000000e+00" ID="SMASARJDPJQ"/>
+        <DemoteSurfsCubicFlag Value="0.000000000000000000e+00" ID="BRLOHSTBMJR"/>
+        <HighOrderElementFlag Value="0.000000000000000000e+00" ID="WTAKYTCBTNZ"/>
+        <IntersectSubSurfs Value="1.000000000000000000e+00" ID="TUYXZPPNZZU"/>
+        <RelCurveTol Value="5.000000000000000104e-03" ID="FQLDJXBENBO"/>
+        <Set Value="1.000000000000000000e+00" ID="LXBUJIPTSCT"/>
+        <UseMode Value="0.000000000000000000e+00" ID="PXNZKMAEMUF"/>
+      </Global>
+    </ParmContainer>
+  </CFDMeshSettings>
+  <SurfaceIntersectSettings>
+    <ModeID/>
+    <ParmContainer>
+      <ID>UCOTCGOPQX</ID>
+      <Name>SurfaceIntersectSettings</Name>
+      <DrawMesh>
+        <ColorReasonFlag Value="0.000000000000000000e+00" ID="MFURMIFIBTH"/>
+        <ColorTagsFlag Value="1.000000000000000000e+00" ID="MKSFAFAKXSO"/>
+        <DrawBinAdaptFlag Value="1.000000000000000000e+00" ID="TPXLLKVLNMQ"/>
+        <DrawBorderFlag Value="1.000000000000000000e+00" ID="XYXDOYFYREP"/>
+        <DrawCurveFlag Value="1.000000000000000000e+00" ID="OATYRDCFWJH"/>
+        <DrawIsectFlag Value="1.000000000000000000e+00" ID="ZZLPIHOEIQH"/>
+        <DrawMeshFlag Value="1.000000000000000000e+00" ID="HWNQFVDPGBL"/>
+        <DrawPntsFlag Value="1.000000000000000000e+00" ID="RCDLYLHFJNP"/>
+        <DrawRawFlag Value="0.000000000000000000e+00" ID="SZYDNYWWZMP"/>
+        <DrawSourceWake Value="1.000000000000000000e+00" ID="AHVKFTQUJLR"/>
+      </DrawMesh>
+      <ExportIntersect>
+        <CADLabelDelim Value="0.000000000000000000e+00" ID="RYRGXEYUMUQ"/>
+        <CADLabelID Value="1.000000000000000000e+00" ID="CKJPADJEUUG"/>
+        <CADLabelName Value="1.000000000000000000e+00" ID="MZQQXNTLJIL"/>
+        <CADLabelSplitNo Value="1.000000000000000000e+00" ID="KBLGAFFVFSG"/>
+        <CADLabelSurfNo Value="1.000000000000000000e+00" ID="FAZWURZXQUT"/>
+        <CADLenUnit Value="4.000000000000000000e+00" ID="TWFZMWZNGON"/>
+        <CURV_Export Value="1.000000000000000000e+00" ID="DFEOSHOUKBO"/>
+        <ExportRawFlag Value="0.000000000000000000e+00" ID="LJAEYMLBFLX"/>
+        <IGES_Export Value="1.000000000000000000e+00" ID="GHIMOYLJFNC"/>
+        <PLOT3D_Export Value="1.000000000000000000e+00" ID="RKOWDXSOUBT"/>
+        <SRF_Export Value="1.000000000000000000e+00" ID="CQATGUHYOQN"/>
+        <SRF_XYZIntCurve Value="0.000000000000000000e+00" ID="IFEGBZRMFXC"/>
+        <STEPMergePoints Value="0.000000000000000000e+00" ID="TGFUYJTODOL"/>
+        <STEPRepresentation Value="1.000000000000000000e+00" ID="LZTZFNWRLQF"/>
+        <STEPTol Value="9.999999999999999547e-07" ID="NBYAITDHKJU"/>
+        <STEP_Export Value="1.000000000000000000e+00" ID="UEAFCRJTHXY"/>
+      </ExportIntersect>
+      <FarField>
+        <FarComp Value="0.000000000000000000e+00" ID="FBCBUNHLPZS"/>
+        <FarMesh Value="0.000000000000000000e+00" ID="ZFDDJRSZAEH"/>
+        <HalfMesh Value="0.000000000000000000e+00" ID="ZHIFQAXENUT"/>
+        <SymmetrySplitting Value="0.000000000000000000e+00" ID="YOGWZDGZPGV"/>
+      </FarField>
+      <Global>
+        <ConvertToQuadsFlag Value="0.000000000000000000e+00" ID="WJNJLDIUGHF"/>
+        <CubicSurfTolerance Value="9.999999999999999547e-07" ID="HSJUQKYVRJS"/>
+        <DegenSet Value="-1.000000000000000000e+00" ID="IIZXEPYNFNJ"/>
+        <DemoteSurfsCubicFlag Value="0.000000000000000000e+00" ID="LYRQPFLBKPG"/>
+        <HighOrderElementFlag Value="0.000000000000000000e+00" ID="IVOFVDTVMKN"/>
+        <IntersectSubSurfs Value="1.000000000000000000e+00" ID="TGXRKKCALQK"/>
+        <RelCurveTol Value="5.000000000000000104e-03" ID="JFDFKFDLIFY"/>
+        <Set Value="1.000000000000000000e+00" ID="JVHTAYYRIWF"/>
+        <UseMode Value="0.000000000000000000e+00" ID="EAGCCOMZEFD"/>
+      </Global>
+    </ParmContainer>
+  </SurfaceIntersectSettings>
+  <CFDGridDensity>
+    <ParmContainer>
+      <ID>HDMMCJUKDZ</ID>
+      <Name>CFDGridDensity</Name>
+      <CFDGridDensity>
+        <BaseAbsRel Value="0.000000000000000000e+00" ID="YQNOFFAUQYZ"/>
+        <BaseLen Value="5.000000000000000000e-01" ID="HAQRRYCIZTF"/>
+        <BaseLenFrac Value="1.000000000000000021e-02" ID="NTOZIXSABCG"/>
+        <FarAbsRel Value="0.000000000000000000e+00" ID="XYRFOKIBYZO"/>
+        <FarFrac Value="2.000000000000000000e+00" ID="ROKFJWJPLTE"/>
+        <FarMaxGapAbsRel Value="0.000000000000000000e+00" ID="IUJJFBANOSZ"/>
+        <FarMaxGapFrac Value="5.000000000000000278e-02" ID="SHXBQNXASCX"/>
+        <FarNCircSeg Value="1.600000000000000000e+01" ID="TZIMZYKOAAZ"/>
+        <GrowRatio Value="1.300000000000000044e+00" ID="JCGPEYVBTRC"/>
+        <MaxFar Value="2.000000000000000000e+00" ID="HFJBABWAEUC"/>
+        <MaxFarGap Value="2.000000000000000042e-02" ID="IBTRHKWLOFI"/>
+        <MaxGap Value="5.000000000000000104e-03" ID="KKNUVWBYDKJ"/>
+        <MaxGapAbsRel Value="0.000000000000000000e+00" ID="IBTFXNZBAPJ"/>
+        <MaxGapFrac Value="5.000000000000000278e-02" ID="YGBWNEHOFXD"/>
+        <MinAbsRel Value="0.000000000000000000e+00" ID="GCWIBWYVCNB"/>
+        <MinFrac Value="5.000000000000000278e-02" ID="WHDCOIJEVIS"/>
+        <MinLen Value="2.500000000000000139e-02" ID="AFFNWMEPLWM"/>
+        <NCircSeg Value="1.600000000000000000e+01" ID="BGWJSNJGJPF"/>
+        <RigorLimit Value="0.000000000000000000e+00" ID="DFFUCIHSEVQ"/>
+      </CFDGridDensity>
+    </ParmContainer>
+  </CFDGridDensity>
+  <StructureMgr>
+    <ParmContainer>
+      <ID>WIFZPQYPOC</ID>
+      <Name>Default</Name>
+      <Struct>
+        <CurrStructIndex Value="-1.000000000000000000e+00" ID="ORKBOSKXWFF"/>
+      </Struct>
+    </ParmContainer>
+  </StructureMgr>
+  <ClippingMgr>
+    <ParmContainer>
+      <ID>DRJPUQQERD</ID>
+      <Name>ClippingMgr</Name>
+      <Clipping>
+        <XGTClip Value="1.000000000000000000e+00" ID="LVNOZKFSFFH"/>
+        <XGTClipFlag Value="0.000000000000000000e+00" ID="VXSBUUPWABI"/>
+        <XLTClip Value="-1.000000000000000000e+00" ID="MWCWAFEOXBT"/>
+        <XLTClipFlag Value="0.000000000000000000e+00" ID="UUIMITTJZZJ"/>
+        <YGTClip Value="1.000000000000000000e+00" ID="FZEEKZBFDTW"/>
+        <YGTClipFlag Value="0.000000000000000000e+00" ID="DDDCXPCOFER"/>
+        <YLTClip Value="-1.000000000000000000e+00" ID="WYDQQRIYCGY"/>
+        <YLTClipFlag Value="0.000000000000000000e+00" ID="WAISBFRRROH"/>
+        <ZGTClip Value="1.000000000000000000e+00" ID="LHOYLZFPNME"/>
+        <ZGTClipFlag Value="0.000000000000000000e+00" ID="OLHSZTVPGHN"/>
+        <ZLTClip Value="-1.000000000000000000e+00" ID="GLBCUAVZVCZ"/>
+        <ZLTClipFlag Value="0.000000000000000000e+00" ID="PZAGJYZCMKS"/>
+      </Clipping>
+    </ParmContainer>
+  </ClippingMgr>
+  <WaveDragMgr>
+    <ParmContainer>
+      <ID>XNFALVFSBH</ID>
+      <Name>WaveDragSettings</Name>
+      <WaveDrag>
+        <AreaPlotType Value="0.000000000000000000e+00" ID="ESNPGCRQCPP"/>
+        <MachNumber Value="1.500000000000000000e+00" ID="TZNNBBQYZDP"/>
+        <NumRotSects Value="1.000000000000000000e+01" ID="KSJKXVJFAVL"/>
+        <NumSlices Value="2.000000000000000000e+01" ID="CEEOOJWGKCH"/>
+        <PlaneFlag Value="0.000000000000000000e+00" ID="ZUISHTJBQRZ"/>
+        <PointPlotFlag Value="1.000000000000000000e+00" ID="ZHWMFUNJZIH"/>
+        <RefFlag Value="0.000000000000000000e+00" ID="LZAYZWDELOG"/>
+        <SelBodyIndex Value="0.000000000000000000e+00" ID="FZAFSMCJQEW"/>
+        <SelSetIndex Value="1.000000000000000000e+00" ID="LDRLFPZYVQQ"/>
+        <SlicingLoc Value="0.000000000000000000e+00" ID="INHFSWTDAGS"/>
+        <Sref Value="1.000000000000000000e+02" ID="EBQWXLQBHAS"/>
+        <SymmFlag Value="1.000000000000000000e+00" ID="TATFEGWEMEP"/>
+        <ThetaIndex Value="1.000000000000000000e+00" ID="DRMUOUUGCJU"/>
+        <UseMode Value="0.000000000000000000e+00" ID="EUSRZKDRYTN"/>
+      </WaveDrag>
+    </ParmContainer>
+    <ReferenceGeomID/>
+    <ModeID/>
+    <FlowSS_List/>
+  </WaveDragMgr>
+  <ParasiteDragMgr>
+    <ParmContainer>
+      <ID>AVKWPTTWGT</ID>
+      <Name>ParasiteDragSettings</Name>
+      <ParasiteDrag>
+        <Alt Value="2.000000000000000000e+04" ID="PZOCBVTESVP"/>
+        <AltLengthUnit Value="0.000000000000000000e+00" ID="ALNRZOWGQCY"/>
+        <DeltaTemp Value="0.000000000000000000e+00" ID="PXDIYEDIYNG"/>
+        <Density Value="1.266412590332830759e-03" ID="FRCYHNRKPZQ"/>
+        <DynaVisc Value="3.323942381921151671e-07" ID="IIKLVHNYGWM"/>
+        <ExcresType Value="0.000000000000000000e+00" ID="XGKBDZLGFDQ"/>
+        <ExcresVal Value="0.000000000000000000e+00" ID="FPFWSRQAEGY"/>
+        <ExportSubCompFlag Value="0.000000000000000000e+00" ID="QJMHIWSAREI"/>
+        <FreestreamType Value="0.000000000000000000e+00" ID="OSSWYQPELVU"/>
+        <LamCfEqnType Value="0.000000000000000000e+00" ID="RSSOJVVXKFG"/>
+        <LengthUnit Value="4.000000000000000000e+00" ID="RSBJOHYOPIS"/>
+        <Mach Value="4.822255386125843812e-01" ID="ZOJDERJAGJY"/>
+        <Pres Value="9.724938058607042421e+02" ID="BWIJUJBYTCN"/>
+        <Re_L Value="1.904985774153036764e+06" ID="XHBDWFPVMRX"/>
+        <RefFlag Value="0.000000000000000000e+00" ID="WKSVJZODPQP"/>
+        <Set Value="1.000000000000000000e+00" ID="ANGLDMSYYEN"/>
+        <SortBy Value="0.000000000000000000e+00" ID="PPUJPUCILKN"/>
+        <SpecificHeatRatio Value="1.399999999999999911e+00" ID="CTYPBUVBNRQ"/>
+        <Sref Value="1.000000000000000000e+02" ID="RSYPJJLXWQZ"/>
+        <Temp Value="-1.232320000000004256e+01" ID="MOUGOGWDAQM"/>
+        <TempUnit Value="2.000000000000000000e+00" ID="SDQNWMWLQXK"/>
+        <TurbCfEqnType Value="1.000000000000000000e+01" ID="PBPRJMZKUTA"/>
+        <UseModeMassFlag Value="0.000000000000000000e+00" ID="XCSSWADYEWE"/>
+        <Vinf Value="5.000000000000000000e+02" ID="OAETUJLPKEC"/>
+        <VinfUnitType Value="0.000000000000000000e+00" ID="DSLROIBVRKF"/>
+      </ParasiteDrag>
+    </ParmContainer>
+    <ReferenceGeomID/>
+    <ModeID/>
+    <Excrescence>
+      <NumExcres>0</NumExcres>
+    </Excrescence>
+  </ParasiteDragMgr>
+  <AeroStructMgr>
+    <ParmContainer>
+      <ID>NAIVKQRAIV</ID>
+      <Name>AeroStructSettings</Name>
+      <AeroStructure>
+        <CurrStructAssyIndex Value="-1.000000000000000000e+00" ID="BPCSTLDLWRL"/>
+        <DynamicPressure Value="0.000000000000000000e+00" ID="QNMBYQTVPDE"/>
+      </AeroStructure>
+    </ParmContainer>
+  </AeroStructMgr>
+  <Background3D>
+    <Num_of_Background3Ds>0</Num_of_Background3Ds>
+  </Background3D>
+  <SetNames>
+    <Set>All</Set>
+    <Set>Shown</Set>
+    <Set>Not_Shown</Set>
+    <Set>fuel_tanks</Set>
+    <Set>OML</Set>
+    <Set>Set_2</Set>
+    <Set>Set_3</Set>
+    <Set>Set_4</Set>
+    <Set>Set_5</Set>
+    <Set>Set_6</Set>
+    <Set>Set_7</Set>
+    <Set>Set_8</Set>
+    <Set>Set_9</Set>
+    <Set>Set_10</Set>
+    <Set>Set_11</Set>
+    <Set>Set_12</Set>
+    <Set>Set_13</Set>
+    <Set>Set_14</Set>
+    <Set>Set_15</Set>
+    <Set>Set_16</Set>
+    <Set>Set_17</Set>
+    <Set>Set_18</Set>
+    <Set>Set_19</Set>
+  </SetNames>
+  <SetAttrs>
+    <fuel_tanks/>
+    <OML/>
+    <Set_2/>
+    <Set_3/>
+    <Set_4/>
+    <Set_5/>
+    <Set_6/>
+    <Set_7/>
+    <Set_8/>
+    <Set_9/>
+    <Set_10/>
+    <Set_11/>
+    <Set_12/>
+    <Set_13/>
+    <Set_14/>
+    <Set_15/>
+    <Set_16/>
+    <Set_17/>
+    <Set_18/>
+    <Set_19/>
+  </SetAttrs>
+</Vsp_Geometry>

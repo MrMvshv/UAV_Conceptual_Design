@@ -24,6 +24,8 @@ from SUAVE.Methods.Power.Battery.Sizing                  import initialize_from_
 
 
 from copy import deepcopy
+
+
 #save plots
 def save_plots(results):
     plot_solar_flux(results)
@@ -42,33 +44,40 @@ def save_plots(results):
 # ----------------------------------------------------------------------------------------------------------------------
 
 def main():
+    output_path = '/home/mvshv/conceptual_design/UAV_Conceptual_Design/my_evtol_model.vsp3'
 
     # Setup a vehicle
     vehicle = setup_vehicle()
-    
+
+    #print("Wings:", vehicle.wings)
+    #print("Fuselages:", vehicle.Fuselages)
+    #print("Propulsors:", vehicle.Propulsors)
+    print("Vehicle contents:")
+    print(vehicle.__dict__)
+    print("exporting vehicle")
     # export the vehicle
-    #write(vehicle, 'our_eVTOL')
-    
+    write(vehicle, output_path)
+    print("done export to: ", output_path)
     # Setup analyses
-    analyses = setup_analyses(vehicle)
-    analyses.finalize() #<- this builds surrogate models!
+    #analyses = setup_analyses(vehicle)
+    #analyses.finalize() #<- this builds surrogate models!
     
     # Setup a mission
-    mission  = setup_mission(vehicle, analyses)
+    #mission  = setup_mission(vehicle, analyses)
     
     # Evaluate the mission
-    results = mission.evaluate()
+    #results = mission.evaluate()
     
     #print results
-    print("Running eVTOL tutorial")
+    #print("Running eVTOL tutorial")
     #print("results: ")
     #print(results)
     # plot the mission
-    print("making plots")
-    make_plots(results)
-    print("saviing plots")
-    save_plots(results)
-    print("done")
+    #print("making plots")
+    #make_plots(results)
+    #print("saviing plots")
+    #save_plots(results)
+    #print("done")
     
     return
     
