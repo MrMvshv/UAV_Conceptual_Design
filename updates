@@ -1,0 +1,172 @@
+# Required Imports (make sure these are at the top of your script)
+import SUAVE
+from SUAVE.Core import Units, Data
+from SUAVE.Components.Fuselages import Fuselage as Fuselages # Use alias
+from SUAVE.Components.Geometric_Transformations import Segment as Lofted_Body_Segment # Correct import for Segments
+import numpy as np
+from copy import deepcopy
+
+# Assuming 'vehicle' object is already created:
+# vehicle = SUAVE.Vehicle()
+
+# ---------------------------------------------------------------
+# FUSELAGE (Adapted for 1m eVTOL)
+# ---------------------------------------------------------------
+# FUSELAGE PROPERTIES
+fuselage = Fuselages.Fuselage()
+fuselage.tag = 'eVTOL_Fuselage' # Updated tag
+
+# Basic parameters scaled for 1m vehicle
+fuselage.fineness.nose = 1.33 # (nose_length / width) = 0.2 / 0.15
+fuselage.fineness.tail = 1.33 # (tail_length / width) = 0.2 / 0.15
+fuselage.lengths.nose = 0.2 * Units.meter # 20 cm nose
+fuselage.lengths.tail = 0.2 * Units.meter # 20 cm tail
+fuselage.lengths.cabin = 0.6 * Units.meter # 60 cm cabin = 1.0m total - nose - tail
+fuselage.lengths.total = fuselage.lengths.nose + fuselage.lengths.cabin + fuselage.lengths.tail # Calculated total: 1.0 m
+fuselage.width = 0.15 * Units.meter # Max width 15 cm
+fuselage.heights.maximum = 0.15 * Units.meter # Max height 15 cm
+
+# Specific heights (can be refined, starting similar to max height)
+# Scaling based on the ratio of new max_height (0.15m) to old max_height (4.65ft ~= 1.417m)
+# Scale factor = 0.15 / 1.417 ~= 0.106
+# However, simpler approach for initial design: base it on the new max height
+fuselage.heights.at_quarter_length = 0.14 * Units.meter # Slightly less than max if tapered
+fuselage.heights.at_wing_root_quarter_chord = 0.15 * Units.meter # Assume wing at max height point
+fuselage.heights.at_three_quarters_length = 0.14 * Units.meter # Slightly less than max if tapered
+
+# Estimated areas for the 1m fuselage
+fuselage.areas.wetted = 0.6 * Units['meters**2'] # Previous estimate
+fuselage.areas.front_projected = (0.15 * 0.15) * Units['meters**2'] # Approx 0.0225 m^2
+
+fuselage.effective_diameter = 0.15 * Units.meter # Based on max width/height
+
+# Unpressurized
+fuselage.differential_pressure = 0.0 * Units.pascal # Use units
+
+# Remove passenger-specific items
+# fuselage.seats_abreast = 0. # Or remove line
+
+# Initialize Segments list if it doesn't exist (Good practice)
+if not hasattr(fuselage, 'Segments'):
+    fuselage.Segments = [] # Use list for append
+
+# --- Lofted Body Segments ---
+# Define cross-sections along the length.
+# We need to scale the original height/width values significantly.
+# Original max width/height was ~1.4 (units were ambiguous, assuming meters for scaling logic)
+# New max width/height is 0.15m. Scale factor ~ 0.15 / 1.4 = 0.107
+# Apply this scaling logic to the segment dimensions.
+
+# Segment 0 (Nose Tip)
+segment = Lofted_Body_Segment.Segment()
+segment.tag = 'segment_0'
+segment.percent_x_location = 0. # Start of nose
+segment.percent_z_location = 0. # Centerline start
+segment.height = 0.01 * Units.meter # Very small at the tip
+segment.width = 0.01 * Units.meter # Very small at the tip
+fuselage.Segments.append(segment)
+
+# Segment 1 (Near start of main section)
+segment = Lofted_Body_Segment.Segment()
+segment.tag = 'segment_1'
+segment.percent_x_location = 0.06 # 6% along length
+segment.percent_z_location = 0. # Keep centerline for simplicity now
+segment.height = 0.08 * Units.meter # Scale: 0.52 * 0.107 = 0.055 -> adjusted up
+segment.width = 0.10 * Units.meter # Scale: 0.75 * 0.107 = 0.08 -> adjusted up
+fuselage.Segments.append(segment)
+
+# Segment 2 (Approaching Max Width/Height) - Percent location corresponds roughly to end of nose (0.2m / 1.0m = 0.2)
+segment = Lofted_Body_Segment.Segment()
+segment.tag = 'segment_2'
+segment.percent_x_location = 0.20 # Adjusted location (was 0.25)
+segment.percent_z_location = 0.
+segment.height = 0.15 * Units.meter # Reaching max height
+segment.width = 0.15 * Units.meter # Reaching max width
+fuselage.Segments.append(segment)
+
+# Segment 3 (Max Width/Height - Mid Cabin) - Percent location 0.2 + 0.6*0.5 = 0.5
+segment = Lofted_Body_Segment.Segment()
+segment.tag = 'segment_3'
+segment.percent_x_location = 0.5 # Adjusted location (was 0.475) - Mid point approx
+segment.percent_z_location = 0.
+segment.height = 0.15 * Units.meter # Max Height
+segment.width = 0.15 * Units.meter # Max Width
+fuselage.Segments.append(segment)
+
+# Segment 4 (Start of Tail Cone) - Percent location = 0.2 (nose) + 0.6 (cabin) = 0.8
+segment = Lofted_Body_Segment.Segment()
+segment.tag = 'segment_4'
+segment.percent_x_location = 0.8 # Adjusted location (was 0.75) - Start of tail
+segment.percent_z_location = 0.01 # Slight raise maybe
+segment.height = 0.10 * Units.meter # Tapering down (Scale: 0.6 * 0.107 = 0.06 -> adjusted)
+segment.width = 0.08 * Units.meter # Tapering down (Scale: 0.4 * 0.107 = 0.04 -> adjusted)
+fuselage.Segments.append(segment)
+
+# Segment 5 (Tail Tip)
+segment = Lofted_Body_Segment.Segment()
+segment.tag = 'segment_5'
+segment.percent_x_location = 1. # End of tail
+segment.percent_z_location = 0.02 # Maybe slightly higher tail tip
+segment.height = 0.01 * Units.meter # Very small at the tip
+segment.width = 0.01 * Units.meter # Very small at the tip
+fuselage.Segments.append(segment)
+
+# Add fuselage component to vehicle
+vehicle.append_component(fuselage)
+
+
+#-------------------------------------------------------------------
+# Booms (Adapted for 1m eVTOL)
+#-------------------------------------------------------------------
+# Add booms, assuming they mount outboard, perhaps aligned with wing leading/trailing edge
+
+boom = Fuselages.Fuselage() # Re-use Fuselage class for simple boom shapes
+boom.tag = 'boom_R'
+
+# Placement: Needs careful consideration based on wing/rotor placement.
+# Example: Place start of boom slightly behind nose, outboard, slightly below fuselage centerline.
+# Assume wing starts at x=0.25m, boom under wing. Place boom start at x=0.3m?
+# Place outboard Y=0.5m? Place Z=-0.1m? (Relative to vehicle origin 0,0,0)
+boom.origin = [[0.3, 0.5, -0.1]] * Units.meter # Units are important!
+
+# Boom Dimensions (scaled down significantly)
+boom.lengths.total = 1.2 * Units.meter # Example: Boom slightly longer than fuselage? Or shorter? Depends on layout. Adjust as needed.
+boom.lengths.nose = 0.1 * Units.meter # Short nose cone
+boom.lengths.tail = 0.1 * Units.meter # Short tail cone
+boom.lengths.cabin = boom.lengths.total - boom.lengths.nose - boom.lengths.tail # Should define cabin length if using segments, otherwise less critical.
+
+boom.width = 0.08 * Units.meter # e.g., 8 cm diameter boom
+boom.heights.maximum = 0.08 * Units.meter
+boom.heights.at_quarter_length = 0.08 * Units.meter
+boom.heights.at_three_quarters_length = 0.08 * Units.meter
+boom.heights.at_wing_root_quarter_chord = 0.08 * Units.meter # Less relevant for boom unless wing attaches to it
+
+boom.effective_diameter = 0.08 * Units.meter
+
+# Areas (Recalculate for new dimensions)
+# Wetted Area: Approx surface area. Cylinder approx: pi * D * L_cyl = pi * 0.08 * (1.2-0.1-0.1) = pi * 0.08 * 1.0 = ~0.25 m^2. Add ends. Let's estimate higher.
+boom.areas.wetted = 0.3 * Units['meters**2'] # Rough estimate
+# Frontal Area: Area of cross-section. pi * (D/2)^2 = pi * (0.08/2)^2 = pi * 0.04^2 = ~0.005 m^2
+boom.areas.front_projected = np.pi * (0.08/2)**2 * Units['meters**2']
+
+# Fineness (Length / Diameter)
+boom.fineness.nose = boom.lengths.nose / boom.width # 0.1 / 0.08 = 1.25
+boom.fineness.tail = boom.lengths.tail / boom.width # 0.1 / 0.08 = 1.25
+
+# Add right boom
+vehicle.append_component(boom)
+
+# Now attach the mirrored boom
+other_boom = deepcopy(boom) # Create a completely independent copy
+other_boom.tag = 'boom_L' # Change tag
+other_boom.origin[0][1] = -boom.origin[0][1] # Mirror the Y coordinate
+
+# Add left boom
+vehicle.append_component(other_boom)
+
+print("Fuselage and Booms adapted for 1m eVTOL.")
+# You might want to print key dimensions here to verify
+print(f"Fuselage Total Length: {fuselage.lengths.total / Units.meter} m")
+print(f"Boom Total Length: {boom.lengths.total / Units.meter} m")
+print(f"Boom Right Origin: {boom.origin[0] / Units.meter} m")
+print(f"Boom Left Origin: {other_boom.origin[0] / Units.meter} m")

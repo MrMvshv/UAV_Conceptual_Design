@@ -40,28 +40,33 @@ def create_valid_aircraft():
 
     # Fuselage (with all required OpenVSP parameters)
     fuselage = Fuselages.Fuselage()
-    fuselage.tag = 'Fuselage'
+    fuselage.tag = 'eVTOL_Fuselage'
 
     fuselage.lengths = Data()
-    fuselage.lengths.total = 5 * Units.meters
-    fuselage.lengths.nose = 1 * Units.meters
-    fuselage.lengths.tail = 1 * Units.meters
-    fuselage.width = 1 * Units.meters
+    fuselage.lengths.total = 1 * Units.meters
+    fuselage.lengths.nose = 0.2 * Units.meters
+    fuselage.lengths.tail = 0.2 * Units.meters
+    # Estimate width based on typical fuselage aspect ratios (Length/Width ~ 5-10)
+    # For 1m length, a width of 0.1m to 0.2m seems reasonable. Let's choose 0.15m.
+    fuselage.width = 0.15 * Units.meters
 
     fuselage.heights = Data()
-    fuselage.heights.maximum = 1.2 * Units.meters
-    fuselage.heights.at_quarter_length = 1 * Units.meters
-    fuselage.heights.at_wing_root_quarter_chord = 1 * Units.meters
-    fuselage.heights.at_three_quarters_length = 1 * Units.meters
-    fuselage.effective_diameter = 1 * Units.meters  # Critical for OpenVSP!
+    fuselage.heights.maximum = 0.15 * Units.meters
+    fuselage.heights.at_quarter_length = 0.15 * Units.meters
+    fuselage.heights.at_wing_root_quarter_chord = 0.15 * Units.meters
+    fuselage.heights.at_three_quarters_length = 0.15 * Units.meters
+    fuselage.effective_diameter = 0.15 * Units.meters  # Critical for OpenVSP!
 
     fuselage.areas = Data()
-    fuselage.areas.wetted = 10 * Units['meters**2']
-    fuselage.areas.front_projected = 1 * Units['meters**2']
+    #NOTE: this is approximate, use advanced analysis tools to calculate
+    fuselage.areas.wetted = 0.6 * Units['meters**2']
+    #NOTE: this is approximate, use advanced analysis tools to calculate(CIRCULAR)
+    fuselage.areas.front_projected = 0.018 * Units['meters**2']
 
     fuselage.fineness = Data()
-    fuselage.fineness.nose = 2.0
-    fuselage.fineness.tail = 2.0
+    # Nose Fineness = nose_length / width = 0.2 / 0.15
+    fuselage.fineness.nose = 0.2 / 0.15
+    fuselage.fineness.tail = 0.2 / 0.15
 
     # Critical addition for vertical position
     fuselage.origin = [[0.0, 0.0, 0.0]]  # X,Y,Z position
@@ -75,8 +80,9 @@ def create_valid_aircraft():
     vehicle.wings = Data()
     vehicle.wings['main_wing'] = wing
 
-    vehicle.fuselages = Data()
-    vehicle.fuselages['fuselage'] = fuselage
+    #vehicle.fuselages = Data()
+    #vehicle.fuselages['fuselage'] = fuselage
+    vehicle.append_component(fuselage)
 
     # Initialize empty required containers
     vehicle.networks = Data()

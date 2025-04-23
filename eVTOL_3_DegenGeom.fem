@@ -1,0 +1,210 @@
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 100.0000000 Lunit^2             
+Cref_                   1.0000000 Lunit               
+Bref_                   1.0000000 Lunit               
+Xcg_                    0.0000000 Lunit               
+Ycg_                    0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.0010000 no_unit             
+AoA_                    1.0000000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    0.0023770 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+Wing Surface: 1 
+SpanStations: 5 
+
+   Wing    XLE_ORIG  YLE_ORIG  ZLE_ORIG  XTE_ORIG  YTE_ORIG  ZTE_ORIG  XQC_ORIG  YQC_ORIG  ZQC_ORIG  S_ORIG     Area     Chord     XLE_DEF   YLE_DEF   ZLE_DEF   XTE_DEF   YTE_DEF   ZTE_DEF   XQC_DEF   YQC_DEF   ZQC_DEF    S_DEF       Cl        Cd        Cs        Cx        Cy        Cz       Cmx       Cmy       Cmz 
+        1   0.01875   0.50000   0.00000   1.81875   0.50000   0.00000   0.46875   0.50000   0.00000   0.07314   1.80000   1.80000   0.01875   0.50000   0.00000   1.81875   0.50000   0.00000   0.46875   0.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.05625   1.50000   0.00000   1.70625   1.50000   0.00000   0.46875   1.50000   0.00000   0.25299   1.65000   1.65000   0.05625   1.50000   0.00000   1.70625   1.50000   0.00000   0.46875   1.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.09375   2.50000   0.00000   1.59375   2.50000   0.00000   0.46875   2.50000   0.00000   0.46642   1.50000   1.50000   0.09375   2.50000   0.00000   1.59375   2.50000   0.00000   0.46875   2.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.13125   3.50000   0.00000   1.48125   3.50000   0.00000   0.46875   3.50000   0.00000   0.67985   1.35000   1.35000   0.13125   3.50000   0.00000   1.48125   3.50000   0.00000   0.46875   3.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.16875   4.50000   0.00000   1.36875   4.50000   0.00000   0.46875   4.50000   0.00000   0.89328   1.20000   1.20000   0.16875   4.50000   0.00000   1.36875   4.50000   0.00000   0.46875   4.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+
+   Planform:
+
+   Root LE:   0.00000   0.00000   0.00000 
+   Root TE:   1.87500   0.00000   0.00000 
+   Root QC:   0.45000   0.00000   0.00000 
+
+   Tip LE:    0.15000   4.00000   0.00000 
+   Tip TE:    1.42500   4.00000   0.00000 
+   Tip QC:    0.45000   4.00000   0.00000 
+Wing Surface: 2 
+SpanStations: 5 
+
+   Wing    XLE_ORIG  YLE_ORIG  ZLE_ORIG  XTE_ORIG  YTE_ORIG  ZTE_ORIG  XQC_ORIG  YQC_ORIG  ZQC_ORIG  S_ORIG     Area     Chord     XLE_DEF   YLE_DEF   ZLE_DEF   XTE_DEF   YTE_DEF   ZTE_DEF   XQC_DEF   YQC_DEF   ZQC_DEF    S_DEF       Cl        Cd        Cs        Cx        Cy        Cz       Cmx       Cmy       Cmz 
+        2   0.01875  -0.50000   0.00000   1.81875  -0.50000   0.00000   0.46875  -0.50000   0.00000   0.07314   1.80000   1.80000   0.01875  -0.50000   0.00000   1.81875  -0.50000   0.00000   0.46875  -0.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.05625  -1.50000   0.00000   1.70625  -1.50000   0.00000   0.46875  -1.50000   0.00000   0.25299   1.65000   1.65000   0.05625  -1.50000   0.00000   1.70625  -1.50000   0.00000   0.46875  -1.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.09375  -2.50000   0.00000   1.59375  -2.50000   0.00000   0.46875  -2.50000   0.00000   0.46642   1.50000   1.50000   0.09375  -2.50000   0.00000   1.59375  -2.50000   0.00000   0.46875  -2.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.13125  -3.50000   0.00000   1.48125  -3.50000   0.00000   0.46875  -3.50000   0.00000   0.67985   1.35000   1.35000   0.13125  -3.50000   0.00000   1.48125  -3.50000   0.00000   0.46875  -3.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.16875  -4.50000   0.00000   1.36875  -4.50000   0.00000   0.46875  -4.50000   0.00000   0.89328   1.20000   1.20000   0.16875  -4.50000   0.00000   1.36875  -4.50000   0.00000   0.46875  -4.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+
+   Planform:
+
+   Root LE:   0.00000   0.00000   0.00000 
+   Root TE:   1.87500   0.00000   0.00000 
+   Root QC:   0.45000   0.00000   0.00000 
+
+   Tip LE:    0.15000  -4.00000   0.00000 
+   Tip TE:    1.42500  -4.00000   0.00000 
+   Tip QC:    0.45000  -4.00000   0.00000 
+
+
+Total Forces and Moments 
+
+
+Total CL:  -nan(ind) 
+Total CD:  nan 
+Total CS:  -nan(ind) 
+Total CFx: nan 
+Total CFy: -nan(ind) 
+Total CFz: -nan(ind) 
+Total CMx: -nan(ind) 
+Total CMy: nan 
+Total CMz: -nan(ind) 
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 100.0000000 Lunit^2             
+Cref_                   1.0000000 Lunit               
+Bref_                   1.0000000 Lunit               
+Xcg_                    0.0000000 Lunit               
+Ycg_                    0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.0010000 no_unit             
+AoA_                    5.5000000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    0.0023770 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+Wing Surface: 1 
+SpanStations: 5 
+
+   Wing    XLE_ORIG  YLE_ORIG  ZLE_ORIG  XTE_ORIG  YTE_ORIG  ZTE_ORIG  XQC_ORIG  YQC_ORIG  ZQC_ORIG  S_ORIG     Area     Chord     XLE_DEF   YLE_DEF   ZLE_DEF   XTE_DEF   YTE_DEF   ZTE_DEF   XQC_DEF   YQC_DEF   ZQC_DEF    S_DEF       Cl        Cd        Cs        Cx        Cy        Cz       Cmx       Cmy       Cmz 
+        1   0.01875   0.50000   0.00000   1.81875   0.50000   0.00000   0.46875   0.50000   0.00000   0.07314   1.80000   1.80000   0.01875   0.50000   0.00000   1.81875   0.50000   0.00000   0.46875   0.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.05625   1.50000   0.00000   1.70625   1.50000   0.00000   0.46875   1.50000   0.00000   0.25299   1.65000   1.65000   0.05625   1.50000   0.00000   1.70625   1.50000   0.00000   0.46875   1.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.09375   2.50000   0.00000   1.59375   2.50000   0.00000   0.46875   2.50000   0.00000   0.46642   1.50000   1.50000   0.09375   2.50000   0.00000   1.59375   2.50000   0.00000   0.46875   2.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.13125   3.50000   0.00000   1.48125   3.50000   0.00000   0.46875   3.50000   0.00000   0.67985   1.35000   1.35000   0.13125   3.50000   0.00000   1.48125   3.50000   0.00000   0.46875   3.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.16875   4.50000   0.00000   1.36875   4.50000   0.00000   0.46875   4.50000   0.00000   0.89328   1.20000   1.20000   0.16875   4.50000   0.00000   1.36875   4.50000   0.00000   0.46875   4.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+
+   Planform:
+
+   Root LE:   0.00000   0.00000   0.00000 
+   Root TE:   1.87500   0.00000   0.00000 
+   Root QC:   0.45000   0.00000   0.00000 
+
+   Tip LE:    0.15000   4.00000   0.00000 
+   Tip TE:    1.42500   4.00000   0.00000 
+   Tip QC:    0.45000   4.00000   0.00000 
+Wing Surface: 2 
+SpanStations: 5 
+
+   Wing    XLE_ORIG  YLE_ORIG  ZLE_ORIG  XTE_ORIG  YTE_ORIG  ZTE_ORIG  XQC_ORIG  YQC_ORIG  ZQC_ORIG  S_ORIG     Area     Chord     XLE_DEF   YLE_DEF   ZLE_DEF   XTE_DEF   YTE_DEF   ZTE_DEF   XQC_DEF   YQC_DEF   ZQC_DEF    S_DEF       Cl        Cd        Cs        Cx        Cy        Cz       Cmx       Cmy       Cmz 
+        2   0.01875  -0.50000   0.00000   1.81875  -0.50000   0.00000   0.46875  -0.50000   0.00000   0.07314   1.80000   1.80000   0.01875  -0.50000   0.00000   1.81875  -0.50000   0.00000   0.46875  -0.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.05625  -1.50000   0.00000   1.70625  -1.50000   0.00000   0.46875  -1.50000   0.00000   0.25299   1.65000   1.65000   0.05625  -1.50000   0.00000   1.70625  -1.50000   0.00000   0.46875  -1.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.09375  -2.50000   0.00000   1.59375  -2.50000   0.00000   0.46875  -2.50000   0.00000   0.46642   1.50000   1.50000   0.09375  -2.50000   0.00000   1.59375  -2.50000   0.00000   0.46875  -2.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.13125  -3.50000   0.00000   1.48125  -3.50000   0.00000   0.46875  -3.50000   0.00000   0.67985   1.35000   1.35000   0.13125  -3.50000   0.00000   1.48125  -3.50000   0.00000   0.46875  -3.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.16875  -4.50000   0.00000   1.36875  -4.50000   0.00000   0.46875  -4.50000   0.00000   0.89328   1.20000   1.20000   0.16875  -4.50000   0.00000   1.36875  -4.50000   0.00000   0.46875  -4.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+
+   Planform:
+
+   Root LE:   0.00000   0.00000   0.00000 
+   Root TE:   1.87500   0.00000   0.00000 
+   Root QC:   0.45000   0.00000   0.00000 
+
+   Tip LE:    0.15000  -4.00000   0.00000 
+   Tip TE:    1.42500  -4.00000   0.00000 
+   Tip QC:    0.45000  -4.00000   0.00000 
+
+
+Total Forces and Moments 
+
+
+Total CL:  -nan(ind) 
+Total CD:  nan 
+Total CS:  -nan(ind) 
+Total CFx: nan 
+Total CFy: -nan(ind) 
+Total CFz: -nan(ind) 
+Total CMx: -nan(ind) 
+Total CMy: nan 
+Total CMz: -nan(ind) 
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 100.0000000 Lunit^2             
+Cref_                   1.0000000 Lunit               
+Bref_                   1.0000000 Lunit               
+Xcg_                    0.0000000 Lunit               
+Ycg_                    0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.0010000 no_unit             
+AoA_                   10.0000000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    0.0023770 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+Wing Surface: 1 
+SpanStations: 5 
+
+   Wing    XLE_ORIG  YLE_ORIG  ZLE_ORIG  XTE_ORIG  YTE_ORIG  ZTE_ORIG  XQC_ORIG  YQC_ORIG  ZQC_ORIG  S_ORIG     Area     Chord     XLE_DEF   YLE_DEF   ZLE_DEF   XTE_DEF   YTE_DEF   ZTE_DEF   XQC_DEF   YQC_DEF   ZQC_DEF    S_DEF       Cl        Cd        Cs        Cx        Cy        Cz       Cmx       Cmy       Cmz 
+        1   0.01875   0.50000   0.00000   1.81875   0.50000   0.00000   0.46875   0.50000   0.00000   0.07314   1.80000   1.80000   0.01875   0.50000   0.00000   1.81875   0.50000   0.00000   0.46875   0.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.05625   1.50000   0.00000   1.70625   1.50000   0.00000   0.46875   1.50000   0.00000   0.25299   1.65000   1.65000   0.05625   1.50000   0.00000   1.70625   1.50000   0.00000   0.46875   1.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.09375   2.50000   0.00000   1.59375   2.50000   0.00000   0.46875   2.50000   0.00000   0.46642   1.50000   1.50000   0.09375   2.50000   0.00000   1.59375   2.50000   0.00000   0.46875   2.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.13125   3.50000   0.00000   1.48125   3.50000   0.00000   0.46875   3.50000   0.00000   0.67985   1.35000   1.35000   0.13125   3.50000   0.00000   1.48125   3.50000   0.00000   0.46875   3.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.16875   4.50000   0.00000   1.36875   4.50000   0.00000   0.46875   4.50000   0.00000   0.89328   1.20000   1.20000   0.16875   4.50000   0.00000   1.36875   4.50000   0.00000   0.46875   4.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+
+   Planform:
+
+   Root LE:   0.00000   0.00000   0.00000 
+   Root TE:   1.87500   0.00000   0.00000 
+   Root QC:   0.45000   0.00000   0.00000 
+
+   Tip LE:    0.15000   4.00000   0.00000 
+   Tip TE:    1.42500   4.00000   0.00000 
+   Tip QC:    0.45000   4.00000   0.00000 
+Wing Surface: 2 
+SpanStations: 5 
+
+   Wing    XLE_ORIG  YLE_ORIG  ZLE_ORIG  XTE_ORIG  YTE_ORIG  ZTE_ORIG  XQC_ORIG  YQC_ORIG  ZQC_ORIG  S_ORIG     Area     Chord     XLE_DEF   YLE_DEF   ZLE_DEF   XTE_DEF   YTE_DEF   ZTE_DEF   XQC_DEF   YQC_DEF   ZQC_DEF    S_DEF       Cl        Cd        Cs        Cx        Cy        Cz       Cmx       Cmy       Cmz 
+        2   0.01875  -0.50000   0.00000   1.81875  -0.50000   0.00000   0.46875  -0.50000   0.00000   0.07314   1.80000   1.80000   0.01875  -0.50000   0.00000   1.81875  -0.50000   0.00000   0.46875  -0.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.05625  -1.50000   0.00000   1.70625  -1.50000   0.00000   0.46875  -1.50000   0.00000   0.25299   1.65000   1.65000   0.05625  -1.50000   0.00000   1.70625  -1.50000   0.00000   0.46875  -1.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.09375  -2.50000   0.00000   1.59375  -2.50000   0.00000   0.46875  -2.50000   0.00000   0.46642   1.50000   1.50000   0.09375  -2.50000   0.00000   1.59375  -2.50000   0.00000   0.46875  -2.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.13125  -3.50000   0.00000   1.48125  -3.50000   0.00000   0.46875  -3.50000   0.00000   0.67985   1.35000   1.35000   0.13125  -3.50000   0.00000   1.48125  -3.50000   0.00000   0.46875  -3.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.16875  -4.50000   0.00000   1.36875  -4.50000   0.00000   0.46875  -4.50000   0.00000   0.89328   1.20000   1.20000   0.16875  -4.50000   0.00000   1.36875  -4.50000   0.00000   0.46875  -4.50000   0.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+
+   Planform:
+
+   Root LE:   0.00000   0.00000   0.00000 
+   Root TE:   1.87500   0.00000   0.00000 
+   Root QC:   0.45000   0.00000   0.00000 
+
+   Tip LE:    0.15000  -4.00000   0.00000 
+   Tip TE:    1.42500  -4.00000   0.00000 
+   Tip QC:    0.45000  -4.00000   0.00000 
+
+
+Total Forces and Moments 
+
+
+Total CL:  -nan(ind) 
+Total CD:  nan 
+Total CS:  -nan(ind) 
+Total CFx: nan 
+Total CFy: -nan(ind) 
+Total CFz: -nan(ind) 
+Total CMx: -nan(ind) 
+Total CMy: nan 
+Total CMz: -nan(ind) 

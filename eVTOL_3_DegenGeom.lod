@@ -1,0 +1,141 @@
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 100.0000000 Lunit^2             
+Cref_                   1.0000000 Lunit               
+Bref_                   1.0000000 Lunit               
+Xcg_                    0.0000000 Lunit               
+Ycg_                    0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.0010000 no_unit             
+AoA_                    1.0000000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    0.0023770 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+   Wing       S        Xavg      Yavg      Zavg     Chord     V/Vref      Cl        Cd        Cs        Cx        Cy       Cz        Cmx       Cmy       Cmz 
+        1   0.07314   0.91901   0.49306   0.00000   1.80000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.25299   0.88153   1.49242   0.00000   1.65000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.46642   0.84406   2.49167   0.00000   1.50000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.67985   0.80660   3.49074   0.00000   1.35000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.89328   0.76914   4.48958   0.00000   1.20000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.07314   0.91901  -0.49306   0.00000   1.80000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.25299   0.88153  -1.49242   0.00000   1.65000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.46642   0.84406  -2.49167   0.00000   1.50000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.67985   0.80660  -3.49074   0.00000   1.35000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.89328   0.76914  -4.48958   0.00000   1.20000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+
+
+
+Comp      Component-Name                             Mach       AoA      Beta       CL        CDi       CS       CFx       CFy       CFz       Cmx       Cmy       Cmz 
+0                                                    0.00100   1.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 
+1         MainWing                                   0.00100   1.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+2         MainWing                                   0.00100   1.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+3         Fuselage                                   0.00100   1.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+4         Fuselage                                   0.00100   1.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+5         Fuselage                                   0.00100   1.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+6         Fuselage                                   0.00100   1.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+7         FuselageGeom                               0.00100   1.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+8         FuselageGeom                               0.00100   1.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+9         FuselageGeom                               0.00100   1.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+10        FuselageGeom                               0.00100   1.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+
+
+
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 100.0000000 Lunit^2             
+Cref_                   1.0000000 Lunit               
+Bref_                   1.0000000 Lunit               
+Xcg_                    0.0000000 Lunit               
+Ycg_                    0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.0010000 no_unit             
+AoA_                    5.5000000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    0.0023770 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+   Wing       S        Xavg      Yavg      Zavg     Chord     V/Vref      Cl        Cd        Cs        Cx        Cy       Cz        Cmx       Cmy       Cmz 
+        1   0.07314   0.91901   0.49306   0.00000   1.80000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.25299   0.88153   1.49242   0.00000   1.65000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.46642   0.84406   2.49167   0.00000   1.50000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.67985   0.80660   3.49074   0.00000   1.35000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.89328   0.76914   4.48958   0.00000   1.20000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.07314   0.91901  -0.49306   0.00000   1.80000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.25299   0.88153  -1.49242   0.00000   1.65000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.46642   0.84406  -2.49167   0.00000   1.50000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.67985   0.80660  -3.49074   0.00000   1.35000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.89328   0.76914  -4.48958   0.00000   1.20000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+
+
+
+Comp      Component-Name                             Mach       AoA      Beta       CL        CDi       CS       CFx       CFy       CFz       Cmx       Cmy       Cmz 
+0                                                    0.00100   5.50000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 
+1         MainWing                                   0.00100   5.50000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+2         MainWing                                   0.00100   5.50000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+3         Fuselage                                   0.00100   5.50000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+4         Fuselage                                   0.00100   5.50000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+5         Fuselage                                   0.00100   5.50000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+6         Fuselage                                   0.00100   5.50000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+7         FuselageGeom                               0.00100   5.50000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+8         FuselageGeom                               0.00100   5.50000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+9         FuselageGeom                               0.00100   5.50000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+10        FuselageGeom                               0.00100   5.50000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+
+
+
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 100.0000000 Lunit^2             
+Cref_                   1.0000000 Lunit               
+Bref_                   1.0000000 Lunit               
+Xcg_                    0.0000000 Lunit               
+Ycg_                    0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.0010000 no_unit             
+AoA_                   10.0000000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    0.0023770 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+   Wing       S        Xavg      Yavg      Zavg     Chord     V/Vref      Cl        Cd        Cs        Cx        Cy       Cz        Cmx       Cmy       Cmz 
+        1   0.07314   0.91901   0.49306   0.00000   1.80000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.25299   0.88153   1.49242   0.00000   1.65000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.46642   0.84406   2.49167   0.00000   1.50000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.67985   0.80660   3.49074   0.00000   1.35000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        1   0.89328   0.76914   4.48958   0.00000   1.20000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.07314   0.91901  -0.49306   0.00000   1.80000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.25299   0.88153  -1.49242   0.00000   1.65000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.46642   0.84406  -2.49167   0.00000   1.50000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.67985   0.80660  -3.49074   0.00000   1.35000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+        2   0.89328   0.76914  -4.48958   0.00000   1.20000       nan -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+
+
+
+Comp      Component-Name                             Mach       AoA      Beta       CL        CDi       CS       CFx       CFy       CFz       Cmx       Cmy       Cmz 
+0                                                    0.00100  10.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 
+1         MainWing                                   0.00100  10.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+2         MainWing                                   0.00100  10.00000   0.00000 -nan(ind)       nan -nan(ind)       nan -nan(ind) -nan(ind) -nan(ind)       nan -nan(ind) 
+3         Fuselage                                   0.00100  10.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+4         Fuselage                                   0.00100  10.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+5         Fuselage                                   0.00100  10.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+6         Fuselage                                   0.00100  10.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+7         FuselageGeom                               0.00100  10.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+8         FuselageGeom                               0.00100  10.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+9         FuselageGeom                               0.00100  10.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+10        FuselageGeom                               0.00100  10.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -nan(ind)       nan -nan(ind) 
+
+
+
