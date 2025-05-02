@@ -1,0 +1,18 @@
+Name, Theo_Area, Wet_Area, Theo_Vol, Wet_Vol
+main_wing,0.545448,0.476274,0.005165,0.004649
+horizontal_tail,0.124324,0.110405,0.000554,0.000507
+vertical_tail,0.063834,0.056007,0.000277,0.000250
+eVTOL_Fuselage,0.360690,0.340151,0.011329,0.011013
+boom_R,0.058800,0.050145,0.000420,0.000369
+boom_L,0.058800,0.050145,0.000420,0.000369
+Totals,1.211895,1.083128,0.018164,0.017158
+
+Tag_Name, Tag_Theo_Area, Tag_Wet_Area
+main_wing_Surf0,0.272724,0.238137
+main_wing_Surf1,0.272724,0.238137
+horizontal_tail_Surf0,0.062162,0.055203
+horizontal_tail_Surf1,0.062162,0.055203
+vertical_tail_Surf0,0.063834,0.056007
+eVTOL_Fuselage_Surf0,0.360690,0.340151
+boom_R_Surf0,0.058800,0.050145
+boom_L_Surf0,0.058800,0.050145

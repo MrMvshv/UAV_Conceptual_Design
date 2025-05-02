@@ -1,0 +1,13 @@
+# VSPGEOM Tag Key File
+C:/Users/Evelyne/Desktop/SUAVE-2.5.2/UAV_Conceptual_Design/eVTOL.vspgeom
+8
+
+# tag#,geom#,surf#,gname,gid,ssname1,ssname2,...,ssid1,ssid2,...
+1,2,0,main_wing,NQXLGFTMXK
+2,2,1,main_wing,NQXLGFTMXK
+3,4,0,horizontal_tail,HWPFEZUATJ
+4,4,1,horizontal_tail,HWPFEZUATJ
+5,5,0,vertical_tail,CUZBUZEFKV
+6,0,0,eVTOL_Fuselage,VVLHVCEFDZ
+7,3,0,boom_R,IWMDPBHFGO
+8,1,0,boom_L,SMOJNJAWKE
