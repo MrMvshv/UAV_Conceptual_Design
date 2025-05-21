@@ -336,7 +336,7 @@ def setup_vehicle():
     # Example: Place start of boom slightly behind nose, outboard, slightly below fuselage centerline.
     # Assume wing starts at x=0.25m, boom under wing. Place boom start at x=0.3m?
     # Place outboard Y=0.5m? Place Z=-0.1m? (Relative to vehicle origin 0,0,0)
-    boom.origin = [[0.1, 0.35, 0.06]] * Units.meter # Units are important!
+    boom.origin = [[0.1, 0.35, 0.04]] * Units.meter # Units are important!
 
     # Boom Dimensions (scaled down significantly)
     boom.lengths.total = 0.66 * Units.meter # Example: Boom slightly longer than fuselage? Or shorter? Depends on layout. Adjust as needed.
@@ -442,6 +442,8 @@ def setup_vehicle():
     
   # The lift rotors
     lift_rotor                            = SUAVE.Components.Energy.Converters.Lift_Rotor()
+    lift_rotor.chord_distribution = np.linspace(0.2, 0.08, 5)  
+    lift_rotor.blade_solidity               = 0.5                #    
     lift_rotor.tip_radius                 = 0.2 * Units.meter  # 40cm diameter
     lift_rotor.hub_radius                 = 0.02 * Units.meter # 4cm hub
     lift_rotor.number_of_blades           = 2                  # Balance efficiency/weight
@@ -462,7 +464,7 @@ def setup_vehicle():
     lift_rotor                            = propeller_design(lift_rotor)    
 
 
-
+   
 
     # Appending rotors - positions based on your boom locations
     rotations = [1,-1,1,-1]  # Alternating rotation directions
