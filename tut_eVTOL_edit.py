@@ -128,11 +128,11 @@ def setup_vehicle():
     #   Vehicle-level Properties
     # ------------------------------------------------------------------
     # mass properties
-    vehicle.mass_properties.takeoff           = 5. * Units.lb
-    vehicle.mass_properties.operating_empty   = 5. * Units.lb       
-    vehicle.mass_properties.max_takeoff       = 5. * Units.lb     
-    vehicle.mass_properties.max_payload       = 1.  * Units.lb
-    vehicle.mass_properties.center_of_gravity = [[2.0,   0.  ,  0. ]] # I made this up
+    vehicle.mass_properties.takeoff           = 3.1 * Units.kg
+    vehicle.mass_properties.operating_empty   = 2.624 * Units.kg       
+    vehicle.mass_properties.max_takeoff       = 3.1 * Units.kg 
+    vehicle.mass_properties.max_payload       =  0.2 * Units.kg
+    vehicle.mass_properties.center_of_gravity = [[0.5,   0.  ,  0. ]] # I made this up
     
     # basic parameters
     vehicle.envelope.ultimate_load = 5.7
@@ -379,7 +379,7 @@ def setup_vehicle():
     net.number_of_propeller_engines  = 1
     net.identical_propellers         = True
     net.identical_lift_rotors        = True    
-    net.voltage                      = 400.    
+    net.voltage                      = 14.8 * Units.volt  # Typical for small eVTOLs, e.g., 4S LiPo battery    
     
     #------------------------------------------------------------------
     # Electronic Speed Controller
@@ -403,14 +403,14 @@ def setup_vehicle():
     # Avionics
     #------------------------------------------------------------------
     avionics            = SUAVE.Components.Energy.Peripherals.Avionics()
-    avionics.power_draw = 300. * Units.watts
+    avionics.power_draw = 50. * Units.watts
     net.avionics        = avionics    
     
     #------------------------------------------------------------------
     # Design Battery
     #------------------------------------------------------------------
     bat                      = SUAVE.Components.Energy.Storages.Batteries.Constant_Mass.Lithium_Ion_LiNiMnCoO2_18650() 
-    bat.mass_properties.mass = 1000. * Units.lb 
+    bat.mass_properties.mass = 0.3 * Units.kg        
     bat.max_voltage          = net.voltage   
     initialize_from_mass(bat)    
     net.battery              = bat      
@@ -441,18 +441,19 @@ def setup_vehicle():
     net.propellers.append(propeller)
     
   # The lift rotors
-    lift_rotor                            = SUAVE.Components.Energy.Converters.Lift_Rotor()
-    lift_rotor.chord_distribution = np.linspace(0.2, 0.08, 5)  
-    lift_rotor.blade_solidity               = 0.5                #    
-    lift_rotor.tip_radius                 = 0.2 * Units.meter  # 40cm diameter
-    lift_rotor.hub_radius                 = 0.02 * Units.meter # 4cm hub
+    #lift_rotor                            = SUAVE.Components.Energy.Converters.Lift_Rotor()
+    lift_rotor                            = SUAVE.Components.Energy.Converters.Propeller()
+    lift_rotor.blade_solidity = 0.15  # Moderate value, more market-like 
+    lift_rotor.tip_radius                 = 0.15 * Units.meter  # 13cm diameter
+    lift_rotor.hub_radius                 = 0.0075 * Units.meter # 4cm hub
     lift_rotor.number_of_blades           = 2                  # Balance efficiency/weight
     lift_rotor.design_tip_mach            = 0.25               # Lower tip Mach for noise
     lift_rotor.freestream_velocity        = 2.5 * Units['m/s']    # ~500 ft/min descent
-    lift_rotor.angular_velocity           = lift_rotor.design_tip_mach*Air().compute_speed_of_sound()/lift_rotor.tip_radius
-    lift_rotor.design_Cl                  = 0.4              # Higher for hover
+    #lift_rotor.angular_velocity           = lift_rotor.design_tip_mach*Air().compute_speed_of_sound()/lift_rotor.tip_radius
+    lift_rotor.angular_velocity           = 9000 * Units.rpm    # Higher RPM for small rotors
+    lift_rotor.design_Cl                  = 0.7              # Higher for hover
     lift_rotor.design_altitude            = 500. * Units.meter # Ground effect considered
-    lift_rotor.design_thrust              = 5. * Units.newton # ~lbf per rotor
+    lift_rotor.design_thrust              = 7.6 * Units.newton # ~lbf per rotor
     lift_rotor.variable_pitch             = False              # Important for small craft
     lift_rotor.airfoil_geometry       = ['./Airfoils/NACA_4412.txt']
     lift_rotor.airfoil_polars         = [['./Airfoils/Polars/NACA_4412_polar_Re_50000.txt' ,
@@ -461,8 +462,47 @@ def setup_vehicle():
                                          './Airfoils/Polars/NACA_4412_polar_Re_500000.txt' ,
                                          './Airfoils/Polars/NACA_4412_polar_Re_1000000.txt' ]]    
     lift_rotor.airfoil_polar_stations = np.zeros((20),dtype=np.int8).tolist()
-    lift_rotor                            = propeller_design(lift_rotor)    
 
+    # Design the rotor
+    number_of_stations = 20
+    lift_rotor.twist_distribution = np.linspace(7, 7, number_of_stations)
+
+    lift_rotor                            = propeller_design(lift_rotor)
+
+    R = lift_rotor.tip_radius
+    Rh = lift_rotor.hub_radius
+    chi0 = Rh / R
+    chi = np.linspace(chi0, 1.0, number_of_stations)
+
+    lift_rotor.n_stations = number_of_stations
+    lift_rotor.radius_distribution = chi * R
+
+    # Set parameters
+    c_min = 0.02  # chord at root and tip
+    c_max = 0.05   # peak chord at 0.4*R
+    chi_peak = 0.33  # location of peak chord (normalized)
+
+    # Use a Gaussian centered at chi_peak
+    sigma = 0.15  # controls spread (smaller = sharper peak)
+    gaussian_peak = np.exp(-((chi - chi_peak)**2) / (2 * sigma**2))
+
+    # Normalize to peak at 1.0
+    gaussian_peak /= np.max(gaussian_peak)
+
+    # Apply chord profile
+    chord_guess = c_min + (c_max - c_min) * gaussian_peak
+
+    lift_rotor.chord_distribution = chord_guess
+    lift_rotor.propeller_radius = R
+    lift_rotor.override_geometry = True
+
+
+
+    print("\n\n\n\n\Lift Rotor Design:")
+    print(lift_rotor.chord_distribution)
+    print(lift_rotor.twist_distribution)
+    print("====================================================")   
+  #  print(lift_rotor.geometry)
 
    
 
