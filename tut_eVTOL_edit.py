@@ -26,6 +26,10 @@ from SUAVE.Methods.Power.Battery.Sizing                  import initialize_from_
 
 from copy import deepcopy
 
+
+
+
+#exporting to vsp
 def export_to_vsp(vehicle, base_filename='eVTOL'):
     """Export SUAVE vehicle to OpenVSP with auto-numbering"""
     try:
@@ -71,41 +75,71 @@ def save_plots(results):
 
 def main():
     # Setup a vehicle
+    print("Setting up the vehicle")
     vehicle = setup_vehicle()
-    success = export_to_vsp(vehicle)
-    if success:
-        print("\nNext steps:")
-        print("1. Open the exported file in OpenVSP")
-        print("2. Verify the geometry and parameters")
-        print("3. Proceed with further analysis or modifications")
-    #print("Wings:", vehicle.wings)
+    print(" Vehicle setup complete")
+    #print("Vehicle networks:", vehicle.networks.keys())
+    #print("Lift Cruise Network:", vehicle.networks.lift_cruise)
+
+    # success = export_to_vsp(vehicle)
+    # if success:
+    #     print("\nNext steps:")
+    #     print("1. Open the exported file in OpenVSP")
+    #     print("2. Verify the geometry and parameters")
+    #     print("3. Proceed with further analysis or modifications")
+    # #print("Wings:", vehicle.wings)
     #print("Fuselages:", vehicle.Fuselages)
-    #print("Propulsors:", vehicle.Propulsors)
+    #print("Propulsors:", vehicle.propulsors)
     #print("Vehicle contents:")
     #print(vehicle.__dict__)
     #print("exporting vehicle")
     # export the vehicle
  
     # Setup analyses
-    #analyses = setup_analyses(vehicle)
-    #analyses.finalize() #<- this builds surrogate models!
+    print("Setting up the analyses")
+    analyses = setup_analyses(vehicle)
+    print("finalizing...")
+    analyses.finalize() #<- this builds surrogate models!
     
     # Setup a mission
-    #mission  = setup_mission(vehicle, analyses)
-    
-    # Evaluate the mission
-    #results = mission.evaluate()
+    print("Setting up the mission")
+    mission  = setup_mission(vehicle, analyses)
+
+
+    print(f"Number of lift rotors: {len(vehicle.networks.lift_cruise.lift_rotors)}")
+
+    for i, rotor in enumerate(vehicle.networks.lift_cruise.lift_rotors):
+        print(f"Lift rotor #{i}:")
+        print(f"  Radius: {rotor}")
+
+
+
+
+    # Run the mission    
+    results = mission.evaluate()
+    print("Mission evaluation complete")
+    for segment in results.segments:
+        print(f"\n--- Residuals for segment: {segment.tag} ---")
+        try:
+            residuals = segment.conditions.residuals
+            unknowns  = segment.conditions.unknowns
+            for key, val in residuals.items():
+                print(f"  Residual: {key:<20} {val}")
+            for key, val in unknowns.items():
+                print(f"  Unknown:  {key:<20} {val}")
+        except Exception as e:
+            print(f"  Could not read residuals: {e}")
     
     #print results
     #print("Running eVTOL tutorial")
-    #print("results: ")
-    #print(results)
+    print("results: ")
+    print(results)
     # plot the mission
-    #print("making plots")
-    #make_plots(results)
-    #print("saviing plots")
-    #save_plots(results)
-    #print("done")
+    print("making plots")
+    make_plots(results)
+    print("saving plots")
+    save_plots(results)
+    print("done")
     
     return
     
@@ -443,17 +477,17 @@ def setup_vehicle():
   # The lift rotors
     #lift_rotor                            = SUAVE.Components.Energy.Converters.Lift_Rotor()
     lift_rotor                            = SUAVE.Components.Energy.Converters.Propeller()
-    lift_rotor.blade_solidity = 0.15  # Moderate value, more market-like 
-    lift_rotor.tip_radius                 = 0.15 * Units.meter  # 13cm diameter
+    lift_rotor.blade_solidity = 0.12  # Moderate value, more market-like 
+    lift_rotor.tip_radius                 = 0.18 * Units.meter  # 13cm diameter
     lift_rotor.hub_radius                 = 0.0075 * Units.meter # 4cm hub
     lift_rotor.number_of_blades           = 2                  # Balance efficiency/weight
     lift_rotor.design_tip_mach            = 0.25               # Lower tip Mach for noise
     lift_rotor.freestream_velocity        = 2.5 * Units['m/s']    # ~500 ft/min descent
     #lift_rotor.angular_velocity           = lift_rotor.design_tip_mach*Air().compute_speed_of_sound()/lift_rotor.tip_radius
-    lift_rotor.angular_velocity           = 9000 * Units.rpm    # Higher RPM for small rotors
-    lift_rotor.design_Cl                  = 0.7              # Higher for hover
+    lift_rotor.angular_velocity           = 5700 * Units.rpm    # Higher RPM for small rotors
+    lift_rotor.design_Cl                  = 0.6              # Higher for hover
     lift_rotor.design_altitude            = 500. * Units.meter # Ground effect considered
-    lift_rotor.design_thrust              = 7.6 * Units.newton # ~lbf per rotor
+    lift_rotor.design_thrust              = 9.6 * Units.newton # ~lbf per rotor
     lift_rotor.variable_pitch             = False              # Important for small craft
     lift_rotor.airfoil_geometry       = ['./Airfoils/NACA_4412.txt']
     lift_rotor.airfoil_polars         = [['./Airfoils/Polars/NACA_4412_polar_Re_50000.txt' ,
@@ -465,7 +499,7 @@ def setup_vehicle():
 
     # Design the rotor
     number_of_stations = 20
-    lift_rotor.twist_distribution = np.linspace(7, 7, number_of_stations)
+    lift_rotor.twist_distribution = np.linspace(25, 5, number_of_stations)
 
     lift_rotor                            = propeller_design(lift_rotor)
 
@@ -479,7 +513,7 @@ def setup_vehicle():
 
     # Set parameters
     c_min = 0.02  # chord at root and tip
-    c_max = 0.05   # peak chord at 0.4*R
+    c_max = 0.08   # peak chord at 0.4*R
     chi_peak = 0.33  # location of peak chord (normalized)
 
     # Use a Gaussian centered at chi_peak
@@ -494,13 +528,13 @@ def setup_vehicle():
 
     lift_rotor.chord_distribution = chord_guess
     lift_rotor.propeller_radius = R
-    lift_rotor.override_geometry = True
+    lift_rotor.override_geometry = False
 
 
 
-    print("\n\n\n\n\Lift Rotor Design:")
-    print(lift_rotor.chord_distribution)
-    print(lift_rotor.twist_distribution)
+    #print("\n\n\n\n\Lift Rotor Design:")
+    #print(lift_rotor.chord_distribution)
+    #print(lift_rotor.twist_distribution)
     print("====================================================")   
   #  print(lift_rotor.geometry)
 
@@ -565,8 +599,7 @@ def setup_vehicle():
 # ----------------------------------------------------------------------------------------------------------------------
 #   Analyses
 # ----------------------------------------------------------------------------------------------------------------------
-
-    
+   
 def setup_analyses(vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
@@ -630,6 +663,11 @@ def setup_mission(vehicle,analyses):
     # base segment
     base_segment                                             = Segments.Segment()
     base_segment.state.numerics.number_control_points        = 8
+
+    #tweaking solver settings
+    base_segment.state.numerics.iterations = 50
+    base_segment.state.numerics.tolerance  = 1e-4
+
     base_segment.process.initialize.initialize_battery       = SUAVE.Methods.Missions.Segments.Common.Energy.initialize_battery
     base_segment.process.iterate.conditions.planet_position  = SUAVE.Methods.skip   
     base_segment.process.iterate.conditions.stability        = SUAVE.Methods.skip
@@ -637,75 +675,96 @@ def setup_mission(vehicle,analyses):
     ones_row                                                 = base_segment.state.ones_row
     
     # ------------------------------------------------------------------
+    #   Constant Altitude Hover Segment
+    # ------------------------------------------------------------------
+    segment     = Segments.Hover.Hover(base_segment)
+    segment.tag = "hover_segment"
+    segment.analyses.extend(analyses)
+    segment.altitude         = 100.0 * Units.ft         # constant altitude
+    segment.duration         = 30.0 * Units.seconds     # hover duration
+    segment.battery_energy   = vehicle.networks.lift_cruise.battery.max_energy * 0.95
+    segment.process.iterate.unknowns.mission = SUAVE.Methods.skip
+
+    # Set initial guesses if needed
+    segment.initial_throttle = 0.95
+
+    # Add lift network unknowns and residuals
+    segment = vehicle.networks.lift_cruise.add_lift_unknowns_and_residuals_to_segment(segment)
+
+    # Add to mission
+    mission.append_segment(segment)
+
+
+    # ------------------------------------------------------------------
     #   Hover Climb Segment
     # ------------------------------------------------------------------
-    segment     = Segments.Hover.Climb(base_segment)
-    segment.tag = "hover_climb"
-    segment.analyses.extend(analyses)
-    segment.altitude_start                                   = 0.0   * Units.ft
-    segment.altitude_end                                     = 100.  * Units.ft
-    segment.climb_rate                                       = 200.  * Units['ft/min']
-    segment.battery_energy                                   = vehicle.networks.lift_cruise.battery.max_energy*0.95
-    segment.process.iterate.unknowns.mission                 = SUAVE.Methods.skip
-    segment = vehicle.networks.lift_cruise.add_lift_unknowns_and_residuals_to_segment(segment)
+    # segment     = Segments.Hover.Climb(base_segment)
+    # segment.tag = "hover_climb"
+    # segment.analyses.extend(analyses)
+    # segment.altitude_start                                   = 0.0   * Units.ft
+    # segment.altitude_end                                     = 100.  * Units.ft
+    # segment.climb_rate                                       = 200.  * Units['ft/min']
+    # segment.battery_energy                                   = vehicle.networks.lift_cruise.battery.max_energy*0.95
+    # segment.process.iterate.unknowns.mission                 = SUAVE.Methods.skip
+    # segment = vehicle.networks.lift_cruise.add_lift_unknowns_and_residuals_to_segment(segment)
     
-    # add to misison
-    mission.append_segment(segment)
+    # # add to misison
+    # mission.append_segment(segment)
     
-    # ------------------------------------------------------------------
-    #   Second Climb Segment: Constant Speed, Constant Rate
-    # ------------------------------------------------------------------
-    segment                                            = Segments.Climb.Constant_Speed_Constant_Rate(base_segment)
-    segment.tag                                        = 'wing_climb'
-    segment.analyses.extend(analyses)
-    segment.air_speed                                  = 70. * Units.knots
-    segment.altitude_end                               = 3000. * Units.ft
-    segment.climb_rate                                 = 500. * Units['ft/min'] 
-    segment = vehicle.networks.lift_cruise.add_cruise_unknowns_and_residuals_to_segment(segment)
+    # # ------------------------------------------------------------------
+    # #   Second Climb Segment: Constant Speed, Constant Rate
+    # # ------------------------------------------------------------------
+    # segment                                            = Segments.Climb.Constant_Speed_Constant_Rate(base_segment)
+    # segment.tag                                        = 'wing_climb'
+    # segment.analyses.extend(analyses)
+    # segment.air_speed                                  = 70. * Units.knots
+    # segment.altitude_end                               = 3000. * Units.ft
+    # segment.climb_rate                                 = 500. * Units['ft/min'] 
+    # segment = vehicle.networks.lift_cruise.add_cruise_unknowns_and_residuals_to_segment(segment)
     
-    # add to misison
-    mission.append_segment(segment)        
+    # # add to misison
+    # mission.append_segment(segment)        
     
-    # ------------------------------------------------------------------
-    #   Cruise
-    # ------------------------------------------------------------------
-    segment                                            = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
-    segment.tag                                        = "Cruise"
-    segment.analyses.extend(analyses)
-    segment.distance                                   = 50.   * Units.nautical_miles
-    segment.air_speed                                  = 100.  * Units.knots
-    segment = vehicle.networks.lift_cruise.add_cruise_unknowns_and_residuals_to_segment(segment)
+    # # ------------------------------------------------------------------
+    # #   Cruise
+    # # ------------------------------------------------------------------
+    # segment                                            = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
+    # segment.tag                                        = "Cruise"
+    # segment.analyses.extend(analyses)
+    # segment.distance                                   = 50.   * Units.nautical_miles
+    # segment.air_speed                                  = 100.  * Units.knots
+    # segment = vehicle.networks.lift_cruise.add_cruise_unknowns_and_residuals_to_segment(segment)
 
-    # add to misison
-    mission.append_segment(segment)    
+    # # add to misison
+    # mission.append_segment(segment)    
     
-    # ------------------------------------------------------------------
-    #  Descent
-    # ------------------------------------------------------------------
-    segment                                            = Segments.Descent.Constant_Speed_Constant_Rate(base_segment)
-    segment.tag                                        = "wing_descent"
-    segment.analyses.extend(analyses)
-    segment.air_speed                                  = 100. * Units.knots
-    segment.altitude_end                               = 100 * Units.ft
-    segment.descent_rate                               = 300. * Units['ft/min'] 
-    segment = vehicle.networks.lift_cruise.add_cruise_unknowns_and_residuals_to_segment(segment)
+    # # ------------------------------------------------------------------
+    # #  Descent
+    # # ------------------------------------------------------------------
+    # segment                                            = Segments.Descent.Constant_Speed_Constant_Rate(base_segment)
+    # segment.tag                                        = "wing_descent"
+    # segment.analyses.extend(analyses)
+    # segment.air_speed                                  = 100. * Units.knots
+    # segment.altitude_end                               = 100 * Units.ft
+    # segment.descent_rate                               = 300. * Units['ft/min'] 
+    # segment = vehicle.networks.lift_cruise.add_cruise_unknowns_and_residuals_to_segment(segment)
 
-    # add to misison
-    mission.append_segment(segment)       
+    # # add to misison
+    # mission.append_segment(segment)       
     
-    # ------------------------------------------------------------------
-    #  Hover Descent
-    # ------------------------------------------------------------------
-    segment                                            = Segments.Hover.Descent(base_segment)
-    segment.tag                                        = "hover_descent"
-    segment.analyses.extend(analyses)
-    segment.altitude_end                              = 0.
-    segment.descent_rate                              = 100 * Units['ft/min'] 
-    segment.process.iterate.unknowns.mission          = SUAVE.Methods.skip
-    segment = vehicle.networks.lift_cruise.add_lift_unknowns_and_residuals_to_segment(segment)
+    # # ------------------------------------------------------------------
+    # #  Hover Descent
+    # # ------------------------------------------------------------------
+    # segment                                            = Segments.Hover.Descent(base_segment)
+    # segment.tag                                        = "hover_descent"
+    # segment.analyses.extend(analyses)
+    # segment.altitude_end                              = 0.
+    # segment.descent_rate                              = 100 * Units['ft/min'] 
+    # segment.process.iterate.unknowns.mission          = SUAVE.Methods.skip
+    # segment = vehicle.networks.lift_cruise.add_lift_unknowns_and_residuals_to_segment(segment)
 
-    # add to misison
-    mission.append_segment(segment)          
+    # # add to misison
+    # mission.append_segment(segment)          
 
     return mission
 
