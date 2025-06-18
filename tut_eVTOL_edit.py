@@ -12,6 +12,7 @@ import SUAVE
 assert SUAVE.__version__=='2.5.2', 'These tutorials only work with the SUAVE 2.5.2 release'
 import numpy as np
 import os
+import SUAVE.Methods.Missions.Segments.Common.Noise as Noise
 
 # module imports
 from SUAVE.Core                                          import Units
@@ -22,10 +23,50 @@ from SUAVE.Methods.Geometry.Two_Dimensional.Planform     import segment_properti
 from SUAVE.Methods.Propulsion                            import propeller_design
 from SUAVE.Methods.Propulsion.electric_motor_sizing      import size_optimal_motor
 from SUAVE.Methods.Power.Battery.Sizing                  import initialize_from_mass
-
+from SUAVE.Analyses import Process
 
 from copy import deepcopy
+from scipy.interpolate import RectBivariateSpline
 
+#fixed thrust model for debugging(fix)
+def fixed_thrust_model(self, conditions):
+    import numpy as np
+
+    try:
+        n_times = len(conditions.frames.inertial.time)
+    except (AttributeError, KeyError):
+        n_times = 8
+
+    # Get throttle from conditions (shape: [n_times, 1])
+   
+    try:
+        throttle = conditions.propulsion.throttle
+        throttle = np.atleast_2d(throttle).reshape(n_times, 1)
+        #print("Using fixed thrust model, throttle from conditions. throttle shape: {throttle.shape}".format(throttle=throttle, n_times=n_times))
+    except:
+        print("[fixed_thrust_model] No throttle found in conditions, using default.")
+        throttle = np.ones((n_times, 1))  # fallback to full throttle
+
+    # Design (max) values
+    thrust_value = self.design_thrust
+    torque_value = self.design_torque
+    power_value = self.design_power
+    eta_p_value = 0.6
+    Cp_value = 0.05
+
+    # Scaled by throttle
+    thrust = throttle * thrust_value
+    torque = throttle * torque_value
+    power  = throttle * power_value
+    Cp     = np.ones((n_times, 1)) * Cp_value
+    eta_p  = np.ones((n_times, 1)) * eta_p_value
+    outputs = np.zeros((n_times, 1))  # optional placeholder
+
+    # Debug (optional)
+    # print(f"[fixed_thrust_model] throttle: {throttle.T}")
+    # print(f"[fixed_thrust_model] thrust shape: {thrust.shape}")
+
+    return thrust, torque, power, Cp, outputs, eta_p
 
 
 
@@ -58,10 +99,6 @@ def export_to_vsp(vehicle, base_filename='eVTOL'):
 
 #save plots
 def save_plots(results):
-    plot_solar_flux(results)
-    plt.savefig('solar_flux.png')
-    plt.close()
-    
     plot_aerodynamic_forces(results)
     plt.savefig('aero_forces.png') 
     plt.close()
@@ -81,9 +118,9 @@ def main():
     #print("Vehicle networks:", vehicle.networks.keys())
     #print("Lift Cruise Network:", vehicle.networks.lift_cruise)
 
-    # success = export_to_vsp(vehicle)
-    # if success:
-    #     print("\nNext steps:")
+    success = export_to_vsp(vehicle)
+    if success:
+        print("\nNext steps:")
     #     print("1. Open the exported file in OpenVSP")
     #     print("2. Verify the geometry and parameters")
     #     print("3. Proceed with further analysis or modifications")
@@ -101,6 +138,10 @@ def main():
     print("finalizing...")
     analyses.finalize() #<- this builds surrogate models!
     
+
+
+    # override the compute_noise function to be a no-op
+    Noise.compute_noise = lambda segment: None
     # Setup a mission
     print("Setting up the mission")
     mission  = setup_mission(vehicle, analyses)
@@ -110,7 +151,9 @@ def main():
 
     for i, rotor in enumerate(vehicle.networks.lift_cruise.lift_rotors):
         print(f"Lift rotor #{i}:")
-        print(f"  Radius: {rotor}")
+        print(f"Lift rotor #{i}: {rotor.tag}, radius = {rotor.propeller_radius}")
+
+
 
 
 
@@ -133,7 +176,12 @@ def main():
     #print results
     #print("Running eVTOL tutorial")
     print("results: ")
-    print(results)
+    print('\n'.join(
+        f"{seg.tag:15s} | t_end = {float(seg.conditions.frames.inertial.time[-1]):6.1f}s | "
+        f"E_end = {float(getattr(seg,'battery_energy_stop',0)):8.1f}J"
+        for seg in results.segments
+    ))
+
     # plot the mission
     print("making plots")
     make_plots(results)
@@ -412,7 +460,7 @@ def setup_vehicle():
     net.number_of_lift_rotor_engines = 4
     net.number_of_propeller_engines  = 1
     net.identical_propellers         = True
-    net.identical_lift_rotors        = True    
+    net.identical_lift_rotors        = False    
     net.voltage                      = 14.8 * Units.volt  # Typical for small eVTOLs, e.g., 4S LiPo battery    
     
     #------------------------------------------------------------------
@@ -474,71 +522,130 @@ def setup_vehicle():
     propeller                        = propeller_design(propeller)
     net.propellers.append(propeller)
     
-  # The lift rotors
-    #lift_rotor                            = SUAVE.Components.Energy.Converters.Lift_Rotor()
-    lift_rotor                            = SUAVE.Components.Energy.Converters.Propeller()
-    lift_rotor.blade_solidity = 0.12  # Moderate value, more market-like 
-    lift_rotor.tip_radius                 = 0.18 * Units.meter  # 13cm diameter
-    lift_rotor.hub_radius                 = 0.0075 * Units.meter # 4cm hub
-    lift_rotor.number_of_blades           = 2                  # Balance efficiency/weight
-    lift_rotor.design_tip_mach            = 0.25               # Lower tip Mach for noise
-    lift_rotor.freestream_velocity        = 2.5 * Units['m/s']    # ~500 ft/min descent
-    #lift_rotor.angular_velocity           = lift_rotor.design_tip_mach*Air().compute_speed_of_sound()/lift_rotor.tip_radius
-    lift_rotor.angular_velocity           = 5700 * Units.rpm    # Higher RPM for small rotors
-    lift_rotor.design_Cl                  = 0.6              # Higher for hover
-    lift_rotor.design_altitude            = 500. * Units.meter # Ground effect considered
-    lift_rotor.design_thrust              = 9.6 * Units.newton # ~lbf per rotor
-    lift_rotor.variable_pitch             = False              # Important for small craft
-    lift_rotor.airfoil_geometry       = ['./Airfoils/NACA_4412.txt']
-    lift_rotor.airfoil_polars         = [['./Airfoils/Polars/NACA_4412_polar_Re_50000.txt' ,
-                                         './Airfoils/Polars/NACA_4412_polar_Re_100000.txt' ,
-                                         './Airfoils/Polars/NACA_4412_polar_Re_200000.txt' ,
-                                         './Airfoils/Polars/NACA_4412_polar_Re_500000.txt' ,
-                                         './Airfoils/Polars/NACA_4412_polar_Re_1000000.txt' ]]    
-    lift_rotor.airfoil_polar_stations = np.zeros((20),dtype=np.int8).tolist()
+  # The lift rotors - vsp generation
+    # #print("\n\n\n\n\Lift Rotor Design(for openvsp visualization)")
+    # #lift_rotor                            = SUAVE.Components.Energy.Converters.Lift_Rotor()
+    # lift_rotor                            = SUAVE.Components.Energy.Converters.Propeller()
+    # lift_rotor.blade_solidity = 0.12  # Moderate value, more market-like 
+    # lift_rotor.tip_radius                 = 0.18 * Units.meter  # 13cm diameter
+    # lift_rotor.hub_radius                 = 0.0075 * Units.meter # 4cm hub
+    # lift_rotor.number_of_blades           = 2                  # Balance efficiency/weight
+    # lift_rotor.design_tip_mach            = 0.25               # Lower tip Mach for noise
+    # lift_rotor.freestream_velocity        = 2.5 * Units['m/s']    # ~500 ft/min descent
+    # lift_rotor.angular_velocity           = 5700 * Units.rpm    # Higher RPM for small rotors
+    # lift_rotor.design_Cl                  = 0.6              # Higher for hover
+    # lift_rotor.design_altitude            = 500. * Units.meter # Ground effect considered
+    # lift_rotor.design_thrust              = 9.6 * Units.newton # ~lbf per rotor
+    # lift_rotor.variable_pitch             = False              # Important for small craft
+    # lift_rotor.airfoil_geometry       = ['./Airfoils/NACA_4412.txt']
+    # lift_rotor.airfoil_polars         = [['./Airfoils/Polars/NACA_4412_polar_Re_50000.txt' ,
+    #                                      './Airfoils/Polars/NACA_4412_polar_Re_100000.txt' ,
+    #                                      './Airfoils/Polars/NACA_4412_polar_Re_200000.txt' ,
+    #                                      './Airfoils/Polars/NACA_4412_polar_Re_500000.txt' ,
+    #                                      './Airfoils/Polars/NACA_4412_polar_Re_1000000.txt' ]]    
+    # lift_rotor.airfoil_polar_stations = np.zeros((20),dtype=np.int8).tolist()
 
-    # Design the rotor
-    number_of_stations = 20
-    lift_rotor.twist_distribution = np.linspace(25, 5, number_of_stations)
+    # # Design the rotor
+    # number_of_stations = 20
+    # lift_rotor.twist_distribution = np.linspace(25, 5, number_of_stations)
 
-    lift_rotor                            = propeller_design(lift_rotor)
+    # lift_rotor                            = propeller_design(lift_rotor)
 
-    R = lift_rotor.tip_radius
-    Rh = lift_rotor.hub_radius
-    chi0 = Rh / R
-    chi = np.linspace(chi0, 1.0, number_of_stations)
+    # R = lift_rotor.tip_radius
+    # Rh = lift_rotor.hub_radius
+    # chi0 = Rh / R
+    # chi = np.linspace(chi0, 1.0, number_of_stations)
 
-    lift_rotor.n_stations = number_of_stations
-    lift_rotor.radius_distribution = chi * R
+    # lift_rotor.n_stations = number_of_stations
+    # lift_rotor.radius_distribution = chi * R
 
-    # Set parameters
-    c_min = 0.02  # chord at root and tip
-    c_max = 0.08   # peak chord at 0.4*R
-    chi_peak = 0.33  # location of peak chord (normalized)
+    # # Set parameters
+    # c_min = 0.02  # chord at root and tip
+    # c_max = 0.08   # peak chord at 0.4*R
+    # chi_peak = 0.33  # location of peak chord (normalized)
 
-    # Use a Gaussian centered at chi_peak
-    sigma = 0.15  # controls spread (smaller = sharper peak)
-    gaussian_peak = np.exp(-((chi - chi_peak)**2) / (2 * sigma**2))
+    # # Use a Gaussian centered at chi_peak
+    # sigma = 0.15  # controls spread (smaller = sharper peak)
+    # gaussian_peak = np.exp(-((chi - chi_peak)**2) / (2 * sigma**2))
 
-    # Normalize to peak at 1.0
-    gaussian_peak /= np.max(gaussian_peak)
+    # # Normalize to peak at 1.0
+    # gaussian_peak /= np.max(gaussian_peak)
 
-    # Apply chord profile
-    chord_guess = c_min + (c_max - c_min) * gaussian_peak
+    # # Apply chord profile
+    # chord_guess = c_min + (c_max - c_min) * gaussian_peak
 
-    lift_rotor.chord_distribution = chord_guess
-    lift_rotor.propeller_radius = R
-    lift_rotor.override_geometry = False
+    # lift_rotor.chord_distribution = chord_guess
+    # lift_rotor.propeller_radius = R
+    # lift_rotor.override_geometry = False
+
+    # print("====================================================")   
+    # print(lift_rotor.geometry)
+
+    #lift rotors, analytical generation using market prop - Gemfan 1045
+    print("\n\n\n\n\Lift Rotor Design(for mathematical analysis)")
+    lift_rotor = SUAVE.Components.Energy.Converters.Propeller()
+    lift_rotor.tag = "Gemfan_10x4.5"
+
+    # Market prop physical size
+    lift_rotor.propeller_radius = 0.127 * Units.meter  # 10” diameter = 0.254 m
+    lift_rotor.hub_radius = 0.02 * Units.meter
+    lift_rotor.number_of_blades = 2
+
+    # Bypass geometry generation and blade analysis
+    lift_rotor.override_geometry = True
+    lift_rotor.airfoil_flag = False
+    lift_rotor.use_2d_analysis = False
+    lift_rotor.use_blade_element = False
+
+    # Real-world thrust and performance (per rotor)
+    lift_rotor.design_thrust = 12.0 * Units.newton
+    lift_rotor.design_torque = 0.18 * Units.newton * Units.meter
+    lift_rotor.design_power = 180.0 * Units.watt
+    lift_rotor.angular_velocity = 785.0 * Units.radian / Units.second  # ~7500 RPM
+    lift_rotor.blade_solidity = 0.1
+
+    # Dummy geometry to satisfy structure
+    lift_rotor.n_stations = 1
+    lift_rotor.chord_distribution = [0.04]
+    lift_rotor.twist_distribution = [0.0]
+    lift_rotor.thickness_to_chord = [0.12]
+    lift_rotor.radius_distribution = [0.127]
+
+    lift_rotor.inputs.pitch_command = 0.0
+    lift_rotor.beta_0 = 0.0    
+    lift_rotor.inputs.y_axis_rotation = 0.0
+    lift_rotor.variable_pitch = False
 
 
+    # Dummy CL and CD table - fix for suave analysis to work
+   # 5 angles of attack (in radians)
+    alpha = np.radians(np.array([-10, -5, 0, 5, 10]))
+    # 2 Reynolds numbers (must be > kx=1)
+    Re = np.array([1e5, 2e5])
 
-    #print("\n\n\n\n\Lift Rotor Design:")
-    #print(lift_rotor.chord_distribution)
-    #print(lift_rotor.twist_distribution)
-    print("====================================================")   
-  #  print(lift_rotor.geometry)
+    # Create a 2x5 matrix: (Re, alpha)
+    cl_data = np.array([
+        [0.0, 0.4, 0.8, 1.0, 0.8],
+        [0.0, 0.4, 0.8, 1.0, 0.8]
+    ])
+    cd_data = np.array([
+        [0.05, 0.05, 0.05, 0.05, 0.05],
+        [0.05, 0.05, 0.05, 0.05, 0.05]
+    ])
 
-   
+    # Assign dummy surrogates using linear splines (safe)
+    lift_rotor.airfoil_cl_surrogates = {
+        'default': RectBivariateSpline(Re, alpha, cl_data, kx=1, ky=1)
+    }
+    lift_rotor.airfoil_cd_surrogates = {
+        'default': RectBivariateSpline(Re, alpha, cd_data, kx=1, ky=1)
+    }
+
+    # Provide minimal structure
+    lift_rotor.airfoil_geometry = ['default']
+    lift_rotor.airfoil_polars = [['default']]
+    lift_rotor.airfoil_polar_stations = [0]
+
 
     # Appending rotors - positions based on your boom locations
     rotations = [1,-1,1,-1]  # Alternating rotation directions
@@ -552,8 +659,19 @@ def setup_vehicle():
         lr.tag      = 'lift_rotor_' + str(ii+1)
         lr.rotation = rotations[ii]
         lr.origin   = [origins[ii]]
+
+    # 💥 FORCE SCALAR PITCH SETTINGS
+        lr.beta_0 = 0.0
+        lr.inputs.pitch_command = 0.0
+        lr.inputs.y_axis_rotation = 0.0
+        lr.variable_pitch = False
+    # 💥 Patch SUAVE rotor to skip blade-element logic entirely
+        lr.spin = fixed_thrust_model.__get__(lr, type(lr))
+
         net.lift_rotors.append(lr)   
     
+    for rotor in net.lift_rotors:
+        rotor.model = fixed_thrust_model.__get__(rotor)
 
     
     #------------------------------------------------------------------
@@ -571,14 +689,34 @@ def setup_vehicle():
     net.propeller_motors.append(propeller_motor)    
 
     # Lift Rotor Motors
-    lift_rotor_motor                         = SUAVE.Components.Energy.Converters.Motor()
-    lift_rotor_motor.efficiency              = 0.82
-    lift_rotor_motor.nominal_voltage         = bat.max_voltage
-    lift_rotor_motor.mass_properties.mass    = 0.2 * Units.kg
-    lift_rotor_motor.origin                  = lift_rotor.origin
-    lift_rotor_motor.propeller_radius        = lift_rotor.tip_radius
-    lift_rotor_motor.gearbox_efficiency      = 1.0      # Direct drive common at small scale
-    lift_rotor_motor.no_load_current         = 0.8      # Amps
+    # default config
+    # lift_rotor_motor                         = SUAVE.Components.Energy.Converters.Motor()
+    # lift_rotor_motor.efficiency              = 0.82
+    # lift_rotor_motor.nominal_voltage         = bat.max_voltage
+    # lift_rotor_motor.mass_properties.mass    = 0.2 * Units.kg
+    # lift_rotor_motor.origin                  = lift_rotor.origin
+    # lift_rotor_motor.propeller_radius        = lift_rotor.tip_radius
+    # lift_rotor_motor.gearbox_efficiency      = 1.0      # Direct drive common at small scale
+    # lift_rotor_motor.no_load_current         = 0.8      # Amps
+
+    #market config -  Sunnysky X2212 980KV 
+    lift_rotor_motor = SUAVE.Components.Energy.Converters.Motor()
+    lift_rotor_motor.tag = "X2212_980KV"
+
+    # Real-world specs
+    lift_rotor_motor.efficiency = 0.85
+    lift_rotor_motor.nominal_voltage = 14.8 * Units.volt  # 4S
+    lift_rotor_motor.mass_properties.mass = 0.072 * Units.kg  # X2212 weight
+    lift_rotor_motor.no_load_current = 0.5  # Typical for this class
+    lift_rotor_motor.origin = lift_rotor.origin
+    lift_rotor_motor.propeller_radius = lift_rotor.propeller_radius
+    lift_rotor_motor.gearbox_efficiency = 1.0  # Direct drive
+    lift_rotor_motor.resistance = 0.12  # Ohms, estimated
+    lift_rotor_motor.speed_constant = 980 * Units['rpm/volt']  # KV rating
+    lift_rotor_motor.max_power_output = 250.0 * Units.watt  # To reflect ESC/motor pairing
+
+
+    # Optional: skip optimal sizing and assign manually for more realistic conditions
     lift_rotor_motor                         = size_optimal_motor(lift_rotor_motor,lift_rotor) 
 
     for _ in range(4):
@@ -668,6 +806,10 @@ def setup_mission(vehicle,analyses):
     base_segment.state.numerics.iterations = 50
     base_segment.state.numerics.tolerance  = 1e-4
 
+    # tell SUAVE to skip the noise computation step
+    base_segment.process.iterate.noise  = SUAVE.Methods.skip
+    base_segment.process.finalize.noise = SUAVE.Methods.skip
+
     base_segment.process.initialize.initialize_battery       = SUAVE.Methods.Missions.Segments.Common.Energy.initialize_battery
     base_segment.process.iterate.conditions.planet_position  = SUAVE.Methods.skip   
     base_segment.process.iterate.conditions.stability        = SUAVE.Methods.skip
@@ -677,6 +819,9 @@ def setup_mission(vehicle,analyses):
     # ------------------------------------------------------------------
     #   Constant Altitude Hover Segment
     # ------------------------------------------------------------------
+    for rotor in vehicle.networks.lift_cruise.lift_rotors:
+        print(rotor.tag, type(rotor.beta_0), type(rotor.inputs.pitch_command))
+
     segment     = Segments.Hover.Hover(base_segment)
     segment.tag = "hover_segment"
     segment.analyses.extend(analyses)
@@ -691,6 +836,8 @@ def setup_mission(vehicle,analyses):
     # Add lift network unknowns and residuals
     segment = vehicle.networks.lift_cruise.add_lift_unknowns_and_residuals_to_segment(segment)
 
+    segment.process.iterate.noise  = SUAVE.Methods.skip
+    segment.process.finalize.noise = SUAVE.Methods.skip
     # Add to mission
     mission.append_segment(segment)
 
