@@ -1,15 +1,23 @@
-# eVTOL_tutorial.py
-# old_code
-# Created: Nov 2021, E. Botero
+# LunaDesign1.py
 #
+# Created: Nov 2021, E. Botero
+# Extensively edited for Luna EVTOL Design By:
+# Luna Design Team:
+# Irungu Macharia
+# Brian Vuyiya
+
+# TO-DO
+#1. find all TO-DOs in the code and do them
+#2. Uncomment/remove commented blocks as appropriate(advanced)
+#3. Do analyses and iterate till completely satisfactory results...
 
 # ----------------------------------------------------------------------------------------------------------------------
 #   Imports
 # ----------------------------------------------------------------------------------------------------------------------
 
-# pacakgee imports
+# package imports
 import SUAVE
-assert SUAVE.__version__=='2.5.2', 'These tutorials only work with the SUAVE 2.5.2 release'
+assert SUAVE.__version__=='2.5.2', 'This codebase only work with the SUAVE 2.5.2 release!'
 import numpy as np
 import os
 import SUAVE.Methods.Missions.Segments.Common.Noise as Noise
@@ -29,11 +37,11 @@ from copy import deepcopy
 from scipy.interpolate import RectBivariateSpline
 
 #fixed thrust model for debugging
-#TO-DO: (Advanced) figure out the bug that necessitates this function and fix
+#TO-DO: (Advanced) figure out the bug that necessitates this function and fix it
 def fixed_thrust_model(self, conditions):
     import numpy as np
 
-    print(".", end="  ")
+    print(".", end="")
     try:
         n_times = len(conditions.frames.inertial.time)
     except (AttributeError, KeyError):
@@ -665,7 +673,7 @@ def setup_vehicle():
         lr.inputs.y_axis_rotation = 0.0
         lr.variable_pitch = False
     # 💥 Patch SUAVE rotor to skip blade-element logic entirely
-        print("Using fixed thrust model, fix this for more realistix")
+        print("fixed thrust model in use, this is patch.. fix pls asap")
         lr.spin = fixed_thrust_model.__get__(lr, type(lr))
 
         net.lift_rotors.append(lr)   
