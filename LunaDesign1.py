@@ -123,14 +123,14 @@ def save_plots(results):
 # ----------------------------------------------------------------------------------------------------------------------
 
 def main():
-    # Setup a vehicle
-    print("Setting up the vehicle")
+    # Setup Vehicle
+    print("\nSetting up the vehicle...")
     vehicle = setup_vehicle()
-    print(" Vehicle setup complete")
+    print("✓ Vehicle setup complete")
     #print("Vehicle networks:", vehicle.networks.keys())
     #print("Lift Cruise Network:", vehicle.networks.lift_cruise)
 
-    #Open VSP generation
+    # Open VSP generation
     #success = export_to_vsp(vehicle)
     #if success:
     #    print("\nNext steps:")
@@ -144,32 +144,31 @@ def main():
     #print(vehicle.__dict__)
     #print("exporting vehicle")
     # export the vehicle
- 
-    # Setup analyses
-    print("Setting up the analyses")
+
+    # Setup Analyses
+    print("\nSetting up analyses...")
     analyses = setup_analyses(vehicle)
     print("finalizing analysis...")
-    analyses.finalize() #<- this builds surrogate models!
-    print("analyzed.")
+    analyses.finalize()  # build surrogate models
+    print("✓ Analyses finalized")
 
-
-    # override the compute_noise function to be a no-op
+    # Override the compute_noise function to be a no-op
     Noise.compute_noise = lambda segment: None
-    # Setup a mission
-    print("Setting up the mission")
-    mission  = setup_mission(vehicle, analyses)
 
+    # Setup Mission
+    print("\nSetting up the mission...")
+    mission = setup_mission(vehicle, analyses)
     print(f"Number of lift rotors: {len(vehicle.networks.lift_cruise.lift_rotors)}")
+    print(f"Mission ready with {len(mission.segments)} segment(s)")
 
-
-
-    # Run the mission    
-    print("Commenced mission evaluation")
+    # Run Mission
+    print("Commenced mission evaluation...")
     results = mission.evaluate()
-    print("Mission evaluation complete, results:")
-    # print(results)
+    print("\n✓ Mission evaluation complete")
+
+    # Print Results
     for segment in results.segments:
-        print(f"\n--- Residuals for segment: {segment.tag} ---")
+        print(f"\n=== RESIDUALS FOR: {segment.tag.upper()} ===")
         try:
             residuals = segment.conditions.residuals
             unknowns  = segment.conditions.unknowns
@@ -179,25 +178,107 @@ def main():
                 print(f"  Unknown:  {key:<20} {val}")
         except Exception as e:
             print(f"  Could not read residuals: {e}")
+        
+        #TO-DO: make it print more informative results that give good picture of results
+        print(f"\n=== RESULTS FOR: {segment.tag.upper()} ===")
+        
+        # time
+        time    = segment.conditions.frames.inertial.time[:, 0]
+        dt      = time[-1] - time[0]
+        print(f"  Duration       = {dt:.2f} s")
+        
+        # altitude
+        alt     = -segment.conditions.frames.inertial.position_vector[:, 2]
+        dz      = alt[-1] - alt[0]
+        print(f"  Final altitude = {alt[-1]:.2f} m")
+        
+        # Velocity
+        vel         = segment.conditions.freestream.velocity[:, 0]  # m/s
+        climb_desc_rate  = dz / dt
+        
+        if "hover" in segment.tag.lower():
+            print(f"  Vertical rate  = {climb_desc_rate:.2f} m/s")
+        
+        elif "climb" in segment.tag.lower():
+            print(f"  Mean airspeed  = {vel.mean():.2f} m/s")
+            print(f"  Climb rate = {climb_desc_rate:.2f} m/s")
+        
+        elif "descent" in segment.tag.lower():
+            print(f"  Mean airspeed  = {vel.mean():.2f} m/s")
+            print(f"  Descent rate   = {climb_desc_rate:.2f} m/s")
+        
+        elif "cruise" in segment.tag.lower():
+            print(f"  Mean cruise speed = {vel.mean():.2f} m/s")
+        
+        # Aerodynamics
+        CL = segment.conditions.aerodynamics.lift_coefficient[:, 0]
+        CD = segment.conditions.aerodynamics.drag_coefficient[:, 0]
+        LD_ratio    = CL.mean() / CD.mean() if CD.mean() > 0 else 0.0
+        print(f"  Mean CL  = {CL.mean():.3f}")
+        print(f"  Mean CD  = {CD.mean():.3f}")
+        print(f"  Mean L/D = {LD_ratio:.2f}")
+                
+        # Lift Rotor Thrust
+        lift_arr            = segment.conditions.propulsion.lift_rotor_thrust
+        per_rotor           = lift_arr
+        per_rotor[:, 1:]    = lift_arr[:, 1:] - lift_arr[:, :-1]
+        lift_total          = per_rotor.sum(axis=1) 
+        print("  Avg lift rotor thrust:")
+        print(f"    Total   = {lift_total.mean():.2f} N") 
+        
+        # Per rotor thrust
+        for i in range(per_rotor.shape[1]):
+            print(f"    Rotor {i+1} = {per_rotor[:, i].mean():.2f} N")
+        
+        # Propeller Thrust
+        prop_thrust = segment.conditions.propulsion.propeller_thrust[:,0]
+        print(f"  Avg total propeller thrust: {prop_thrust.mean():.2f} N")
+        
+        # Energy consumption
+        batt        = segment.conditions.propulsion.battery_energy[:, 0]
+        print("  Battery Energy:")
+        print(f"    Used = {(batt[0] - batt[-1]):.2f} J")
+        print(f"    End  = {batt[-1] / 1000:.2f} KJ")
+        
+        # Battery state of charge
+        soc         = segment.conditions.propulsion.battery_state_of_charge[:, 0]
+        print("  Battery SOC:")
+        print(f"    Used = {(soc[0] - soc[-1]) * 100:.3f} %")
+        print(f"    End  = {soc[-1] * 100:.3f} %")
+        
+        # Power draw
+        power_draw = segment.conditions.propulsion.battery_power_draw[:, 0]
+        print("  Battery Power draw:")
+        print(f"    Avg  = {abs(power_draw.mean()):.2f} W")
+        print(f"    Peak = {abs(power_draw.max()):.2f} W")
+        
+        # Mission range
+        mission_range   = 0.0
+        mission_range  += np.trapz(vel, time) # integrate velocity over time
+        
+    print("\n===== MISSION SUMMARY =====")
+    # Total time
+    total_time = results.segments[-1].conditions.frames.inertial.time[-1, 0]
+    print(f"  Total mission time   = {total_time:.2f} s")
+    # Total range 
+    print(f"  Total mission range  = {mission_range:.2f} m")
+    # Average velocity
+    avg_velocity = mission_range / total_time if total_time > 0 else 0.0
+    print(f"  Average mission vel  = {avg_velocity:.2f} m/s")
+    # Total Energy used
+    E_0     = results.segments[0].conditions.propulsion.battery_energy[0, 0]
+    E_end   = results.segments[-1].conditions.propulsion.battery_energy[-1, 0]
+    E_diff  = E_0 - E_end
+    print(f"  Total energy used    = {E_diff / 1000:.2f} kJ")
+    print(f"  Remainig Battery SOC = {(E_diff / E_0) * 100:.4f} %")
     
-    #print results
-    #print("Running eVTOL tutorial")
-    #TO-DO: make it print more informative results that give good picture of results
-    print("final analysis results: ")
-    print('\n'.join(
-        f"{seg.tag:15s} | t_end = {float(seg.conditions.frames.inertial.time[-1]):6.1f}s | "
-        f"E_end = {float(getattr(seg,'battery_energy_stop',0)):8.1f}J"
-        for seg in results.segments
-    ))
-
-
-    # plot the mission
-    print("making plots")
+    # Plots
+    print("\nMaking plots...")
     make_plots(results)
-    print("saving plots")
+    print("Saving plots...")
     save_plots(results)
-    print("done plotting")
-    
+    print("✓ Done plotting")
+
     return
     
     
@@ -941,6 +1022,6 @@ def make_plots(results):
 if __name__ == '__main__':
     print("Running eVTOL tutorial")
     main()
-    print("Done main")
+    print("✓ Done main")
     plt.show()
-    print('show graph done')
+    print('✓ Show graph done')
