@@ -167,6 +167,9 @@ def main():
     print("\n✓ Mission evaluation complete")
 
     # Print Results
+    #initialise mission range
+    mission_range   = 0.0
+    
     for segment in results.segments:
         print(f"\n=== RESIDUALS FOR: {segment.tag.upper()} ===")
         try:
@@ -220,7 +223,7 @@ def main():
                 
         # Lift Rotor Thrust
         lift_arr            = segment.conditions.propulsion.lift_rotor_thrust
-        per_rotor           = lift_arr
+        per_rotor           = lift_arr.copy()
         per_rotor[:, 1:]    = lift_arr[:, 1:] - lift_arr[:, :-1]
         lift_total          = per_rotor.sum(axis=1) 
         print("  Avg lift rotor thrust:")
@@ -253,7 +256,6 @@ def main():
         print(f"    Peak = {abs(power_draw.max()):.2f} W")
         
         # Mission range
-        mission_range   = 0.0
         mission_range  += np.trapz(vel, time) # integrate velocity over time
         
     print("\n===== MISSION SUMMARY =====")
@@ -269,8 +271,9 @@ def main():
     E_0     = results.segments[0].conditions.propulsion.battery_energy[0, 0]
     E_end   = results.segments[-1].conditions.propulsion.battery_energy[-1, 0]
     E_diff  = E_0 - E_end
-    print(f"  Total energy used    = {E_diff / 1000:.2f} kJ")
-    print(f"  Remainig Battery SOC = {(E_diff / E_0) * 100:.4f} %")
+    print(f"  Total energy used    = {E_diff / 1000:.3f} kJ")
+    soc_end = results.segments[-1].conditions.propulsion.battery_state_of_charge[-1, 0]
+    print(f"  Remainig Battery SOC = {soc_end * 100:.3f} %")
     
     # Plots
     print("\nMaking plots...")
