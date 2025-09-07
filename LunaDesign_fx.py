@@ -21,6 +21,9 @@ import SUAVE
 assert SUAVE.__version__=='2.5.2', 'This codebase only work with the SUAVE 2.5.2 release!'
 import numpy as np
 import os
+from datetime import datetime
+import glob
+import matplotlib.pyplot as plt
 import SUAVE.Methods.Missions.Segments.Common.Noise as Noise
 
 # module imports
@@ -37,49 +40,9 @@ from SUAVE.Analyses import Process
 from copy import deepcopy
 from scipy.interpolate import RectBivariateSpline
 
-#fixed thrust model for debugging
-#TO-DO: (Advanced) figure out the bug that necessitates this function and fix it
-def fixed_thrust_model(self, conditions):
-    import numpy as np
-
-    print(".", end="")
-    try:
-        n_times = len(conditions.frames.inertial.time)
-    except (AttributeError, KeyError):
-        n_times = 8
-
-    # Get throttle from conditions (shape: [n_times, 1])
-   
-    try:
-        throttle = conditions.propulsion.throttle
-        throttle = np.atleast_2d(throttle).reshape(n_times, 1)
-        #print("Using fixed thrust model, throttle from conditions. throttle shape: {throttle.shape}".format(throttle=throttle, n_times=n_times))
-    except:
-        print("[fixed_thrust_model] No throttle found in conditions, using default.")
-        throttle = np.ones((n_times, 1))  # fallback to full throttle
-
-    # Design (max) values
-    thrust_value = self.design_thrust
-    torque_value = self.design_torque
-    power_value = self.design_power
-    eta_p_value = 0.6
-    Cp_value = 0.05
-
-    # Scaled by throttle
-    thrust = throttle * thrust_value
-    torque = throttle * torque_value
-    power  = throttle * power_value
-    Cp     = np.ones((n_times, 1)) * Cp_value
-    eta_p  = np.ones((n_times, 1)) * eta_p_value
-    outputs = np.zeros((n_times, 1))  # optional placeholder
-
-    # Debug (optional)
-    # print(f"[fixed_thrust_model] throttle: {throttle.T}")
-    # print(f"[fixed_thrust_model] thrust shape: {thrust.shape}")
-
-    return thrust, torque, power, Cp, outputs, eta_p
-
-
+# ----------------------------------------------------------------------------------------------------------------------
+#   VSP GENERATION
+# ----------------------------------------------------------------------------------------------------------------------
 
 #exporting to vsp
 def export_to_vsp(vehicle, base_filename='eVTOL'):
@@ -108,98 +71,138 @@ def export_to_vsp(vehicle, base_filename='eVTOL'):
         print(f"✗ Export failed: {str(e)}")
         return False
 
-#save plots
-#TO-DO: Add more plots to see more data
-def save_plots(results):
-    plot_aerodynamic_forces(results)
-    plt.savefig('aero_forces.png') 
-    plt.close()
+# ----------------------------------------------------------------------------------------------------------------------
+#   Plots
+# ----------------------------------------------------------------------------------------------------------------------
+
+#TO-DO: Add more plots to see more data - done, verify...
+def save_plots(results, plot_all=False):
+    """
+    Save SUAVE plots to a sequential dated folder
     
-    plot_aerodynamic_coefficients(results)
-    plt.savefig('aero_coefficients.png')
-    plt.close()
-# ----------------------------------------------------------------------------------------------------------------------
-#   Main
-# ----------------------------------------------------------------------------------------------------------------------
-
-def main():
-    # Setup a vehicle
-    print("Setting up the vehicle")
-    vehicle = setup_vehicle()
-    print(" Vehicle setup complete")
-    #print("Vehicle networks:", vehicle.networks.keys())
-    #print("Lift Cruise Network:", vehicle.networks.lift_cruise)
-
-    #Open VSP generation
-    #success = export_to_vsp(vehicle)
-    #if success:
-    #    print("\nNext steps:")
-    #     print("1. Open the exported file in OpenVSP")
-    #     print("2. Verify the geometry and parameters")
-    #     print("3. Proceed with further analysis or modifications")
-    # #print("Wings:", vehicle.wings)
-    #print("Fuselages:", vehicle.Fuselages)
-    #print("Propulsors:", vehicle.propulsors)
-    #print("Vehicle contents:")
-    #print(vehicle.__dict__)
-    #print("exporting vehicle")
-    # export the vehicle
- 
-    # Setup analyses
-    print("Setting up the analyses")
-    analyses = setup_analyses(vehicle)
-    print("finalizing analysis...")
-    analyses.finalize() #<- this builds surrogate models!
-    print("analyzed.")
-
-
-    # override the compute_noise function to be a no-op
-    Noise.compute_noise = lambda segment: None
-    # Setup a mission
-    print("Setting up the mission")
-    mission  = setup_mission(vehicle, analyses)
-
-    print(f"Number of lift rotors: {len(vehicle.networks.lift_cruise.lift_rotors)}")
-
-
-
-    # Run the mission    
-    print("Commenced mission evaluation")
-    results = mission.evaluate()
-    print("Mission evaluation complete, results:")
-    # print(results)
-    for segment in results.segments:
-        print(f"\n--- ##Remove this if consistent no residuals##\nResiduals for segment: {segment.tag} ---")
+    Parameters:
+    results: Mission results object
+    plot_all: If True, plot all available graphs. If False, plot only main analysis graphs
+    """
+    # Create sequential folder with date
+    base_dir = os.getcwd()
+    date_str = datetime.now().strftime("%Y%m%d")
+    
+    # Find existing folders with the same date pattern
+    existing_folders = glob.glob(os.path.join(base_dir, f"graphs_*_{date_str}"))
+    
+    # Determine the next sequential number
+    if existing_folders:
+        numbers = []
+        for folder in existing_folders:
+            try:
+                folder_base = os.path.basename(folder)
+                number = int(folder_base.split('_')[1])
+                numbers.append(number)
+            except (ValueError, IndexError):
+                continue
+        next_number = max(numbers) + 1 if numbers else 1
+    else:
+        next_number = 1
+    
+    # Create folder name
+    folder_name = f"graphs_{next_number:02d}_{date_str}"
+    folder_path = os.path.join(base_dir, folder_name)
+    
+    # Create the directory
+    os.makedirs(folder_path, exist_ok=True)
+    print(f"Created folder: {folder_path}")
+    
+    # Dictionary of available plot functions with descriptions
+    available_plots = {
+        # Main analysis plots (always plotted)
+        'main': {
+            'plot_aerodynamic_forces': 'Aerodynamic forces over mission',
+            'plot_aerodynamic_coefficients': 'Aerodynamic coefficients (CL, CD)',
+            'plot_mission': 'Mission profile overview',
+            'plot_battery_pack_conditions': 'Battery pack conditions',
+            'plot_altitude_sweep': 'Altitude profile',
+            'plot_flight_profile': 'Flight profile summary'
+        },
+        
+        # Additional plots (plotted only if plot_all=True)
+        'additional': {
+            'plot_battery_cell_conditions': 'Battery cell-level conditions',
+            'plot_disc_loading': 'Disk loading analysis',
+            'plot_electric_motor_efficiency': 'Motor efficiency',
+            'plot_lift_distribution': 'Lift distribution',
+            'plot_propeller_conditions': 'Propeller performance',
+            'plot_rotor_conditions': 'Rotor performance',
+            'plot_solar_flux': 'Solar flux analysis',
+            'plot_stability': 'Stability analysis',
+            'plot_vehicle': 'Vehicle geometry',
+            'plot_vehicle_vlm_panels': 'VLM panels visualization',
+            'plot_drag_breakdown': 'Drag breakdown analysis'
+        }
+    }
+    
+    # Combine plots based on mode
+    if plot_all:
+        plots_to_generate = {**available_plots['main'], **available_plots['additional']}
+        print("Generating ALL available plots...")
+    else:
+        plots_to_generate = available_plots['main']
+        print("Generating main analysis plots...")
+    
+    successful_plots = 0
+    failed_plots = []
+    
+    # Generate and save plots
+    for plot_func_name, description in plots_to_generate.items():
         try:
-            residuals = segment.conditions.residuals
-            unknowns  = segment.conditions.unknowns
-            for key, val in residuals.items():
-                print(f"  Residual: {key:<20} {val}")
-            for key, val in unknowns.items():
-                print(f"  Unknown:  {key:<20} {val}")
+            # Get the plot function from globals
+            plot_func = globals().get(plot_func_name)
+            
+            if plot_func is None:
+                print(f"✗ Function not found: {plot_func_name}")
+                failed_plots.append(plot_func_name)
+                continue
+            
+            # Create figure
+            plt.figure(figsize=(12, 8))
+            
+            # Call the plot function
+            plot_func(results)
+            
+            # Format title
+            title_name = plot_func_name.replace('plot_', '').replace('_', ' ').title()
+            plt.title(f"{title_name}\n{description}", fontsize=14, pad=20)
+            plt.tight_layout()
+            
+            # Save plot
+            filename = f"{plot_func_name}.png"
+            filepath = os.path.join(folder_path, filename)
+            plt.savefig(filepath, dpi=300, bbox_inches='tight')
+            plt.close()
+            
+            print(f"✓ Saved: {filename}")
+            successful_plots += 1
+            
         except Exception as e:
-            print(f"  Could not read residuals: {e}")
+            print(f"✗ Failed {plot_func_name}: {str(e)}")
+            failed_plots.append(plot_func_name)
+            plt.close()  # Ensure figure is closed even if error occurs
     
-    #print results
-    #print("Running eVTOL tutorial")
-    #TO-DO: make it print more informative results that give good picture of results
-    print("final analysis results: ")
-    print('\n'.join(
-        f"{seg.tag:15s} | t_end = {float(seg.conditions.frames.inertial.time[-1]):6.1f}s | "
-        f"E_end = {float(getattr(seg,'battery_energy_stop',0)):8.1f}J"
-        for seg in results.segments
-    ))
+    # Print summary
+    print(f"\n=== PLOT GENERATION SUMMARY ===")
+    print(f"Folder: {folder_path}")
+    print(f"Successful: {successful_plots}")
+    print(f"Failed: {len(failed_plots)}")
+    
+    if failed_plots:
+        print("Failed plots:")
+        for failed in failed_plots:
+            print(f"  - {failed}")
+    
+    return folder_path, successful_plots, failed_plots
 
 
-    # plot the mission
-    print("making plots")
-    make_plots(results)
-    print("saving plots")
-    save_plots(results)
-    print("done plotting")
-    
-    return
-    
+
     
 # ----------------------------------------------------------------------------------------------------------------------
 #   Vehicle
@@ -594,7 +597,7 @@ def setup_vehicle():
 
 
     ###LIFT ROTOR DESIGN (blade-element) - Gemfan 1045###
-
+    # TO-DO - Replace with real world prop - composite 1038 prop
 
     #lift rotors, analytical generation using market prop - Gemfan 1045
     #fixed the fixed thrust bug by using a propeller component instead of lift rotor component
@@ -720,6 +723,7 @@ def setup_vehicle():
     # Design Motors
     #------------------------------------------------------------------
    # Propeller (Cruise) Motor
+   # TO-DO: replace with real world cruise motor
     propeller_motor                      = SUAVE.Components.Energy.Converters.Motor()
     propeller_motor.efficiency           = 0.90          # Lower for small motors
     propeller_motor.nominal_voltage      = bat.max_voltage
@@ -742,6 +746,7 @@ def setup_vehicle():
     # lift_rotor_motor.no_load_current         = 0.8      # Amps
 
     #market config -  Sunnysky X2212 980KV 
+    #TO-DO: Validate this section
     lift_rotor_motor = SUAVE.Components.Energy.Converters.Motor()
     lift_rotor_motor.tag = "X2212_980KV"
 
@@ -960,20 +965,188 @@ def setup_mission(vehicle,analyses):
 
     return mission
 
+
 # ----------------------------------------------------------------------------------------------------------------------
-#   Plots
+#   Print Results
 # ----------------------------------------------------------------------------------------------------------------------
 
-def make_plots(results):
-    
-    plot_flight_conditions(results)
 
-    plot_aerodynamic_coefficients(results)
-    
-    plot_battery_pack_conditions(results)
-    
-    plot_lift_cruise_network(results)
+def print_segment_results(results):
+    """Print detailed results for each mission segment"""
+    for segment in results.segments:
+        print(f"\n=== RESIDUALS FOR: {segment.tag.upper()} ===")
+        try:
+            residuals = segment.conditions.residuals
+            unknowns = segment.conditions.unknowns
+            for key, val in residuals.items():
+                print(f"  Residual: {key:<20} {val}")
+            for key, val in unknowns.items():
+                print(f"  Unknown:  {key:<20} {val}")
+        except Exception as e:
+            print(f"  Could not read residuals: {e}")
+        
+        print_segment_performance(segment)
 
+
+def print_segment_performance(segment):
+    """Print performance metrics for a single segment"""
+    print(f"\n=== RESULTS FOR: {segment.tag.upper()} ===")
+    
+    # Time
+    time = segment.conditions.frames.inertial.time[:, 0]
+    dt = time[-1] - time[0]
+    print(f"  Duration       = {dt:.2f} s")
+    
+    # Altitude
+    alt = -segment.conditions.frames.inertial.position_vector[:, 2]
+    dz = alt[-1] - alt[0]
+    print(f"  Final altitude = {alt[-1]:.2f} m")
+    
+    # Velocity
+    vel = segment.conditions.freestream.velocity[:, 0]  # m/s
+    climb_desc_rate = dz / dt
+    
+    if "hover" in segment.tag.lower():
+        print(f"  Vertical rate  = {climb_desc_rate:.2f} m/s")
+    
+    elif "climb" in segment.tag.lower():
+        print(f"  Mean airspeed  = {vel.mean():.2f} m/s")
+        print(f"  Climb rate = {climb_desc_rate:.2f} m/s")
+    
+    elif "descent" in segment.tag.lower():
+        print(f"  Mean airspeed  = {vel.mean():.2f} m/s")
+        print(f"  Descent rate   = {climb_desc_rate:.2f} m/s")
+    
+    elif "cruise" in segment.tag.lower():
+        print(f"  Mean cruise speed = {vel.mean():.2f} m/s")
+    
+    # Aerodynamics
+    CL = segment.conditions.aerodynamics.lift_coefficient[:, 0]
+    CD = segment.conditions.aerodynamics.drag_coefficient[:, 0]
+    LD_ratio = CL.mean() / CD.mean() if CD.mean() > 0 else 0.0
+    print(f"  Mean CL  = {CL.mean():.3f}")
+    print(f"  Mean CD  = {CD.mean():.3f}")
+    print(f"  Mean L/D = {LD_ratio:.2f}")
+            
+    # Lift Rotor Thrust
+    lift_arr = segment.conditions.propulsion.lift_rotor_thrust
+    per_rotor = lift_arr.copy()
+    per_rotor[:, 1:] = lift_arr[:, 1:] - lift_arr[:, :-1]
+    lift_total = per_rotor.sum(axis=1) 
+    print("  Avg lift rotor thrust:")
+    print(f"    Total   = {lift_total.mean():.2f} N") 
+    
+    # Per rotor thrust
+    for i in range(per_rotor.shape[1]):
+        print(f"    Rotor {i+1} = {per_rotor[:, i].mean():.2f} N")
+    
+    # Propeller Thrust
+    prop_thrust = segment.conditions.propulsion.propeller_thrust[:, 0]
+    print(f"  Avg total propeller thrust: {prop_thrust.mean():.2f} N")
+    
+    # Energy consumption
+    batt = segment.conditions.propulsion.battery_energy[:, 0]
+    print("  Battery Energy:")
+    print(f"    Used = {(batt[0] - batt[-1]):.2f} J")
+    print(f"    End  = {batt[-1] / 1000:.2f} KJ")
+    
+    # Battery state of charge
+    soc = segment.conditions.propulsion.battery_state_of_charge[:, 0]
+    print("  Battery SOC:")
+    print(f"    Used = {(soc[0] - soc[-1]) * 100:.3f} %")
+    print(f"    End  = {soc[-1] * 100:.3f} %")
+    
+    # Power draw
+    power_draw = segment.conditions.propulsion.battery_power_draw[:, 0]
+    print("  Battery Power draw:")
+    print(f"    Avg  = {abs(power_draw.mean()):.2f} W")
+    print(f"    Peak = {abs(power_draw.max()):.2f} W")
+
+
+def print_mission_summary(results):
+    """Print overall mission summary"""
+    print("\n===== MISSION SUMMARY =====")
+    
+    # Calculate mission range
+    mission_range = 0.0
+    for segment in results.segments:
+        time = segment.conditions.frames.inertial.time[:, 0]
+        vel = segment.conditions.freestream.velocity[:, 0]
+        mission_range += np.trapz(vel, time)
+    
+    # Total time
+    total_time = results.segments[-1].conditions.frames.inertial.time[-1, 0]
+    print(f"  Total mission time   = {total_time:.2f} s")
+    
+    # Total range 
+    print(f"  Total mission range  = {mission_range:.2f} m")
+    
+    # Average velocity
+    avg_velocity = mission_range / total_time if total_time > 0 else 0.0
+    print(f"  Average mission vel  = {avg_velocity:.2f} m/s")
+    
+    # Total Energy used
+    E_0 = results.segments[0].conditions.propulsion.battery_energy[0, 0]
+    E_end = results.segments[-1].conditions.propulsion.battery_energy[-1, 0]
+    E_diff = E_0 - E_end
+    print(f"  Total energy used    = {E_diff / 1000:.3f} kJ")
+    
+    # Battery state of charge
+    soc_end = results.segments[-1].conditions.propulsion.battery_state_of_charge[-1, 0]
+    print(f"  Remainig Battery SOC = {soc_end * 100:.3f} %")
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+#   Main
+# ----------------------------------------------------------------------------------------------------------------------
+
+def main():
+    # Setup a vehicle
+    print("Setting up the vehicle")
+    vehicle = setup_vehicle()
+    print("✓ Vehicle setup complete")
+
+
+    #Open VSP generation
+    #success = export_to_vsp(vehicle)
+    #if success:
+    #    print("\n✓ Successfully exported vehicle to OpenVSP format.\n")
+ 
+    # Setup analyses
+    print("Setting up the analyses")
+    analyses = setup_analyses(vehicle)
+    print("finalizing analysis...")
+    analyses.finalize() #<- this builds surrogate models!
+    print("✓ Analyzed.")
+
+
+    # override the compute_noise function to be a no-op
+    Noise.compute_noise = lambda segment: None
+    # Setup a mission
+    print("Setting up the mission")
+    mission  = setup_mission(vehicle, analyses)
+
+    print(f"Number of lift rotors: {len(vehicle.networks.lift_cruise.lift_rotors)}")
+
+    # Run the mission    
+    print("Commenced mission evaluation...Please wait...")
+    results = mission.evaluate()
+    print("✓ Mission evaluation complete, displaying results:")
+    
+    # Print Results
+    print_segment_results(results)
+    print_mission_summary(results)
+
+    # plot the mission
+    print("making and saving plots...")
+    #main plots only
+    save_plots(results)
+    # Option 2: Save all available plots
+    # save_plots(results, plot_all=True)
+    print("✓ done plotting")
+    
+    return
+    
 if __name__ == '__main__':
     print("Running eVTOL tutorial")
     main()
