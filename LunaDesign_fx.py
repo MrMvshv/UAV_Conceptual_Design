@@ -611,33 +611,44 @@ def setup_vehicle():
     rpm_nom    = 7500.0
     omega_nom  = 2.0*np.pi*rpm_nom/60.0   # ~785 rad/s
 
-    # Station layout (root → tip). Use 8–10 stations for stability.
-    n_stations = 8
-    r_dist     = np.linspace(R_hub, R_tip, n_stations)
+    # Station layout (root → tip). Use 8–10 stations for stability. - BEVW FIX(10 STATIONS)
+    n_stations = 10
+    r_dist     = np.linspace(R_hub*1.15, R_tip*0.985, n_stations)
 
     # Chord distribution (meters): slightly tapered
     # Target solidity ~0.10–0.12; for R=0.127, B=2 this implies avg chord ≈ 0.02–0.025 m
-    c_root = 0.032
-    c_tip  = 0.016
+    c_root = 0.034
+    c_tip  = 0.018
     chord  = np.linspace(c_root, c_tip, n_stations)
 
     # Twist distribution (deg): set from geometric pitch at 75%R, washout to the tip
-    # beta_geo = arctan(pitch/(2*pi*r))
-    beta_75R = np.degrees(np.arctan(pitch_m/(2.0*np.pi*0.75*R_tip)))  # ~10.8 deg
-    beta_root = beta_75R + 3.0   # a bit more at root
-    beta_tip  = beta_75R - 3.0   # a bit less at tip
-    twist_deg = np.linspace(beta_root, beta_tip, n_stations)
+    # twist: a touch more at root to unload tip in hover
+    beta_75R   = np.degrees(np.arctan(pitch_m/(2.0*np.pi*0.75*R_tip)))
+    beta_root  = beta_75R + 5.0
+    beta_tip   = beta_75R - 2.0
+    twist_deg  = np.linspace(beta_root, beta_tip, n_stations)
 
     # --- Analytic airfoil model (surrogate CL/CD over Re, alpha) ---
     # Alpha range in radians and Re range typical for ~10" props
-    alpha_deg = np.linspace(-12.0, 18.0, 31)     # dense and smooth
-    alpha     = np.radians(alpha_deg)
-    Re_vals   = np.array([8e4, 1.2e5, 1.6e5, 2.0e5, 2.5e5])  # benign coverage
+    # alpha_deg = np.linspace(-12.0, 18.0, 31)     # dense and smooth
+    # alpha     = np.radians(alpha_deg)
+    # Re_vals   = np.array([8e4, 1.2e5, 1.6e5, 2.0e5, 2.5e5])  # benign coverage
 
-    alpha0   = np.radians(-2.0)  # zero-lift angle
-    Cl_max   = 1.2               # soft cap
-    Cd0      = 0.012
-    k_ind    = 0.010
+    # alpha0   = np.radians(-2.0)  # zero-lift angle
+    # Cl_max   = 1.2               # soft cap
+    # Cd0      = 0.012
+    # k_ind    = 0.010
+
+    # # Finer grid for convergence test - BEVW
+    # wider alpha, stronger cap
+    alpha_deg = np.linspace(-20.0, 25.0, 46)
+    alpha     = np.radians(alpha_deg)
+    Re_vals   = np.array([4e4, 6e4, 8e4, 1.2e5, 1.6e5, 2.0e5, 2.5e5])
+
+    alpha0 = np.radians(-2.0)
+    Cl_max = 1.6        # allow higher lift before soft stall
+    Cd0    = 0.012
+    k_ind  = 0.010
 
     # Build CL(Re, alpha) and CD(Re, alpha) as 2D arrays with smooth stall limiting
     CL_table = []
@@ -659,14 +670,16 @@ def setup_vehicle():
     # --- SUAVE propeller object configured for blade-element ---
     lift_proto = SUAVE.Components.Energy.Converters.Propeller()
     lift_proto.tag                 = "Gemfan_10x4.5"
+    lift_proto.tip_radius        = R_tip 
     lift_proto.propeller_radius    = R_tip
     lift_proto.hub_radius          = R_hub
     lift_proto.number_of_blades    = B
 
     # Enable blade-element analysis
-    lift_proto.override_geometry   = False
-    lift_proto.airfoil_flag        = True
-    lift_proto.use_2d_analysis     = True
+    lift_proto.override_geometry   = True
+    #following two switch be/bemt analysis - BEVW
+    lift_proto.airfoil_flag        = False
+    lift_proto.use_2d_analysis     = False
     lift_proto.use_blade_element   = True
 
     # Provide geometry distributions
@@ -706,7 +719,7 @@ def setup_vehicle():
     lift_proto.design_power  = 180.0 * Units.watt        # ballpark
     lift_proto.design_torque = lift_proto.design_power / lift_proto.angular_velocity
 
-    net.lift_rotors = {}   # use dict, not list
+    net.lift_rotors = {}   # use list??
 
     for ii in range(4):
         lr          = deepcopy(lift_proto)
@@ -716,6 +729,7 @@ def setup_vehicle():
         lr.inputs.pitch_command   = 0.0
         lr.inputs.y_axis_rotation = 0.0
         net.lift_rotors[lr.tag]   = lr   # assign to dict
+        #net.lift_rotors.append(lr)   # append to list
 
 
     
@@ -829,7 +843,18 @@ def setup_analyses(vehicle):
 
     return analyses
 
-
+def _ensure_generic_throttle(segment):
+    """Shim: if Hover.Common expects unknowns.throttle, synthesize it."""
+    s = segment.state
+    n_cp = s.numerics.number_control_points
+    # Create generic throttle if missing, derived from per-rotor throttle if present
+    if not hasattr(s.unknowns, 'throttle'):
+        if hasattr(s.unknowns, 'lift_rotor_throttle'):
+            # mean across rotors → shape (n_cp, 1)
+            s.unknowns.throttle = np.mean(s.unknowns.lift_rotor_throttle, axis=1, keepdims=True)
+        else:
+            # safe fallback
+            s.unknowns.throttle = 0.7 * np.ones((n_cp, 1))
 # ----------------------------------------------------------------------------------------------------------------------
 #   Mission
 # ----------------------------------------------------------------------------------------------------------------------
@@ -850,8 +875,8 @@ def setup_mission(vehicle,analyses):
     base_segment.state.numerics.number_control_points        = 8
 
     #tweaking solver settings
-    base_segment.state.numerics.iterations = 50
-    base_segment.state.numerics.tolerance  = 1e-4
+    base_segment.state.numerics.iterations = 120
+    base_segment.state.numerics.tolerance  = 1e-6
 
     # tell SUAVE to skip the noise computation step
     base_segment.process.iterate.noise  = SUAVE.Methods.skip
@@ -870,25 +895,73 @@ def setup_mission(vehicle,analyses):
     segment     = Segments.Hover.Hover(base_segment)
     segment.tag = "hover_segment"
     segment.analyses.extend(analyses)
-    segment.altitude         = 100.0 * Units.ft         # constant altitude
-    segment.duration         = 300.0 * Units.seconds     # hover duration
-    segment.battery_energy   = vehicle.networks.lift_cruise.battery.max_energy * 0.95
-    segment.process.iterate.unknowns.mission = SUAVE.Methods.skip
 
-    # Set initial guesses if needed
-    segment.initial_throttle = 0.95
+    # 1) Set numerics & basics BEFORE touching unknowns/residuals
+    segment.state.numerics.number_control_points = 8
+    segment.altitude       = 100.0 * Units.ft
+    segment.duration       = 300.0 * Units.seconds
+    segment.battery_energy = vehicle.networks.lift_cruise.battery.max_energy * 0.95
 
-    # Add lift network unknowns and residuals
+    # 2) Ensure containers exist
+    if not hasattr(segment.state, 'unknowns'):
+        segment.state.unknowns = Data()
+    if not hasattr(segment.state, 'residuals'):
+        segment.state.residuals = Data()
+
+    # 3a) Seed a dummy throttle so the helper’s unconditional delete succeeds
+    n_cp = segment.state.numerics.number_control_points
+    segment.state.unknowns.throttle = 0.7 * np.ones((n_cp, 1))
+
+   # 3b) Let the network install its unknowns/residuals & handlers (call ONCE)
     segment = vehicle.networks.lift_cruise.add_lift_unknowns_and_residuals_to_segment(segment)
 
+    # 4) Re-create the generic throttle expected by Hover/Common BEFORE solver packs x0
+    if not hasattr(segment.state.unknowns, 'throttle'):
+        segment.state.unknowns.throttle = 0.8 * np.ones((n_cp, 1))  # a tad higher to help
+
+    # >>> NEW: seed per-rotor throttle guess so rotors make thrust on the very first call
+    n_lift = len(vehicle.networks.lift_cruise.lift_rotors)
+    if hasattr(segment.state.unknowns, 'lift_rotor_throttle'):
+        segment.state.unknowns.lift_rotor_throttle[:, :] = 0.8  # shape (n_cp, n_lift)
+    # keep cruise prop at zero in hover if present (harmless, but explicit)
+    if hasattr(segment.state.unknowns, 'propeller_throttle'):
+        segment.state.unknowns.propeller_throttle[:, :] = 0.0
+
+    # 4b) Add a zero residual matching our synthetic unknown so sizes stay equal
+    def _add_zero_throttle_residual(seg):
+        ncp = seg.state.numerics.number_control_points
+        if hasattr(seg.state.unknowns, 'throttle') and not hasattr(seg.state.residuals, 'throttle'):
+            seg.state.residuals.throttle = np.zeros((ncp, 1))
+
+    # Wrap residuals handler robustly (works whether it's a Process(.mission) or a bare function)
+    res_proc = segment.process.iterate.residuals
+    try:
+        # Case A: residuals is a Process with .mission
+        prev_residuals_handler = res_proc.mission
+        def _combined_residuals(seg):
+            prev_residuals_handler(seg)
+            _add_zero_throttle_residual(seg)
+        res_proc.mission = _combined_residuals
+    except AttributeError:
+        # Case B: residuals is a bare callable
+        prev_residuals_handler = res_proc
+        def _combined_residuals(seg):
+            prev_residuals_handler(seg)
+            _add_zero_throttle_residual(seg)
+        segment.process.iterate.residuals = _combined_residuals
+
+    # 5) Optional solver nudge (don’t force conditions throttle anywhere)
+    segment.initial_throttle = 0.85
+
+    # 6) Skip noise only; DO NOT alter iterate.unknowns.mission
     segment.process.iterate.noise  = SUAVE.Methods.skip
     segment.process.finalize.noise = SUAVE.Methods.skip
 
-    # Set control points and throttle profile (PART OF THE BUGFIX)
-    segment.state.numerics.number_control_points = 8
-    segment.conditions.propulsion.throttle = np.ones((8,1))*0.6
+    # 7) Debug once: verify pack size includes our throttle (>= n_cp)
+    x0 = segment.state.unknowns.pack_array()
+    print(f"Initial unknowns length (should be >= {n_cp}): {len(x0)}")
 
-    # Add to mission
+    # Append to mission
     mission.append_segment(segment)
 
 
@@ -1130,6 +1203,20 @@ def main():
 
     # Run the mission    
     print("Commenced mission evaluation...Please wait...")
+
+    #diagnostic prints
+    lr_keys = list(vehicle.networks.lift_cruise.lift_rotors.keys())
+    for k in lr_keys:
+        lr = vehicle.networks.lift_cruise.lift_rotors[k]
+        print(f"[{k}] tip_radius={getattr(lr,'tip_radius',None)}  hub_radius={lr.hub_radius}  "
+            f"n_stations={getattr(lr,'n_stations',None)}  "
+            f"r[0]={lr.radius_distribution[0]:.4f}  r[-1]={lr.radius_distribution[-1]:.4f}")
+        
+    for k, lr in vehicle.networks.lift_cruise.lift_rotors.items():
+        print(f"[{k}] R_tip={lr.tip_radius:.3f}, n_stations={lr.n_stations}, "
+            f"r0={lr.radius_distribution[0]:.4f}, rN={lr.radius_distribution[-1]:.4f}, "
+            f"c0={lr.chord_distribution[0]:.4f}, cN={lr.chord_distribution[-1]:.4f}")
+
     results = mission.evaluate()
     print("✓ Mission evaluation complete, displaying results:")
     
