@@ -608,47 +608,154 @@ def setup_vehicle():
     R_hub     = 0.020
     B         = 2
     pitch_m   = 0.038 * 0.0254 # 3.8 in -> 0.09652 m   # << changed from 4.5"
-    rpm_nom   = 8000.0                                  # << a bit higher for lower pitch
-    omega_nom = 2.0*np.pi*rpm_nom/60.0
+    # rpm_nom   = 8000.0                                  # << a bit higher for lower pitch
+    # omega_nom = 2.0*np.pi*rpm_nom/60.0
+    # cnv fx 2 rpm & omega_nom ->
+
+    # --- rpm seeding from hover thrust requirement ---
+    def seed_rpm_from_hover(weight_N, n_rotors, R, Ct_guess=0.12, rho=1.225):
+        """
+        Solve n (rev/s) from T = Ct * rho * n^2 * D^4  => n = sqrt(T / (Ct*rho*D^4))
+        Then rpm = 60*n
+        """
+        T_per = weight_N / n_rotors
+        D = 2.0 * R
+        n = np.sqrt(T_per / (Ct_guess * rho * D**4))
+        rpm = 60.0 * n
+        return float(rpm)
+    
+    def rpm_bounds_for_x2212_4s(R_tip, mach_max=0.60, kv=980.0, V=14.8):
+        # No-load ceiling
+        rpm_nl = kv * V                      # ~14.5 krpm
+        # Tip Mach ceiling
+        a = 343.0
+        rpm_tip_cap = (60.0 * (mach_max * a)) / (2.0 * np.pi * R_tip)
+        # Practical loaded hover band ~ 0.7–0.85 of no-load
+        rpm_min = 0.20 * rpm_nl              # don't start absurdly low
+        rpm_max = min(0.85 * rpm_nl, rpm_tip_cap)
+        return rpm_min, rpm_max, rpm_nl, rpm_tip_cap
+    
+
+    W = vehicle.mass_properties.takeoff * Units.gravity  # N
+
+    rpm_seed = seed_rpm_from_hover(weight_N=W, n_rotors=4, R=R_tip, Ct_guess=0.12)
+
+    rpm_min, rpm_max, rpm_nl, rpm_tip = rpm_bounds_for_x2212_4s(R_tip)
+
+    if not (rpm_min <= rpm_seed <= rpm_max):
+        print("[WARN] rpm_seed {:.0f} outside practical band [{:.0f}, {:.0f}]".format(
+            rpm_seed, rpm_min, rpm_max))
+        print("       => Revisit chord/twist or Ct_guess; current setup may be inconsistent.")
+        # OPTIONAL soft-clip to proceed (comment this out if you want to fail-fast)
+        rpm_seed = float(np.clip(rpm_seed, rpm_min, rpm_max))
+        print("[INFO] Seeding rpm after soft-clip: {:.0f}".format(rpm_seed))
+
+    # Optional: guard by motor power limit (very rough check)
+    def rough_prop_power_W(rpm, D, rho=1.225, Cp_guess=0.055):
+        n = rpm/60.0
+        return Cp_guess * rho * (n**3) * (D**5)
+
+    P_est = rough_prop_power_W(rpm_seed, D=2*R_tip)
+    if P_est > 250.0:
+        print(f"[WARN] Seed RPM implies ~{P_est:.0f} W > motor limit (250 W). Consider lowering Ct_guess or increasing solidity.")
+
+    omega_nom = 2.0 * np.pi * rpm_seed / 60.0
+    print(f"[DEBUG] rpm_seed={rpm_seed:.0f}, no-load≈{rpm_nl:.0f}, tip-cap≈{rpm_tip:.0f}")
+
+
+    # Put reasonable guards: don’t exceed ~Mach 0.6 at tip
+    a_sound = 343.0  # m/s
+    Vtip_max = 0.6 * a_sound
+    rpm_cap  = (60.0 * Vtip_max) / (2.0 * np.pi * R_tip)
+    rpm_nom  = min(rpm_seed, rpm_cap)
+
+    #cnv fx xx
+    def Ct_from_T_rpm(T, rpm, D, rho=1.225):
+        """Thrust coefficient from thrust, rpm, and diameter."""
+        n = rpm / 60.0  # rev/s
+        return T / (rho * (n**2) * (D**4))
+
+    # Known quantities
+    rho     = 1.225
+    R_tip   = 0.127
+    D       = 2.0 * R_tip
+    rpm_use = rpm_seed           # or rpm_nom if you overwrote it
+    W       = float(vehicle.mass_properties.takeoff * Units.gravity)  # N
+    T_per   = W / 4.0            # per-rotor thrust (4 lift rotors)
+
+    Ct_seed = Ct_from_T_rpm(T_per, rpm_use, D, rho)
+    print(f"[CHECK] Seeded C_T ≈ {Ct_seed:.3f}")
+
+    if Ct_seed < 0.07:
+        print("[HINT] Seed C_T is quite low (<0.07): consider lowering rpm seed or increasing solidity.")
+    elif Ct_seed > 0.18:
+        print("[HINT] Seed C_T is high (>0.18): consider raising rpm seed slightly or easing chord/twist.")
+    else:
+        print("[HINT] Seed C_T is in a reasonable hover band.")
+
+
+    omega_nom = 2.0 * np.pi * rpm_nom / 60.0
+    print(f"[DEBUG] rpm_seed={rpm_seed:.0f}, rpm_cap={rpm_cap:.0f}, using rpm_nom={rpm_nom:.0f}")
 
     # Station layout: avoid exact hub/tip, add resolution
     n_stations = 12
     r_dist     = np.linspace(R_hub*1.15, R_tip*0.985, n_stations)
 
-    # Slightly fuller chord for low-Re hover (target solidity ~0.11–0.13)
-    c_root = 0.035
-    c_tip  = 0.018
+    #cnv fx 1 619 ->
+    c_root = 0.040   # +5 mm at root to raise solidity modestly
+    c_tip  = 0.020   # keep a gentle taper
     chord  = np.linspace(c_root, c_tip, n_stations)
+
+    # helper to compute solidity (σ = B/piR * ∫c(r)dr)
+    def compute_solidity(B, R_tip, r_dist, chord):
+        area_blades = B * np.trapz(chord, r_dist)     # m^2
+        area_disk   = np.pi * R_tip**2                # m^2
+        return area_blades / area_disk
+
+    sigma = compute_solidity(B, R_tip, r_dist, chord)
+    print(f"[DEBUG] blade solidity σ = {sigma:.3f}")  # target ~0.13–0.16 for hover props
+
 
     # Twist: unload tip a bit (hover-friendly)
     beta_75R  = np.degrees(np.arctan(pitch_m/(2.0*np.pi*0.75*R_tip)))
-    beta_root = beta_75R + 5.0
-    beta_tip  = beta_75R - 2.0
+    beta_root = beta_75R + 3.0  # smaller positive at root
+    beta_tip  = beta_75R + 0.0  # remove negative tip unload in hover
     twist_deg = np.linspace(beta_root, beta_tip, n_stations)
 
-    # --- Airfoil model (wider α/Re grid improves robustness) ---
+   # --- low-Re surrogate polars tuned for thin cambered prop sections ---
     alpha_deg = np.linspace(-20.0, 25.0, 46)
     alpha     = np.radians(alpha_deg)
-    Re_vals   = np.array([4e4, 6e4, 8e4, 1.2e5, 1.6e5, 2.0e5, 2.5e5])
 
-    alpha0 = np.radians(-2.0)
-    Cl_max = 1.6
-    Cd0    = 0.012
-    k_ind  = 0.010
+    # Extend Re grid down a bit and cluster around 40k–120k
+    Re_vals = np.array([3.0e4, 4.5e4, 6.0e4, 8.0e4, 1.0e5, 1.2e5, 1.6e5, 2.0e5])
+
+    # More conservative low-Re limits
+    alpha0 = np.radians(-2.0)   # zero-lift angle
+    Cl_max = 1.35               # lower than 1.6 for robustness
+    Cd0    = 0.020              # higher profile drag typical at Re~50k
+    k_ind  = 0.010              # keep induced-like quadratic term
 
     CL_table = []
     CD_table = []
     for Re in Re_vals:
-        Cl_line = 2.0*np.pi*(alpha - alpha0)
-        Cl_line = Cl_max*np.tanh(Cl_line/Cl_max)
-        Cd_line = Cd0 + k_ind*(Cl_line**2)
-        CL_table.append(Cl_line)
-        CD_table.append(Cd_line)
+        # Slight Re trend: lower slope and lower Cl_max at very low Re
+        slope = 2.0*np.pi * (0.90 if Re <= 6.0e4 else 0.95)  # reduce lift curve slope at low Re
+        cl_line = slope * (alpha - alpha0)
+        # Soft saturation toward Cl_max
+        cl_line = Cl_max * np.tanh(cl_line / Cl_max)
+        # Slightly higher Cd0 at the very lowest Re
+        Cd0_eff = Cd0 * (1.15 if Re <= 4.5e4 else 1.0)
+        cd_line = Cd0_eff + k_ind * (cl_line**2)
+
+        CL_table.append(cl_line)
+        CD_table.append(cd_line)
+
     CL_table = np.vstack(CL_table)
     CD_table = np.vstack(CD_table)
 
     cl_spline = RectBivariateSpline(Re_vals, alpha, CL_table, kx=1, ky=1)
     cd_spline = RectBivariateSpline(Re_vals, alpha, CD_table, kx=1, ky=1)
+    print(f"[DEBUG] airfoil surrogate polars set up with {len(Re_vals)} Re stations")
 
     # --- SUAVE propeller object (blade-element / BEVW) ---
     lift_proto = SUAVE.Components.Energy.Converters.Propeller()
@@ -687,9 +794,9 @@ def setup_vehicle():
     lift_proto.airfoil_cd_surrogates   = {'default': cd_spline}
 
     # BEVW knobs (only if your 2.5.2 build supports them)
-    try: lift_proto.bevw_max_iterations = 200
+    try: lift_proto.bevw_max_iterations = 400
     except: pass
-    try: lift_proto.bevw_relaxation     = 0.3
+    try: lift_proto.bevw_relaxation     = 0.15
     except: pass
 
     # Operating guesses
@@ -697,8 +804,27 @@ def setup_vehicle():
     lift_proto.variable_pitch      = False
     lift_proto.beta_0              = np.radians(twist_deg).tolist()
 
-    # Reporting
-    lift_proto.blade_solidity = 2.0*np.trapz(chord, r_dist)/(np.pi*R_tip)
+    #cnv fx 3 
+
+    lift_proto.blade_solidity = (B * np.trapz(chord, r_dist)) / (np.pi * R_tip**2)
+
+
+
+    # --- TEMP: single-rotor static hover sanity check ---
+    def quick_hover_check(prop, T_target, rho=1.225):
+        # very light-weight call path: compute disk loading & induced velocity
+        A = np.pi * prop.tip_radius**2
+        v_i = np.sqrt(T_target / (2.0 * rho * A))
+        print(f"[CHECK] Target T={T_target:.2f} N, v_i ~ {v_i:.2f} m/s, sigma ~ {prop.blade_solidity:.3f}")
+
+        # if your SUAVE build exposes a direct BE call, you could do:
+        # results = SUAVE.Methods.Propulsion.propeller_design.BEVW_evaluate(prop, v_i=v_i)
+        # but many builds don’t - so at least confirm basic magnitudes here.
+
+    # Call it for a quarter of weight
+    T_quarter = (vehicle.mass_properties.takeoff * Units.gravity) / 4.0
+    quick_hover_check(lift_proto, T_quarter)
+
 
     # --- Instantiate the four rotors (DICT, as your 2.5.2 expects) ---
     rotations = [ 1, -1,  1, -1]
@@ -863,11 +989,11 @@ def setup_mission(vehicle,analyses):
 
     # base segment
     base_segment                                             = Segments.Segment()
-    base_segment.state.numerics.number_control_points        = 8
+    base_segment.state.numerics.number_control_points        = 6 #cnv fx 4 from 8 to 6
 
     #tweaking solver settings
-    base_segment.state.numerics.iterations = 120
-    base_segment.state.numerics.tolerance  = 1e-6
+    base_segment.state.numerics.iterations = 150 #cnv fx 5 from 100 to 150
+    base_segment.state.numerics.tolerance  = 5e-6 #cnv fx 6 from 1e-6 to 5e-6
 
     # tell SUAVE to skip the noise computation step
     base_segment.process.iterate.noise  = SUAVE.Methods.skip
@@ -901,14 +1027,14 @@ def setup_mission(vehicle,analyses):
 
     # 3a) Seed a dummy throttle so the helper’s unconditional delete succeeds
     n_cp = segment.state.numerics.number_control_points
-    segment.state.unknowns.throttle = 0.7 * np.ones((n_cp, 1))
+    segment.state.unknowns.throttle = 0.85 * np.ones((n_cp, 1))
 
    # 3b) Let the network install its unknowns/residuals & handlers (call ONCE)
     segment = vehicle.networks.lift_cruise.add_lift_unknowns_and_residuals_to_segment(segment)
 
     # 4) Re-create the generic throttle expected by Hover/Common BEFORE solver packs x0
     if not hasattr(segment.state.unknowns, 'throttle'):
-        segment.state.unknowns.throttle = 0.8 * np.ones((n_cp, 1))  # a tad higher to help
+        segment.state.unknowns.throttle = 0.85 * np.ones((n_cp, 1))  # a tad higher to help
 
     # >>> NEW: seed per-rotor throttle guess so rotors make thrust on the very first call
     n_lift = len(vehicle.networks.lift_cruise.lift_rotors)
