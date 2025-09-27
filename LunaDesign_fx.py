@@ -85,11 +85,11 @@ def log_power_and_voltages(seg, label="[POWER-ITER]"):
                    ("battery_voltage_under_load","battery_voltage","pack_voltage","voltage")]
         I_cands = [getattr(prop, n, None) for n in
                    ("battery_current","pack_current","current")]
-        P_cands = [getattr(prop, n, None) for n in (
-            "battery_power_out","battery_power","battery_power_draw",
-            "electrical_power","power_total","network_power",
-            "power_draw","power_lift_total","shaft_power_lift_total"
-        )]
+        P_cands = [getattr(prop, n, None) for n in
+                ("battery_power_out","battery_power","battery_power_draw",
+                    "electrical_power","power_total","network_power","power_draw",
+                    "power_lift_total","shaft_power_lift_total")]
+
 
 
         V_pack = _first_finite(*[ _grab_scalar(c) for c in V_cands ])
@@ -1194,7 +1194,15 @@ def setup_mission(vehicle,analyses):
     #segment.state.numerics.number_control_points = 8
     segment.altitude       = 100.0 * Units.ft
     segment.duration       = 300.0 * Units.seconds
-    segment.battery_energy = vehicle.networks.lift_cruise.battery.max_energy * 0.95
+    segment.battery_energy = vehicle.networks.lift_cruise.battery.max_energy * 0.90
+
+    #cmp fx 2
+    # Defensive SOC clamp (harmless if field not present)
+    try:
+        soc = segment.state.conditions.propulsion.battery_state_of_charge
+        soc[:,0] = np.clip(soc[:,0], 0.02, 0.98)
+    except Exception:
+        pass
 
     # 2) Ensure containers exist
     if not hasattr(segment.state, 'unknowns'):
@@ -1204,7 +1212,7 @@ def setup_mission(vehicle,analyses):
 
     # 3a) Seed a dummy throttle so the helper’s unconditional delete succeeds
     n_cp = segment.state.numerics.number_control_points
-    segment.state.unknowns.throttle = 0.85 * np.ones((n_cp, 1))
+    segment.state.unknowns.throttle = 0.75 * np.ones((n_cp, 1))
 
    # 3b) Let the network install its unknowns/residuals & handlers (call ONCE)
     segment = vehicle.networks.lift_cruise.add_lift_unknowns_and_residuals_to_segment(segment)
@@ -1216,7 +1224,7 @@ def setup_mission(vehicle,analyses):
     # >>> NEW: seed per-rotor throttle guess so rotors make thrust on the very first call
     n_lift = len(vehicle.networks.lift_cruise.lift_rotors)
     if hasattr(segment.state.unknowns, 'lift_rotor_throttle'):
-        segment.state.unknowns.lift_rotor_throttle[:, :] = 0.8  # shape (n_cp, n_lift)
+        segment.state.unknowns.lift_rotor_throttle[:, :] = 0.70  # shape (n_cp, n_lift)
     # keep cruise prop at zero in hover if present (harmless, but explicit)
     if hasattr(segment.state.unknowns, 'propeller_throttle'):
         segment.state.unknowns.propeller_throttle[:, :] = 0.0
@@ -1246,7 +1254,7 @@ def setup_mission(vehicle,analyses):
         segment.process.iterate.residuals = _combined_residuals
 
     # 5) Optional solver nudge (don’t force conditions throttle anywhere)
-    segment.initial_throttle = 0.85
+    segment.initial_throttle = 0.75
 
     # 6) Skip noise only; DO NOT alter iterate.unknowns.mission
     segment.process.iterate.noise  = SUAVE.Methods.skip
@@ -1692,6 +1700,36 @@ def main():
     print("finalizing analysis...")
     analyses.finalize()
     print("✓ Analyzed.")
+
+    #fast computation fix
+    # 1
+    try:
+        Vobj = vehicle.networks.lift_cruise.battery.battery_data.Voltage
+        if hasattr(Vobj, "bounds_error"): Vobj.bounds_error = False
+        if hasattr(Vobj, "fill_value"):   Vobj.fill_value   = "extrapolate"
+        print("[BAT] Voltage interpolant set to extrapolate (safety net)")
+    except Exception as e:
+        print("[BAT] Could not relax Voltage bounds:", e)
+
+
+    # -2-- Keep per-cell current inside table: ensure enough parallel cells ---
+    try:
+        bat = vehicle.networks.lift_cruise.battery
+
+        # Read any available names for series/parallel config
+        Ns = getattr(bat, "number_of_series_cells", None) or getattr(bat, "pack_config_series", None)
+        Np = getattr(bat, "number_of_parallel_cells", None) or getattr(bat, "pack_config_parallel", None)
+        print(f"[BAT-CONFIG] series={Ns}, parallel={Np}")
+
+        # Guarantee at least 3P (bump to 4P if you still see bounds errors)
+        if Np is not None and int(Np) < 3:
+            for attr in ("number_of_parallel_cells","pack_config_parallel"):
+                if hasattr(bat, attr):
+                    setattr(bat, attr, 3)
+                    print("[BAT-CONFIG] forcing >=3P for current relief")
+                    break
+    except Exception as e:
+        print("[BAT-CONFIG] probe/adjust skipped:", e)
 
     # ---------- BEVW solver damping (gentle for first success) ----------
     try:
