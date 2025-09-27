@@ -85,10 +85,12 @@ def log_power_and_voltages(seg, label="[POWER-ITER]"):
                    ("battery_voltage_under_load","battery_voltage","pack_voltage","voltage")]
         I_cands = [getattr(prop, n, None) for n in
                    ("battery_current","pack_current","current")]
-        P_cands = [getattr(prop, n, None) for n in
-                   ("battery_power_out","battery_power","electrical_power",
-                    "power_total","network_power","power_draw",
-                    "power_lift_total","shaft_power_lift_total")]
+        P_cands = [getattr(prop, n, None) for n in (
+            "battery_power_out","battery_power","battery_power_draw",
+            "electrical_power","power_total","network_power",
+            "power_draw","power_lift_total","shaft_power_lift_total"
+        )]
+
 
         V_pack = _first_finite(*[ _grab_scalar(c) for c in V_cands ])
         I_pack = _first_finite(*[ _grab_scalar(c) for c in I_cands ])
@@ -1362,6 +1364,22 @@ def setup_mission(vehicle,analyses):
             segment.process.iterate.residuals = _residuals_with_power_log
             print("[HOOK] Logging after iterate.residuals (callable)")
 
+    # New: also hook a FINALIZE printer so you get at least one truthful line
+        post = segment.process.finalize.post_process
+        prev = getattr(post, "mission", None)
+        if callable(prev):
+            def _post_with_power(seg):
+                prev(seg)
+                log_power_and_voltages(seg, "[POWER-FINAL]")
+            post.mission = _post_with_power
+            print("[HOOK] Logging after finalize.post_process.mission")
+        else:
+            prev_post = post
+            def _post_with_power(seg):
+                prev_post(seg)
+                log_power_and_voltages(seg, "[POWER-FINAL]")
+            segment.process.finalize.post_process = _post_with_power
+            print("[HOOK] Logging after finalize.post_process (callable)")
 
     # Append to mission
     mission.append_segment(segment)
