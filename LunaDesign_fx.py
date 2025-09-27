@@ -1107,23 +1107,6 @@ def setup_mission(vehicle,analyses):
             prev_residuals_handler(seg)
             _add_zero_throttle_residual(seg)
 
-            # === DEBUG AoA / Re dump per iteration ===
-            try:
-                for tag, lr in seg.vehicle.networks.lift_cruise.lift_rotors.items():
-                    # local references from your distributions
-                    Vt   = lr.angular_velocity * lr.radius_distribution
-                    v_i  = np.sqrt(seg.state.conditions.aerodynamics.thrust_total[0][0] / 
-                                (2.0 * 1.225 * np.pi * lr.tip_radius**2))  # crude actuator-disk inflow
-                    phi  = np.arctan2(v_i, np.maximum(Vt,1e-6))
-                    alpha = lr.twist_distribution - phi
-                    Re_span = (1.225 * Vt * lr.chord_distribution) / 1.81e-5
-
-                    print(f"[ITER-DEBUG] {lr.tag} AoA deg {np.degrees(alpha).min():.1f}–{np.degrees(alpha).max():.1f}, "
-                        f"Re {Re_span.min():.0f}–{Re_span.max():.0f}")
-            except Exception as e:
-                print("[DEBUG] AoA/Re dump failed:", e)
-
-
         res_proc.mission = _combined_residuals
     except AttributeError:
         # Case B: residuals is a bare callable
@@ -1143,6 +1126,86 @@ def setup_mission(vehicle,analyses):
     # 7) Debug once: verify pack size includes our throttle (>= n_cp)
     x0 = segment.state.unknowns.pack_array()
     print(f"Initial unknowns length (should be >= {n_cp}): {len(x0)}")
+
+    # 8? cnv fx
+    # === DEBUG WRAPPER AROUND THE PROPULSION CONDITIONS STEP ===
+    # This runs each iteration before residuals are evaluated.
+
+    # 1) keep the original handler
+    prop_step = segment.process.iterate.conditions.propulsion
+
+    def _propulsion_with_debug(seg):
+        # call original propulsion builder (this computes BEVW / rotor forces)
+        prop_step(seg)
+
+        # ---- DEBUG: spanwise AoA / Re per rotor at the current iterate ----
+        try:
+            net = seg.vehicle.networks.lift_cruise
+
+            # try to get ambient density from the segment; fallback to ISA sea-level
+            rho = 1.225
+            try:
+                rho = float(seg.state.conditions.freestream.density[0,0])
+            except Exception:
+                pass
+
+            mu_air = 1.81e-5
+
+            # Pull a best-effort estimate of current per-rotor thrust from conditions
+            # (field names vary by SUAVE version; we try a few and fallback to equal split)
+            def get_T_per(seg_, n_rotors_):
+                candidates = [
+                    ("propulsion","thrust_lift_total"),
+                    ("propulsion","thrust_total_lift"),
+                    ("aerodynamics","thrust_total"),   # last-resort; may include cruise
+                ]
+                for group, name in candidates:
+                    conds = getattr(seg_.state.conditions, group, None)
+                    if conds is not None and hasattr(conds, name):
+                        val = getattr(conds, name)
+                        try:
+                            return float(val[0,0]) / n_rotors_
+                        except Exception:
+                            try:
+                                return float(val[0]) / n_rotors_
+                            except Exception:
+                                pass
+                # fallback: target hover thrust (weight split)
+                W = float(seg_.vehicle.mass_properties.takeoff * Units.gravity)
+                return W / n_rotors_
+
+            n_rotors = len(net.lift_rotors)
+            T_per = get_T_per(seg, n_rotors)
+
+            for tag, lr in net.lift_rotors.items():
+                # geometry
+                r  = np.asarray(lr.radius_distribution)
+                c  = np.asarray(lr.chord_distribution)
+                bt = np.asarray(lr.twist_distribution)          # [rad]
+
+                # kinematics
+                omega = float(lr.angular_velocity)              # [rad/s]
+                Vt    = omega * r                                # tangential
+                A     = np.pi * (float(lr.tip_radius)**2)
+
+                # actuator-disk induced velocity from current thrust estimate
+                v_i = np.sqrt(max(T_per,1e-9) / (2.0 * rho * A))
+
+                # inflow angle and local AoA
+                phi   = np.arctan2(v_i, np.maximum(Vt, 1e-6))
+                alpha = bt - phi                                 # [rad]
+
+                # Reynolds number
+                Re_span = (rho * Vt * c) / mu_air
+
+                print(f"[ITER-DEBUG] {tag}: AoA {np.degrees(alpha).min():.1f}..{np.degrees(alpha).max():.1f} deg | "
+                    f"Re {Re_span.min():.0f}..{Re_span.max():.0f}")
+        except Exception as e:
+            # Don't break the solver just because of debug printing
+            print("[ITER-DEBUG] (skip) reason:", e)
+
+    # 2) install our wrapper
+    segment.process.iterate.conditions.propulsion = _propulsion_with_debug
 
     # Append to mission
     mission.append_segment(segment)
