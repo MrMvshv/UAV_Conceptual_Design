@@ -1062,7 +1062,7 @@ def setup_mission(vehicle,analyses):
     segment.analyses.extend(analyses)
 
     # 1) Set numerics & basics BEFORE touching unknowns/residuals
-    segment.state.numerics.number_control_points = 8
+    #segment.state.numerics.number_control_points = 8
     segment.altitude       = 100.0 * Units.ft
     segment.duration       = 300.0 * Units.seconds
     segment.battery_energy = vehicle.networks.lift_cruise.battery.max_energy * 0.95
