@@ -1141,7 +1141,7 @@ def setup_mission(vehicle,analyses):
         # ---- DEBUG: spanwise AoA / Re per rotor at the current iterate ----
         try:
             net = vehicle.networks.lift_cruise
-            Print("[ITER-DEBUG] Lift rotors spanwise AoA/Re at current iterate: {net.lift_rotors}")
+            print("[ITER-DEBUG] Lift rotors spanwise AoA/Re at current iterate: {net.lift_rotors}")
             # try to get ambient density from the segment; fallback to ISA sea-level
             rho = 1.225
             try:
