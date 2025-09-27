@@ -607,7 +607,7 @@ def setup_vehicle():
     R_tip     = 0.127          # 10 in dia
     R_hub     = 0.020
     B         = 2
-    pitch_m   = 0.038 * 0.0254 # 3.8 in -> 0.09652 m   # << changed from 4.5"
+    pitch_m   = 3.8 * 0.0254 # 3.8 in -> 0.09652 m   # << changed from 4.5"
     # rpm_nom   = 8000.0                                  # << a bit higher for lower pitch
     # omega_nom = 2.0*np.pi*rpm_nom/60.0
     # cnv fx 2 rpm & omega_nom ->
@@ -699,11 +699,16 @@ def setup_vehicle():
 
     # Station layout: avoid exact hub/tip, add resolution
     n_stations = 12
-    r_dist     = np.linspace(R_hub*1.15, R_tip*0.985, n_stations)
+
+    # === Trim inner span to avoid pathological low-Re region ===
+    r_inner = max(R_hub*1.8, 0.03)              # ~1.8×hub or ≥3 cm
+    r_outer = R_tip*0.985
+    r_dist  = np.linspace(r_inner, r_outer, n_stations)
+
 
     #cnv fx 1 619 ->
-    c_root = 0.040   # +5 mm at root to raise solidity modestly
-    c_tip  = 0.020   # keep a gentle taper
+    c_root = 0.044   # was 0.04
+    c_tip  = 0.022   # keep a gentle taper
     chord  = np.linspace(c_root, c_tip, n_stations)
 
     # helper to compute solidity (σ = B/piR * ∫c(r)dr)
@@ -713,6 +718,7 @@ def setup_vehicle():
         return area_blades / area_disk
 
     sigma = compute_solidity(B, R_tip, r_dist, chord)
+    print(f"[TUNE] new solidity sigma ~ {sigma:.3f}")   # aim ~0.12–0.14
     print(f"[DEBUG] blade solidity σ = {sigma:.3f}")  # target ~0.13–0.16 for hover props
 
 
@@ -772,12 +778,7 @@ def setup_vehicle():
     lift_proto.override_geometry   = True
     lift_proto.use_blade_element   = True
 
-    # If you want to bypass polars temporarily to force convergence once:
-    # lift_proto.airfoil_flag      = False
-    # lift_proto.use_2d_analysis   = False
-    # Otherwise keep polars on:
-    lift_proto.airfoil_flag        = True
-    lift_proto.use_2d_analysis     = True
+    
 
     # Geometry distributions
     lift_proto.n_stations          = n_stations
@@ -793,10 +794,16 @@ def setup_vehicle():
     lift_proto.airfoil_cl_surrogates   = {'default': cl_spline}
     lift_proto.airfoil_cd_surrogates   = {'default': cd_spline}
 
+    # And distributions must match n_stations length:
+    assert len(lift_proto.radius_distribution) == n_stations
+    assert len(lift_proto.chord_distribution)  == n_stations
+    assert len(lift_proto.twist_distribution)  == n_stations
+
+
     # BEVW knobs (only if your 2.5.2 build supports them)
-    try: lift_proto.bevw_max_iterations = 400
+    try: lift_proto.bevw_max_iterations = 600
     except: pass
-    try: lift_proto.bevw_relaxation     = 0.15
+    try: lift_proto.bevw_relaxation     = 0.08
     except: pass
 
     # Operating guesses
@@ -825,6 +832,47 @@ def setup_vehicle():
     T_quarter = (vehicle.mass_properties.takeoff * Units.gravity) / 4.0
     quick_hover_check(lift_proto, T_quarter)
 
+    #cnv fx x2
+    # === Pre-check AoA & Re distribution at seed rpm ===
+    rho    = 1.225
+    mu_air = 1.81e-5
+    omega  = 2.0*np.pi*rpm_seed/60.0
+    A      = np.pi*R_tip**2
+    T_per  = float(vehicle.mass_properties.takeoff * Units.gravity) / 4.0
+
+    # Ideal induced velocity for hover target (actuator disk)
+    v_i = np.sqrt(T_per / (2.0 * rho * A))
+
+    # Local tangential speed and inflow angle
+    Vt   = omega * r_dist                         # tangential
+    phi  = np.arctan2(v_i, np.maximum(Vt,1e-6))  # inflow angle [rad]
+    beta = np.radians(twist_deg)                  # geometric pitch angle at 25% chord-ish
+    alpha = beta - phi                            # section AoA [rad]
+
+    # Reynolds number
+    Re_span = (rho * Vt * chord) / mu_air
+
+    print(f"[CHECK] Re span ~ {Re_span.min():.0f} – {Re_span.max():.0f}")
+    print(f"[CHECK] AoA span ~ {np.degrees(alpha).min():.1f}° – {np.degrees(alpha).max():.1f}°")
+
+    # Flag potentially problematic regions (outside surrogate AoA grid or extreme Re)
+    alpha_deg = np.degrees(alpha)
+    bad_aoa = (alpha_deg < -18) | (alpha_deg > 18)   # conservative inside your -20..+25 grid
+    bad_re  = (Re_span < 3.0e4)                      # below your lowest Re spline station
+    if bad_aoa.any() or bad_re.any():
+        idx_bad = np.where(bad_aoa | bad_re)[0]
+        print(f"[WARN] {len(idx_bad)} stations likely problematic (AoA and/or Re). Consider adjustments below.")
+
+    # Quick debug print of span AoA/Re at seed
+    print("[DEBUG - INIT] span AoA deg:", np.array2string(np.degrees(alpha), precision=1))
+    print("[DEBUG - INIT] span Re     :", np.array2string(Re_span.astype(int)))
+
+    # If you want to bypass polars temporarily to force convergence once:
+    # lift_proto.airfoil_flag      = False
+    # lift_proto.use_2d_analysis   = False
+    # Otherwise keep polars on:
+    lift_proto.airfoil_flag        = True
+    lift_proto.use_2d_analysis     = True
 
     # --- Instantiate the four rotors (DICT, as your 2.5.2 expects) ---
     rotations = [ 1, -1,  1, -1]
@@ -891,7 +939,7 @@ def setup_vehicle():
     lift_rotor_motor.gearbox_efficiency = 1.0  # Direct drive
     lift_rotor_motor.resistance = 0.12  # Ohms, estimated
     lift_rotor_motor.speed_constant = 980 * Units['rpm/volt']  # KV rating
-    lift_rotor_motor.max_power_output = 250.0 * Units.watt  # To reflect ESC/motor pairing
+    lift_rotor_motor.max_power_output = 350.0 * Units.watt  # To reflect ESC/motor pairing - cnv fxx 250W->350W
 
 
     # Optional: skip optimal sizing and assign manually for more realistic conditions
@@ -1058,6 +1106,24 @@ def setup_mission(vehicle,analyses):
         def _combined_residuals(seg):
             prev_residuals_handler(seg)
             _add_zero_throttle_residual(seg)
+
+            # === DEBUG AoA / Re dump per iteration ===
+            try:
+                for tag, lr in seg.vehicle.networks.lift_cruise.lift_rotors.items():
+                    # local references from your distributions
+                    Vt   = lr.angular_velocity * lr.radius_distribution
+                    v_i  = np.sqrt(seg.state.conditions.aerodynamics.thrust_total[0][0] / 
+                                (2.0 * 1.225 * np.pi * lr.tip_radius**2))  # crude actuator-disk inflow
+                    phi  = np.arctan2(v_i, np.maximum(Vt,1e-6))
+                    alpha = lr.twist_distribution - phi
+                    Re_span = (1.225 * Vt * lr.chord_distribution) / 1.81e-5
+
+                    print(f"[ITER-DEBUG] {lr.tag} AoA deg {np.degrees(alpha).min():.1f}–{np.degrees(alpha).max():.1f}, "
+                        f"Re {Re_span.min():.0f}–{Re_span.max():.0f}")
+            except Exception as e:
+                print("[DEBUG] AoA/Re dump failed:", e)
+
+
         res_proc.mission = _combined_residuals
     except AttributeError:
         # Case B: residuals is a bare callable
