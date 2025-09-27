@@ -64,7 +64,10 @@ def log_power_and_voltages(seg, label="[POWER]"):
     if hasattr(conds.propulsion, "battery_current"):
         I_pack = _safe_get(conds.propulsion.battery_current, 0, 0)
 
-    # Lift thrust & power
+    if (P_pack is None or P_pack == "NA") and (V_pack is not None) and (I_pack is not None):
+        P_pack = V_pack * I_pack 
+
+   # Lift thrust & power
     T_lift = None
     P_lift = None
     if hasattr(conds.propulsion, "thrust_lift_total"):
@@ -997,13 +1000,7 @@ def setup_vehicle():
 #    lift_rotor_motor.max_power_output = 350.0 * Units.watt  # To reflect ESC/motor pairing - cnv fxx 250W->350W
 
 
-    # cnv fx
-    # ---------- A/B TEST: MOTOR CAP ----------
-    # Case A (strict): leave your real 250 W cap
-    per_rotor_power_cap_test(vehicle.networks.lift_cruise, cap_watts=250.0)
 
-    # Case B (debug): temporarily raise cap to see if convergence flips
-    # per_rotor_power_cap_test(vehicle.networks.lift_cruise, cap_watts=350.0)
 
     # Optional: skip optimal sizing and assign manually for more realistic conditions
    # lift_rotor_motor                         = size_optimal_motor(lift_rotor_motor,lift_proto) 
@@ -1529,6 +1526,13 @@ def main():
     # except: pass
     # ------------------------------------------------------------------
 
+    # cnv fx
+    # ---------- A/B TEST: MOTOR CAP ----------
+    # Case A (strict): leave your real 250 W cap
+    #per_rotor_power_cap_test(vehicle.networks.lift_cruise, cap_watts=250.0)
+
+    # Case B (debug): temporarily raise cap to see if convergence flips
+    per_rotor_power_cap_test(vehicle.networks.lift_cruise, cap_watts=350.0)
     print("finalizing analysis...")
     analyses.finalize() #<- this builds surrogate models!
     print("✓ Analyzed.")
