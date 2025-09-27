@@ -40,6 +40,61 @@ from SUAVE.Analyses import Process
 from copy import deepcopy
 from scipy.interpolate import RectBivariateSpline
 
+# ---------- POWER & SOLVER DIAGNOSTIC HELPERS ----------
+def _safe_get(arr, *ix, default=None):
+    try:
+        return float(arr[ix])
+    except Exception:
+        try:
+            return float(arr[0])
+        except Exception:
+            return default
+
+def log_power_and_voltages(seg, label="[POWER]"):
+    """Best-effort logs after propulsion step (called each iteration)."""
+    conds = seg.state.conditions
+    # Battery pack
+    V_pack = None
+    P_pack = None
+    I_pack = None
+    if hasattr(conds.propulsion, "battery_voltage_under_load"):
+        V_pack = _safe_get(conds.propulsion.battery_voltage_under_load, 0, 0)
+    if hasattr(conds.propulsion, "battery_power_out"):
+        P_pack = _safe_get(conds.propulsion.battery_power_out, 0, 0)
+    if hasattr(conds.propulsion, "battery_current"):
+        I_pack = _safe_get(conds.propulsion.battery_current, 0, 0)
+
+    # Lift thrust & power
+    T_lift = None
+    P_lift = None
+    if hasattr(conds.propulsion, "thrust_lift_total"):
+        T_lift = _safe_get(conds.propulsion.thrust_lift_total, 0, 0)
+    elif hasattr(conds.propulsion, "thrust_total_lift"):
+        T_lift = _safe_get(conds.propulsion.thrust_total_lift, 0, 0)
+    if hasattr(conds.propulsion, "power_lift_total"):
+        P_lift = _safe_get(conds.propulsion.power_lift_total, 0, 0)
+
+    print(f"{label} V_pack={V_pack if V_pack is not None else 'NA'} V | "
+          f"I_pack={I_pack if I_pack is not None else 'NA'} A | "
+          f"P_pack={P_pack if P_pack is not None else 'NA'} W | "
+          f"T_lift={T_lift if T_lift is not None else 'NA'} N | "
+          f"P_lift={P_lift if P_lift is not None else 'NA'} W")
+
+def per_rotor_power_cap_test(net, cap_watts=None):
+    """Temporarily raise/lower power cap to test if motor limit is binding."""
+    for m in net.lift_rotor_motors:
+        if cap_watts is not None:
+            m.max_power_output = cap_watts * Units.watt
+    print(f"[TEST] Set motor max_power_output to {cap_watts if cap_watts else 'UNCHANGED'} W")
+
+def relax_bevw(lift_proto, relax=0.08, iters=600):
+    try: lift_proto.bevw_relaxation = relax
+    except: pass
+    try: lift_proto.bevw_max_iterations = iters
+    except: pass
+    print(f"[TEST] BEVW relax={relax}, max_iter={iters}")
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 #   VSP GENERATION
 # ----------------------------------------------------------------------------------------------------------------------
@@ -801,9 +856,9 @@ def setup_vehicle():
 
 
     # BEVW knobs (only if your 2.5.2 build supports them)
-    try: lift_proto.bevw_max_iterations = 600
+    try: lift_proto.bevw_max_iterations = 700
     except: pass
-    try: lift_proto.bevw_relaxation     = 0.08
+    try: lift_proto.bevw_relaxation     = 0.05 #cnv fx nudge this upwards
     except: pass
 
     # Operating guesses
@@ -939,8 +994,16 @@ def setup_vehicle():
     lift_rotor_motor.gearbox_efficiency = 1.0  # Direct drive
     lift_rotor_motor.resistance = 0.12  # Ohms, estimated
     lift_rotor_motor.speed_constant = 980 * Units['rpm/volt']  # KV rating
-    lift_rotor_motor.max_power_output = 350.0 * Units.watt  # To reflect ESC/motor pairing - cnv fxx 250W->350W
+#    lift_rotor_motor.max_power_output = 350.0 * Units.watt  # To reflect ESC/motor pairing - cnv fxx 250W->350W
 
+
+    # cnv fx
+    # ---------- A/B TEST: MOTOR CAP ----------
+    # Case A (strict): leave your real 250 W cap
+    per_rotor_power_cap_test(vehicle.networks.lift_cruise, cap_watts=250.0)
+
+    # Case B (debug): temporarily raise cap to see if convergence flips
+    # per_rotor_power_cap_test(vehicle.networks.lift_cruise, cap_watts=350.0)
 
     # Optional: skip optimal sizing and assign manually for more realistic conditions
    # lift_rotor_motor                         = size_optimal_motor(lift_rotor_motor,lift_proto) 
@@ -1198,6 +1261,10 @@ def setup_mission(vehicle,analyses):
             # don't crash the solver just for debug
             print("[ITER-DEBUG] (skip) reason:", e)
 
+        # 👇 Add this line to see battery & lift power each iteration
+        log_power_and_voltages(seg, label="[POWER-ITER]")
+
+
     # install wrapper
     segment.process.iterate.conditions.propulsion = _propulsion_with_debug
 
@@ -1429,6 +1496,39 @@ def main():
     # Setup analyses
     print("Setting up the analyses")
     analyses = setup_analyses(vehicle)
+
+    #cnv fx
+    # ---------- A/B TEST: BATTERY LIMITS ----------
+    bat = vehicle.networks.lift_cruise.battery
+
+    # Case A (strict): your real pack behavior
+    try:
+        print(f"[TEST] Battery mass={bat.mass_properties.mass/Units.kg:.3f} kg")
+    except: pass
+
+    # # Case B (debug): relax limits to see if convergence flips
+    # try:
+    #     # Lower internal resistance (less sag)
+    #     if hasattr(bat, "internal_resistance"):
+    #         bat.internal_resistance *= 0.5
+    #         print("[TEST] battery.internal_resistance *= 0.5")
+    # except: pass
+    # try:
+    #     # Raise max discharge current / power if the class supports it
+    #     if hasattr(bat, "max_power"):
+    #         bat.max_power *= 1.5
+    #         print("[TEST] battery.max_power *= 1.5")
+    #     if hasattr(bat, "max_specific_power"):
+    #         bat.max_specific_power *= 1.5
+    #         print("[TEST] battery.max_specific_power *= 1.5")
+    # except: pass
+    # try:
+    #     # Quick coarse test: add energy/power by increasing mass (temporary)
+    #     bat.mass_properties.mass *= 1.3
+    #     print("[TEST] battery mass *= 1.3 (debug)")
+    # except: pass
+    # ------------------------------------------------------------------
+
     print("finalizing analysis...")
     analyses.finalize() #<- this builds surrogate models!
     print("✓ Analyzed.")
