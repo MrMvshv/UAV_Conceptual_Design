@@ -41,6 +41,50 @@ from copy import deepcopy
 from scipy.interpolate import RectBivariateSpline
 
 
+#------------------------------------------------------------------------------------------------------------------------
+FAST_MODE = True  # False = reproducible (single-thread), True = faster (multi-thread)
+# Global iterate counter for debug logging
+_iter_counter = 0
+# ----------------------------------------------------------------------------------------------------------------------
+
+# --- battery helpers ---
+def enforce_pack_layout(vehicle, Ns=6, Np=4):
+    """Force a valid pack layout on the finalized vehicle."""
+    from SUAVE.Core import Data
+    net = vehicle.networks.lift_cruise
+    bat = net.battery
+    if not hasattr(bat, "pack_config") or bat.pack_config is None:
+        bat.pack_config = Data()
+    bat.pack_config.series   = Ns
+    bat.pack_config.parallel = Np
+
+    # Mirror to any legacy/top-level names that might exist on this build
+    for attr, val in [
+        ("cells_in_series", Ns), ("cells_in_parallel", Np),
+        ("number_of_series_cells", Ns), ("number_of_parallel_cells", Np),
+        ("pack_config_series", Ns), ("pack_config_parallel", Np),
+    ]:
+        if hasattr(bat, attr):
+            setattr(bat, attr, val)
+
+    # Sanity echo
+    s = getattr(bat.pack_config, "series", None)
+    p = getattr(bat.pack_config, "parallel", None)
+    print(f"[BAT-CONFIG] enforced post-finalize series={s}, parallel={p}")
+
+
+# performance ---- Threading for BLAS/MKL/OpenBLAS ----
+if FAST_MODE:
+    # Use more cores for speed (tune to your CPU; 4–8 is usually optimal)
+    os.environ.setdefault("OMP_NUM_THREADS", "8")
+    os.environ.setdefault("MKL_NUM_THREADS", "8")
+    os.environ.setdefault("OPENBLAS_NUM_THREADS", "8")
+else:
+    # Deterministic / comparable runs
+    os.environ["OMP_NUM_THREADS"] = "1"
+    os.environ["MKL_NUM_THREADS"] = "1"
+    os.environ["OPENBLAS_NUM_THREADS"] = "1"
+
 # ========= POWER/AoA LOGGING HELPERS (module-level) =========
 _probe_printed = {"propulsion": False}
 
@@ -106,6 +150,22 @@ def log_power_and_voltages(seg, label="[POWER-ITER]"):
 
     def fmt(x, suf):
         return f"{x:.2f}{suf}" if (x is not None and np.isfinite(x)) else f"NA{suf}"
+    
+    if (V_pack is None) or (not np.isfinite(V_pack)):
+        # fall back to network nominal voltage during early iterations
+        try:
+            net = seg.analyses.vehicle.networks.lift_cruise
+            V_pack = float(net.voltage)
+        except Exception:
+            pass 
+
+    if (V_pack is None) or (not np.isfinite(V_pack)):
+        try:
+            V_pack = float(seg.analyses.vehicle.networks.lift_cruise.voltage)
+        except Exception:
+            pass
+
+
     print(f"{label} V_pack={fmt(V_pack,' V')} | I_pack={fmt(I_pack,' A')} | P_pack={fmt(P_pack,' W')}")
 # ============================================================
 
@@ -728,7 +788,7 @@ def setup_vehicle():
 
     #lift rotors, analytical generation using market prop - Gemfan 1045
     #fixed the fixed thrust bug by using a propeller component instead of lift rotor component
-    print("\n\n\n\n Lift Rotor Design (blade-element) — Composite 10x3.8")
+    print("\n Lift Rotor Design (blade-element) — Composite 10x3.8 \n")
 
     # --- 10×3.8 geometry ---
     R_tip     = 0.127          # 10 in dia
@@ -825,7 +885,8 @@ def setup_vehicle():
     print(f"[DEBUG] rpm_seed={rpm_seed:.0f}, rpm_cap={rpm_cap:.0f}, using rpm_nom={rpm_nom:.0f}")
 
     # Station layout: avoid exact hub/tip, add resolution
-    n_stations = 12
+    n_stations = 8 if FAST_MODE else 12
+
 
     # === Trim inner span to avoid pathological low-Re region ===
     r_inner = max(R_hub*1.8, 0.03)              # ~1.8×hub or ≥3 cm
@@ -1154,6 +1215,7 @@ def _ensure_generic_throttle(segment):
 # ----------------------------------------------------------------------------------------------------------------------
 
 def setup_mission(vehicle,analyses):
+
     
     # ------------------------------------------------------------------
     #   Initialize the Mission
@@ -1182,6 +1244,11 @@ def setup_mission(vehicle,analyses):
     base_segment.process.finalize.post_process.stability     = SUAVE.Methods.skip      
     ones_row                                                 = base_segment.state.ones_row
     
+    if FAST_MODE:
+        base_segment.state.numerics.number_control_points = 4  # was 6
+        base_segment.state.numerics.iterations = 100           # was 150
+        base_segment.state.numerics.tolerance  = 1e-5          # was 5e-6
+
     # ------------------------------------------------------------------
     #   Constant Altitude Hover Segment
     # ------------------------------------------------------------------
@@ -1272,14 +1339,90 @@ def setup_mission(vehicle,analyses):
     # keep the original handler
     prop_step = segment.process.iterate.conditions.propulsion
 
+
+
     def _propulsion_with_debug(seg):
+
+        # ---- Clamp battery inputs so Voltage() never sees out-of-bounds ----
+        try:
+            soc = seg.state.conditions.propulsion.battery_state_of_charge
+            soc[:] = np.clip(soc, 0.02, 0.98)
+        except Exception:
+            pass
+        try:
+            T_cell = seg.state.conditions.propulsion.battery_cell_temperature
+            T_cell[:] = np.clip(T_cell, 273.0, 333.0)
+        except Exception:
+            pass
+        # --------------------------------------------------------------------
+
         # 1) call original propulsion builder (runs BEVW etc.)
         prop_step(seg)
+
+        # 1b) --- Pull V/I/P directly from the battery/network if SUAVE didn't write them yet ---
+        try:
+            conds = seg.state.conditions
+            net   = vehicle.networks.lift_cruise
+            bat   = net.battery
+
+            # Voltage (safe wrapper you installed earlier will clip SOC/Temp)
+            V_cell_or_pack = bat.compute_voltage(seg.state)
+            V_pack = float(np.atleast_1d(V_cell_or_pack)[0])  # SUAVE's NMC model often returns pack-voltage per cp
+
+            # Candidates for power already in conditions (fast path)
+            P_pack = None
+            for name in ("battery_power_out","battery_power","battery_power_draw",
+                        "electrical_power","power_total","network_power","power_draw",
+                        "power_lift_total","shaft_power_lift_total"):
+                if hasattr(conds.propulsion, name):
+                    try:
+                        P_pack = float(getattr(conds.propulsion, name)[0,0])
+                        break
+                    except Exception:
+                        pass
+
+            # If still missing, estimate one:
+            #  - prefer lift rotor mechanical power if available
+            if P_pack is None:
+                try:
+                    P_pack = float(getattr(conds.propulsion,"power_lift_total")[0,0])
+                except Exception:
+                    P_pack = None
+
+            # Pack current
+            I_pack = None
+            if hasattr(conds.propulsion,"battery_current"):
+                try:
+                    I_pack = float(conds.propulsion.battery_current[0,0])
+                except Exception:
+                    pass
+            if I_pack is None and P_pack is not None and np.isfinite(V_pack) and V_pack > 1e-6:
+                I_pack = P_pack / V_pack
+
+            # Optional: stash back into conditions so plots/summaries can see them
+            try:
+                if not hasattr(conds.propulsion,"battery_voltage_under_load"):
+                    conds.propulsion.battery_voltage_under_load = np.atleast_2d([V_pack])
+                if not hasattr(conds.propulsion,"battery_current") and I_pack is not None:
+                    conds.propulsion.battery_current = np.atleast_2d([I_pack])
+                if not hasattr(conds.propulsion,"battery_power_out") and P_pack is not None:
+                    conds.propulsion.battery_power_out = np.atleast_2d([P_pack])
+            except Exception:
+                pass
+
+            # Print with your robust logger format
+            def fmt(x,s): return f"{x:.2f}{s}" if (x is not None and np.isfinite(x)) else f"NA{s}"
+            global _iter_counter
+            _iter_counter += 1
+            if _iter_counter % 5 == 0:  # print every 5th iterate
+                print(f"[POWER-ITER] V_pack={fmt(V_pack,' V')} | I_pack={fmt(I_pack,' A')} | P_pack={fmt(P_pack,' W')}")
+        except Exception as e:
+            print("[POWER-ITER] (estimation skipped):", e)
         print("[ITER-DEBUG] starting iter debug process.")
-        _probe_propulsion_fields(seg)  
+        #_probe_propulsion_fields(seg)  
         try:
             net = vehicle.networks.lift_cruise
-            print(f"[ITER-DEBUG] Lift rotors spanwise AoA/Re at current iterate: {list(net.lift_rotors.keys())}")
+            print(f"[ITER-DEBUG] Lift rotors spanwise AoA/Re at current iterate:")
 
             # 2) air props
             rho = 1.225
@@ -1620,6 +1763,21 @@ def main():
         pass
     print("[TEST] 6S debug: net.voltage/bat.max_voltage = 22.2 V")
 
+    # Define pack layout explicitly so voltage/current can be computed
+    Ns, Np = 6, 4   # 6S4P is a good starting point; use 3–4P per your current draw
+
+    # Attribute name variants across SUAVE builds:
+    for attr, val in [
+        ("number_of_series_cells",   Ns),
+        ("number_of_parallel_cells", Np),
+        ("pack_config_series",       Ns),
+        ("pack_config_parallel",     Np),
+    ]:
+        if hasattr(bat, attr):
+            setattr(bat, attr, val)
+
+    print(f"[BAT-CONFIG] forced series={Ns}, parallel={Np}")
+
     # reduce pack resistance (your build has 'resistance')
     old_R = float(getattr(bat, "resistance"))
     bat.resistance = 0.35 * old_R
@@ -1629,15 +1787,6 @@ def main():
     bat.mass_properties.mass *= 1.3
     if hasattr(bat, "max_power"): bat.max_power *= 1.8
 
-    # Show which battery fields exist in this SUAVE build
-    def show_battery_params(b):
-        print("[BAT] dir:", sorted([a for a in dir(b) if not a.startswith('_')])[:40], "...")
-        for name in ["internal_resistance","resistance","pack_resistance","cell_resistance",
-                     "electrical_resistance","max_power","max_current","max_specific_power",
-                     "max_voltage","voltage","open_circuit_voltage"]:
-            if hasattr(b, name):
-                print(f"[BAT] {name} =", getattr(b, name))
-    show_battery_params(bat)
 
     # Cut sag: reduce the pack resistance if present in this build
     for attr in ["resistance","internal_resistance","pack_resistance","cell_resistance","electrical_resistance"]:
@@ -1701,15 +1850,37 @@ def main():
     analyses.finalize()
     print("✓ Analyzed.")
 
+    # fix for battery pack layout
+    enforce_pack_layout(vehicle, Ns=6, Np=4)   # <- the fix
+
     #fast computation fix
     # 1
     try:
-        Vobj = vehicle.networks.lift_cruise.battery.battery_data.Voltage
+        Vobj = vehicle.networks.lift_cruise.battery
+        print(f"[TEST] battery fields: \n{Vobj.__dict__}\n")
         if hasattr(Vobj, "bounds_error"): Vobj.bounds_error = False
         if hasattr(Vobj, "fill_value"):   Vobj.fill_value   = "extrapolate"
         print("[BAT] Voltage interpolant set to extrapolate (safety net)")
     except Exception as e:
         print("[BAT] Could not relax Voltage bounds:", e)
+
+    # 1) Don't trust __dict__ (many SUAVE objects use __slots__), just set attributes directly
+    bat = vehicle.networks.lift_cruise.battery
+
+    Ns, Np = 6, 4  # keep your 6S4P debug
+    for attr, val in [
+        ("number_of_series_cells",   Ns),
+        ("pack_config_series",       Ns),
+        ("number_of_parallel_cells", Np),
+        ("pack_config_parallel",     Np),
+    ]:
+        if hasattr(bat, attr):
+            setattr(bat, attr, val)
+
+    # sanity echo using getattr (not __dict__)
+    echo_Ns = getattr(bat, "number_of_series_cells", None) or getattr(bat, "pack_config_series", None)
+    echo_Np = getattr(bat, "number_of_parallel_cells", None) or getattr(bat, "pack_config_parallel", None)
+    print(f"[BAT-CONFIG] enforced post-finalize series={echo_Ns}, parallel={echo_Np}")
 
 
     # -2-- Keep per-cell current inside table: ensure enough parallel cells ---
@@ -1736,7 +1907,7 @@ def main():
         # Grab any one rotor to set BEVW knobs on its prototype if available
         lr0 = next(iter(net.lift_rotors.values()))
         if hasattr(lr0, "bevw_relaxation"): lr0.bevw_relaxation = 0.05
-        if hasattr(lr0, "bevw_max_iterations"): lr0.bevw_max_iterations = 700
+        if hasattr(lr0, "bevw_max_iterations"): lr0.bevw_max_iterations = 300
         print("[TEST] BEVW relax=0.05, max_iter=700")
     except Exception:
         pass
@@ -1753,10 +1924,10 @@ def main():
 
     # ---------- Diagnostics ----------
     print("Commenced mission evaluation...Please wait...")
-    for tag, lr in net.lift_rotors.items():
-        print(f"[{tag}] R_tip={getattr(lr,'tip_radius',None):.3f}, n_stations={getattr(lr,'n_stations',None)}, "
-              f"r0={lr.radius_distribution[0]:.4f}, rN={lr.radius_distribution[-1]:.4f}, "
-              f"c0={lr.chord_distribution[0]:.4f}, cN={lr.chord_distribution[-1]:.4f}")
+    # for tag, lr in net.lift_rotors.items():
+    #     print(f"[{tag}] R_tip={getattr(lr,'tip_radius',None):.3f}, n_stations={getattr(lr,'n_stations',None)}, "
+    #           f"r0={lr.radius_distribution[0]:.4f}, rN={lr.radius_distribution[-1]:.4f}, "
+    #           f"c0={lr.chord_distribution[0]:.4f}, cN={lr.chord_distribution[-1]:.4f}")
 
     # ---------- Run ----------
     results = mission.evaluate()
@@ -1766,9 +1937,12 @@ def main():
     print_segment_results(results)
     print_mission_summary(results)
 
-    print("making and saving plots...")
-    save_plots(results)
-    print("✓ done plotting")
+    
+    if not FAST_MODE:
+        print("making and saving plots...")
+        save_plots(results)
+        print("✓ done plotting")
+
     return
 
     
