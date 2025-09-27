@@ -40,6 +40,73 @@ from SUAVE.Analyses import Process
 from copy import deepcopy
 from scipy.interpolate import RectBivariateSpline
 
+
+# ========= POWER/AoA LOGGING HELPERS (module-level) =========
+_probe_printed = {"propulsion": False}
+
+def _grab_scalar(x):
+    """Pull a scalar from SUAVE arrays or python numbers."""
+    try:    return float(x[0,0])
+    except Exception:
+        try: return float(x[0])
+        except Exception:
+            try: return float(x)
+            except Exception: return None
+
+def _first_finite(*vals):
+    for v in vals:
+        try:
+            vv = float(v)
+            if np.isfinite(vv): return vv
+        except Exception:
+            pass
+    return None
+
+def _probe_propulsion_fields(seg):
+    """Print once which fields exist under conditions.propulsion."""
+    if _probe_printed["propulsion"]:
+        return
+    try:
+        props = seg.state.conditions.propulsion
+        names = [n for n in dir(props) if not n.startswith("_")]
+        print("[FIELDS] propulsion has:", sorted(names))
+    except Exception as e:
+        print("[FIELDS] propulsion probe failed:", e)
+    _probe_printed["propulsion"] = True
+
+def log_power_and_voltages(seg, label="[POWER-ITER]"):
+    """Robust pack V/I/P read with fallbacks and derivations."""
+    prop = getattr(seg.state.conditions, "propulsion", None)
+
+    V_pack = I_pack = P_pack = None
+    if prop is not None:
+        # candidate names vary by SUAVE build
+        V_cands = [getattr(prop, n, None) for n in
+                   ("battery_voltage_under_load","battery_voltage","pack_voltage","voltage")]
+        I_cands = [getattr(prop, n, None) for n in
+                   ("battery_current","pack_current","current")]
+        P_cands = [getattr(prop, n, None) for n in
+                   ("battery_power_out","battery_power","electrical_power",
+                    "power_total","network_power","power_draw",
+                    "power_lift_total","shaft_power_lift_total")]
+
+        V_pack = _first_finite(*[ _grab_scalar(c) for c in V_cands ])
+        I_pack = _first_finite(*[ _grab_scalar(c) for c in I_cands ])
+        P_pack = _first_finite(*[ _grab_scalar(c) for c in P_cands ])
+
+    # derive missing quantities
+    if (P_pack is None or not np.isfinite(P_pack)) and (V_pack is not None) and (I_pack is not None):
+        P_pack = V_pack * I_pack
+    if (I_pack is None or not np.isfinite(I_pack)) and (P_pack is not None) and (V_pack is not None) and V_pack > 1e-6:
+        I_pack = P_pack / V_pack
+    if (P_pack is None or not np.isfinite(P_pack)) and prop is not None and hasattr(prop, "power_lift_total"):
+        P_pack = _grab_scalar(getattr(prop, "power_lift_total"))
+
+    def fmt(x, suf):
+        return f"{x:.2f}{suf}" if (x is not None and np.isfinite(x)) else f"NA{suf}"
+    print(f"{label} V_pack={fmt(V_pack,' V')} | I_pack={fmt(I_pack,' A')} | P_pack={fmt(P_pack,' W')}")
+# ============================================================
+
 # ---------- POWER & SOLVER DIAGNOSTIC HELPERS ----------
 def _safe_get(arr, *ix, default=None):
     try:
@@ -50,38 +117,38 @@ def _safe_get(arr, *ix, default=None):
         except Exception:
             return default
 
-def log_power_and_voltages(seg, label="[POWER]"):
-    """Best-effort logs after propulsion step (called each iteration)."""
-    conds = seg.state.conditions
-    # Battery pack
-    V_pack = None
-    P_pack = None
-    I_pack = None
-    if hasattr(conds.propulsion, "battery_voltage_under_load"):
-        V_pack = _safe_get(conds.propulsion.battery_voltage_under_load, 0, 0)
-    if hasattr(conds.propulsion, "battery_power_out"):
-        P_pack = _safe_get(conds.propulsion.battery_power_out, 0, 0)
-    if hasattr(conds.propulsion, "battery_current"):
-        I_pack = _safe_get(conds.propulsion.battery_current, 0, 0)
+# def log_power_and_voltages(seg, label="[POWER]"):
+#     """Best-effort logs after propulsion step (called each iteration)."""
+#     conds = seg.state.conditions
+#     # Battery pack
+#     V_pack = None
+#     P_pack = None
+#     I_pack = None
+#     if hasattr(conds.propulsion, "battery_voltage_under_load"):
+#         V_pack = _safe_get(conds.propulsion.battery_voltage_under_load, 0, 0)
+#     if hasattr(conds.propulsion, "battery_power_out"):
+#         P_pack = _safe_get(conds.propulsion.battery_power_out, 0, 0)
+#     if hasattr(conds.propulsion, "battery_current"):
+#         I_pack = _safe_get(conds.propulsion.battery_current, 0, 0)
 
-    if (P_pack is None or P_pack == "NA") and (V_pack is not None) and (I_pack is not None):
-        P_pack = V_pack * I_pack 
+#     if (P_pack is None or P_pack == "NA") and (V_pack is not None) and (I_pack is not None):
+#         P_pack = V_pack * I_pack 
 
-   # Lift thrust & power
-    T_lift = None
-    P_lift = None
-    if hasattr(conds.propulsion, "thrust_lift_total"):
-        T_lift = _safe_get(conds.propulsion.thrust_lift_total, 0, 0)
-    elif hasattr(conds.propulsion, "thrust_total_lift"):
-        T_lift = _safe_get(conds.propulsion.thrust_total_lift, 0, 0)
-    if hasattr(conds.propulsion, "power_lift_total"):
-        P_lift = _safe_get(conds.propulsion.power_lift_total, 0, 0)
+#    # Lift thrust & power
+#     T_lift = None
+#     P_lift = None
+#     if hasattr(conds.propulsion, "thrust_lift_total"):
+#         T_lift = _safe_get(conds.propulsion.thrust_lift_total, 0, 0)
+#     elif hasattr(conds.propulsion, "thrust_total_lift"):
+#         T_lift = _safe_get(conds.propulsion.thrust_total_lift, 0, 0)
+#     if hasattr(conds.propulsion, "power_lift_total"):
+#         P_lift = _safe_get(conds.propulsion.power_lift_total, 0, 0)
 
-    print(f"{label} V_pack={V_pack if V_pack is not None else 'NA'} V | "
-          f"I_pack={I_pack if I_pack is not None else 'NA'} A | "
-          f"P_pack={P_pack if P_pack is not None else 'NA'} W | "
-          f"T_lift={T_lift if T_lift is not None else 'NA'} N | "
-          f"P_lift={P_lift if P_lift is not None else 'NA'} W")
+#     print(f"{label} V_pack={V_pack if V_pack is not None else 'NA'} V | "
+#           f"I_pack={I_pack if I_pack is not None else 'NA'} A | "
+#           f"P_pack={P_pack if P_pack is not None else 'NA'} W | "
+#           f"T_lift={T_lift if T_lift is not None else 'NA'} N | "
+#           f"P_lift={P_lift if P_lift is not None else 'NA'} W")
 
 def per_rotor_power_cap_test(net, cap_watts=None):
     """Temporarily raise/lower power cap to test if motor limit is binding."""
@@ -1199,7 +1266,7 @@ def setup_mission(vehicle,analyses):
         # 1) call original propulsion builder (runs BEVW etc.)
         prop_step(seg)
         print("[ITER-DEBUG] starting iter debug process.")
-
+        _probe_propulsion_fields(seg)  
         try:
             net = vehicle.networks.lift_cruise
             print(f"[ITER-DEBUG] Lift rotors spanwise AoA/Re at current iterate: {list(net.lift_rotors.keys())}")
@@ -1258,12 +1325,42 @@ def setup_mission(vehicle,analyses):
             # don't crash the solver just for debug
             print("[ITER-DEBUG] (skip) reason:", e)
 
-        # 👇 Add this line to see battery & lift power each iteration
-        log_power_and_voltages(seg, label="[POWER-ITER]")
-
 
     # install wrapper
     segment.process.iterate.conditions.propulsion = _propulsion_with_debug
+    # === POWER LOG HOOK (robust across SUAVE builds) ===
+    # Try preferred: after the energy/battery update
+    try:
+        energy_step = segment.process.iterate.conditions.energy
+
+        def _energy_with_power_log(seg):
+            energy_step(seg)                         # original energy/battery update
+            log_power_and_voltages(seg, "[POWER-ITER]")  # <-- prints V/I/P here
+
+        segment.process.iterate.conditions.energy = _energy_with_power_log
+        print("[HOOK] Logging after iterate.conditions.energy")
+    except AttributeError:
+        # Fallback A: after residuals.mission (runs late in the iterate)
+        res_proc = segment.process.iterate.residuals
+        try:
+            prev_residuals = res_proc.mission
+
+            def _residuals_with_power_log(seg):
+                prev_residuals(seg)                  # original residuals work
+                log_power_and_voltages(seg, "[POWER-ITER]")
+
+            res_proc.mission = _residuals_with_power_log
+            print("[HOOK] Logging after iterate.residuals.mission")
+        except AttributeError:
+            # Fallback B: wrap residuals callable directly
+            prev_residuals = res_proc
+
+            def _residuals_with_power_log(seg):
+                prev_residuals(seg)
+                log_power_and_voltages(seg, "[POWER-ITER]")
+
+            segment.process.iterate.residuals = _residuals_with_power_log
+            print("[HOOK] Logging after iterate.residuals (callable)")
 
 
     # Append to mission
@@ -1496,6 +1593,15 @@ def main():
     except Exception:
         pass
     print("[TEST] 6S debug: net.voltage/bat.max_voltage = 22.2 V")
+
+    # reduce pack resistance (your build has 'resistance')
+    old_R = float(getattr(bat, "resistance"))
+    bat.resistance = 0.35 * old_R
+    print(f"[TEST] bat.resistance: {old_R:.5f} -> {bat.resistance:.5f} Ω")
+
+    # optional: add mass / raise ceilings
+    bat.mass_properties.mass *= 1.3
+    if hasattr(bat, "max_power"): bat.max_power *= 1.8
 
     # Show which battery fields exist in this SUAVE build
     def show_battery_params(b):
