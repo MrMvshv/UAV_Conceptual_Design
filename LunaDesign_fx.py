@@ -1479,144 +1479,136 @@ def print_mission_summary(results):
 # ----------------------------------------------------------------------------------------------------------------------
 
 def main():
-    # Setup a vehicle
+    # ---------- Setup vehicle ----------
     print("Setting up the vehicle")
     vehicle = setup_vehicle()
     print("✓ Vehicle setup complete")
 
+    # ---------- Switch to 6S (debug) BEFORE analyses.finalize ----------
+    net = vehicle.networks.lift_cruise
+    bat = net.battery
 
-    #Open VSP generation
-    #success = export_to_vsp(vehicle)
-    #if success:
-    #    print("\n✓ Successfully exported vehicle to OpenVSP format.\n")
- 
-    # Setup analyses
-    print("Setting up the analyses")
-    analyses = setup_analyses(vehicle)
-
-    #cnv fx
-    # ---------- A/B TEST: BATTERY LIMITS ----------
-    bat = vehicle.networks.lift_cruise.battery
-
-    # Case A (strict): your real pack behavior
+    # Voltage step-up: 4S -> 6S
+    net.voltage     = 22.2 * Units.volt   # 6S nominal
+    bat.max_voltage = net.voltage
     try:
-        print(f"[TEST] Battery mass={bat.mass_properties.mass/Units.kg:.3f} kg")
-    except: pass
+        initialize_from_mass(bat)  # ok if your build requires re-init after voltage change
+    except Exception:
+        pass
+    print("[TEST] 6S debug: net.voltage/bat.max_voltage = 22.2 V")
 
-    # # Case B (debug): relax limits to see if convergence flips
-    # try:
-    #     # Lower internal resistance (less sag)
-    #     if hasattr(bat, "internal_resistance"):
-    #         bat.internal_resistance *= 0.5
-    #         print("[TEST] battery.internal_resistance *= 0.5")
-    # except: pass
-    # try:
-    #     # Raise max discharge current / power if the class supports it
-    #     if hasattr(bat, "max_power"):
-    #         bat.max_power *= 1.5
-    #         print("[TEST] battery.max_power *= 1.5")
-    #     if hasattr(bat, "max_specific_power"):
-    #         bat.max_specific_power *= 1.5
-    #         print("[TEST] battery.max_specific_power *= 1.5")
-    # except: pass
-    # try:
-    #     # Quick coarse test: add energy/power by increasing mass (temporary)
-    #     bat.mass_properties.mass *= 1.3
-    #     print("[TEST] battery mass *= 1.3 (debug)")
-    # except: pass
-    # ------------------------------------------------------------------
+    # Show which battery fields exist in this SUAVE build
+    def show_battery_params(b):
+        print("[BAT] dir:", sorted([a for a in dir(b) if not a.startswith('_')])[:40], "...")
+        for name in ["internal_resistance","resistance","pack_resistance","cell_resistance",
+                     "electrical_resistance","max_power","max_current","max_specific_power",
+                     "max_voltage","voltage","open_circuit_voltage"]:
+            if hasattr(b, name):
+                print(f"[BAT] {name} =", getattr(b, name))
+    show_battery_params(bat)
 
-    # cnv fx
-    # ---------- A/B TEST: MOTOR CAP ----------
-    # Case A (strict): leave your real 250 W cap
-    #per_rotor_power_cap_test(vehicle.networks.lift_cruise, cap_watts=250.0)
+    # Cut sag: reduce the pack resistance if present in this build
+    for attr in ["resistance","internal_resistance","pack_resistance","cell_resistance","electrical_resistance"]:
+        if hasattr(bat, attr):
+            try:
+                old = float(getattr(bat, attr))
+                setattr(bat, attr, 0.35 * old)  # ~65% reduction
+                print(f"[TEST] bat.{attr}: {old:.5f} -> {getattr(bat, attr):.5f} Ω")
+                break
+            except Exception as e:
+                print(f"[TEST] could not set bat.{attr}:", e)
 
-    # Case B (debug): temporarily raise cap to see if convergence flips
-    per_rotor_power_cap_test(vehicle.networks.lift_cruise, cap_watts=350.0)
-
-    # -------- BATTERY DEBUG KNOBS (TEMP) --------
-    bat = vehicle.networks.lift_cruise.battery
-
-    # 1) reduce internal resistance (less sag)
+    # Give a little more headroom (optional)
     try:
-        if hasattr(bat, "internal_resistance"):
-            bat.internal_resistance *= 0.3     # 70% reduction
-            print("[TEST] battery.internal_resistance *= 0.3")
-    except Exception as e:
-        print("[TEST] battery.internal_resistance not available:", e)
-
-    # 2) raise current / power ceilings if present
-    try:
-        if hasattr(bat, "max_power"):
-            bat.max_power *= 2.0
-            print("[TEST] battery.max_power *= 2.0")
-        if hasattr(bat, "max_specific_power"):
-            bat.max_specific_power *= 2.0
-            print("[TEST] battery.max_specific_power *= 2.0")
-        if hasattr(bat, "max_current"):
-            bat.max_current *= 2.0
-            print("[TEST] battery.max_current *= 2.0")
-    except Exception as e:
-        print("[TEST] battery power/current ceilings not available:", e)
-
-    # 3) quick brute-force: add 40–70% mass (more cells in parallel → lower R, more headroom)
-    try:
-        bat.mass_properties.mass *= 1.5
-        print("[TEST] battery mass *= 1.5 (debug)")
+        old_m = float(bat.mass_properties.mass/Units.kg)
+        bat.mass_properties.mass *= 1.3
+        print(f"[TEST] battery mass: {old_m:.3f} -> {bat.mass_properties.mass/Units.kg:.3f} kg (debug)")
     except Exception as e:
         print("[TEST] battery mass tweak failed:", e)
 
+    # Raise battery max power/current ceilings if these exist (harmless if not)
+    for attr in ["max_power","max_specific_power","max_current"]:
+        if hasattr(bat, attr):
+            try:
+                old = float(getattr(bat, attr))
+                setattr(bat, attr, 1.8 * old)
+                print(f"[TEST] bat.{attr}: {old:.1f} -> {getattr(bat, attr):.1f}")
+            except Exception as e:
+                print(f"[TEST] could not set bat.{attr}:", e)
+
+    # ---------- Motor cap A/B (debug: 350 W per lift motor) ----------
+    per_rotor_power_cap_test(net, cap_watts=350.0)
+
+    # ---------- Seed rpm again for 6S (keeps Ct≈0.12) ----------
+    # helper: rpm from hover Ct guess (simple prop theory)
+    def seed_rpm_from_hover(weight_N, n_rotors, R, Ct_guess=0.12, rho=1.225):
+        T_per = weight_N / n_rotors
+        D     = 2.0 * R
+        n_hz  = ((T_per)/(rho*Ct_guess*D**4))**0.5      # rev/s
+        return float(n_hz * 60.0)                       # rpm
+
+    try:
+        R_tip   = next(iter(net.lift_rotors.values())).tip_radius
+        W_total = float(vehicle.mass_properties.takeoff * Units.gravity)
+        rpm0    = seed_rpm_from_hover(W_total, n_rotors=len(net.lift_rotors), R=R_tip, Ct_guess=0.12)
+        # cap rpm by tip Mach ~ 0.6
+        a_sound = 343.0
+        rpm_cap = (60.0 * (0.6 * a_sound)) / (2.0 * np.pi * R_tip)
+        rpm0    = float(np.clip(rpm0, 3000.0, rpm_cap))
+        omega0  = 2.0*np.pi*rpm0/60.0
+        for lr in net.lift_rotors.values():
+            lr.angular_velocity = omega0
+        print(f"[DEBUG] 6S rpm_seed={rpm0:.0f}, tip-cap≈{rpm_cap:.0f}")
+    except Exception as e:
+        print("[DEBUG] rpm reseed skipped:", e)
+
+    # ---------- Analyses (build surrogates AFTER all tweaks) ----------
+    print("Setting up the analyses")
+    analyses = setup_analyses(vehicle)
     print("finalizing analysis...")
-    analyses.finalize() #<- this builds surrogate models!
+    analyses.finalize()
     print("✓ Analyzed.")
 
+    # ---------- BEVW solver damping (gentle for first success) ----------
+    try:
+        # Grab any one rotor to set BEVW knobs on its prototype if available
+        lr0 = next(iter(net.lift_rotors.values()))
+        if hasattr(lr0, "bevw_relaxation"): lr0.bevw_relaxation = 0.05
+        if hasattr(lr0, "bevw_max_iterations"): lr0.bevw_max_iterations = 700
+        print("[TEST] BEVW relax=0.05, max_iter=700")
+    except Exception:
+        pass
 
-    # override the compute_noise function to be a no-op
+    # ---------- Ensure power logger computes P when SUAVE doesn't ----------
+    # If you used the helper from earlier, make sure it computes P=V*I when needed.
+
+    # ---------- Mission ----------
     Noise.compute_noise = lambda segment: None
-    # Setup a mission
     print("Setting up the mission")
-    mission  = setup_mission(vehicle, analyses)
+    mission = setup_mission(vehicle, analyses)
 
-    print(f"Number of lift rotors: {len(vehicle.networks.lift_cruise.lift_rotors)}")
+    print(f"Number of lift rotors: {len(net.lift_rotors)}")
 
-    # Run the mission    
+    # ---------- Diagnostics ----------
     print("Commenced mission evaluation...Please wait...")
+    for tag, lr in net.lift_rotors.items():
+        print(f"[{tag}] R_tip={getattr(lr,'tip_radius',None):.3f}, n_stations={getattr(lr,'n_stations',None)}, "
+              f"r0={lr.radius_distribution[0]:.4f}, rN={lr.radius_distribution[-1]:.4f}, "
+              f"c0={lr.chord_distribution[0]:.4f}, cN={lr.chord_distribution[-1]:.4f}")
 
-    #diagnostic prints
-    lr_keys = list(vehicle.networks.lift_cruise.lift_rotors.keys())
-    for k in lr_keys:
-        lr = vehicle.networks.lift_cruise.lift_rotors[k]
-        print(f"[{k}] tip_radius={getattr(lr,'tip_radius',None)}  hub_radius={lr.hub_radius}  "
-            f"n_stations={getattr(lr,'n_stations',None)}  "
-            f"r[0]={lr.radius_distribution[0]:.4f}  r[-1]={lr.radius_distribution[-1]:.4f}")
-        
-    for k, lr in vehicle.networks.lift_cruise.lift_rotors.items():
-        print(f"[{k}] R_tip={lr.tip_radius:.3f}, n_stations={lr.n_stations}, "
-            f"r0={lr.radius_distribution[0]:.4f}, rN={lr.radius_distribution[-1]:.4f}, "
-            f"c0={lr.chord_distribution[0]:.4f}, cN={lr.chord_distribution[-1]:.4f}")
-
-    for tag, lr in vehicle.networks.lift_cruise.lift_rotors.items():
-        print(f"[{tag}] R_tip={lr.tip_radius:.3f}, n={lr.n_stations}, "
-            f"r0={lr.radius_distribution[0]:.4f}, rN={lr.radius_distribution[-1]:.4f}, "
-            f"c0={lr.chord_distribution[0]:.4f}, cN={lr.chord_distribution[-1]:.4f}")
-
-
+    # ---------- Run ----------
     results = mission.evaluate()
     print("✓ Mission evaluation complete, displaying results:")
-    
-    # Print Results
+
+    # ---------- Summaries & Plots ----------
     print_segment_results(results)
     print_mission_summary(results)
 
-    # plot the mission
     print("making and saving plots...")
-    #main plots only
     save_plots(results)
-    # Option 2: Save all available plots
-    # save_plots(results, plot_all=True)
     print("✓ done plotting")
-    
     return
+
     
 if __name__ == '__main__':
     print("Running eVTOL tutorial")
