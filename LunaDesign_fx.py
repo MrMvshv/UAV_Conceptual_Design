@@ -1533,6 +1533,39 @@ def main():
 
     # Case B (debug): temporarily raise cap to see if convergence flips
     per_rotor_power_cap_test(vehicle.networks.lift_cruise, cap_watts=350.0)
+
+    # -------- BATTERY DEBUG KNOBS (TEMP) --------
+    bat = vehicle.networks.lift_cruise.battery
+
+    # 1) reduce internal resistance (less sag)
+    try:
+        if hasattr(bat, "internal_resistance"):
+            bat.internal_resistance *= 0.3     # 70% reduction
+            print("[TEST] battery.internal_resistance *= 0.3")
+    except Exception as e:
+        print("[TEST] battery.internal_resistance not available:", e)
+
+    # 2) raise current / power ceilings if present
+    try:
+        if hasattr(bat, "max_power"):
+            bat.max_power *= 2.0
+            print("[TEST] battery.max_power *= 2.0")
+        if hasattr(bat, "max_specific_power"):
+            bat.max_specific_power *= 2.0
+            print("[TEST] battery.max_specific_power *= 2.0")
+        if hasattr(bat, "max_current"):
+            bat.max_current *= 2.0
+            print("[TEST] battery.max_current *= 2.0")
+    except Exception as e:
+        print("[TEST] battery power/current ceilings not available:", e)
+
+    # 3) quick brute-force: add 40–70% mass (more cells in parallel → lower R, more headroom)
+    try:
+        bat.mass_properties.mass *= 1.5
+        print("[TEST] battery mass *= 1.5 (debug)")
+    except Exception as e:
+        print("[TEST] battery mass tweak failed:", e)
+
     print("finalizing analysis...")
     analyses.finalize() #<- this builds surrogate models!
     print("✓ Analyzed.")
