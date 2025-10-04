@@ -42,7 +42,7 @@ from scipy.interpolate import RectBivariateSpline
 
 
 #------------------------------------------------------------------------------------------------------------------------
-FAST_MODE = True  # False = reproducible (single-thread), True = faster (multi-thread)
+FAST_MODE = False  # False = reproducible (single-thread), True = faster (multi-thread)
 # Global iterate counter for debug logging
 _iter_counter = 0
 # ----------------------------------------------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ def enforce_pack_layout(vehicle, Ns=6, Np=4):
     # Sanity echo
     s = getattr(bat.pack_config, "series", None)
     p = getattr(bat.pack_config, "parallel", None)
-    print(f"[BAT-CONFIG] enforced post-finalize series={s}, parallel={p}")
+    print(f"[BAT-CONFIG] enforced by fn e_p_l post-finalize series={s}, parallel={p}")
 
 
 # performance ---- Threading for BLAS/MKL/OpenBLAS ----
@@ -660,7 +660,7 @@ def setup_vehicle():
     net.number_of_propeller_engines  = 1
     net.identical_propellers         = True
     net.identical_lift_rotors        = False    
-    net.voltage                      = 14.8 * Units.volt  # Typical for small eVTOLs, e.g., 4S LiPo battery    
+    net.voltage                      = 22.2 * Units.volt  # Typical for small eVTOLs, e.g., 6S LiPo battery    
     
     #------------------------------------------------------------------
     # Electronic Speed Controller
@@ -693,8 +693,12 @@ def setup_vehicle():
     bat                      = SUAVE.Components.Energy.Storages.Batteries.Constant_Mass.Lithium_Ion_LiNiMnCoO2_18650() 
     bat.mass_properties.mass = 0.3 * Units.kg        
     bat.max_voltage          = net.voltage   
-    initialize_from_mass(bat)    
-    net.battery              = bat      
+    initialize_from_mass(bat)
+    from SUAVE.Core import Data    
+    net.battery              = bat 
+    bat.pack_config = Data()
+    bat.pack_config.series   = 6
+    bat.pack_config.parallel = 4     
     
     #------------------------------------------------------------------
     # Design Rotors and Propellers
@@ -811,17 +815,17 @@ def setup_vehicle():
         rpm = 60.0 * n
         return float(rpm)
     
-    def rpm_bounds_for_x2212_4s(R_tip, mach_max=0.60, kv=980.0, V=14.8):
-        # No-load ceiling
-        rpm_nl = kv * V                      # ~14.5 krpm
-        # Tip Mach ceiling
-        a = 343.0
-        rpm_tip_cap = (60.0 * (mach_max * a)) / (2.0 * np.pi * R_tip)
-        # Practical loaded hover band ~ 0.7–0.85 of no-load
-        rpm_min = 0.20 * rpm_nl              # don't start absurdly low
-        rpm_max = min(0.85 * rpm_nl, rpm_tip_cap)
-        return rpm_min, rpm_max, rpm_nl, rpm_tip_cap
     
+    def rpm_bounds_for_x2212_4s(R_tip, mach_max=0.60, kv=980.0, V=22.2):
+            # No-load ceiling
+            rpm_nl = kv * V                      # ~14.5 krpm
+            # Tip Mach ceiling
+            a = 343.0
+            rpm_tip_cap = (60.0 * (mach_max * a)) / (2.0 * np.pi * R_tip)
+            # Practical loaded hover band ~ 0.7–0.85 of no-load
+            rpm_min = 0.20 * rpm_nl              # don't start absurdly low
+            rpm_max = min(0.85 * rpm_nl, rpm_tip_cap)
+            return rpm_min, rpm_max, rpm_nl, rpm_tip_cap
 
     W = vehicle.mass_properties.takeoff * Units.gravity  # N
 
@@ -854,7 +858,7 @@ def setup_vehicle():
     a_sound = 343.0  # m/s
     Vtip_max = 0.6 * a_sound
     rpm_cap  = (60.0 * Vtip_max) / (2.0 * np.pi * R_tip)
-    rpm_nom  = min(rpm_seed, rpm_cap)
+    rpm_nom = min(max(rpm_seed, 9000.0), rpm_cap)
 
     #cnv fx xx
     def Ct_from_T_rpm(T, rpm, D, rho=1.225):
@@ -895,8 +899,8 @@ def setup_vehicle():
 
 
     #cnv fx 1 619 ->
-    c_root = 0.044   # was 0.04
-    c_tip  = 0.022   # keep a gentle taper
+    c_root = 0.05   # was 0.04
+    c_tip  = 0.028   # keep a gentle taper
     chord  = np.linspace(c_root, c_tip, n_stations)
 
     # helper to compute solidity (σ = B/piR * ∫c(r)dr)
@@ -989,13 +993,13 @@ def setup_vehicle():
 
 
     # BEVW knobs (only if your 2.5.2 build supports them)
-    try: lift_proto.bevw_max_iterations = 700
+    try: lift_proto.bevw_max_iterations = 1200
     except: pass
-    try: lift_proto.bevw_relaxation     = 0.05 #cnv fx nudge this upwards
+    try: lift_proto.bevw_relaxation     = 0.12 #cnv fx nudge this upwards
     except: pass
 
     # Operating guesses
-    lift_proto.angular_velocity    = omega_nom
+    lift_proto.angular_velocity = 2.0*np.pi*rpm_nom/60.0
     lift_proto.variable_pitch      = False
     lift_proto.beta_0              = np.radians(twist_deg).tolist()
 
@@ -1119,7 +1123,7 @@ def setup_vehicle():
 
     # Real-world specs
     lift_rotor_motor.efficiency = 0.85
-    lift_rotor_motor.nominal_voltage = 14.8 * Units.volt  # 4S
+    lift_rotor_motor.nominal_voltage = bat.max_voltage
     lift_rotor_motor.mass_properties.mass = 0.072 * Units.kg  # X2212 weight
     lift_rotor_motor.no_load_current = 0.5  # Typical for this class
     lift_rotor_motor.origin = lift_proto.origin
@@ -1198,18 +1202,18 @@ def setup_analyses(vehicle):
 
     return analyses
 
-def _ensure_generic_throttle(segment):
-    """Shim: if Hover.Common expects unknowns.throttle, synthesize it."""
-    s = segment.state
-    n_cp = s.numerics.number_control_points
-    # Create generic throttle if missing, derived from per-rotor throttle if present
-    if not hasattr(s.unknowns, 'throttle'):
-        if hasattr(s.unknowns, 'lift_rotor_throttle'):
-            # mean across rotors → shape (n_cp, 1)
-            s.unknowns.throttle = np.mean(s.unknowns.lift_rotor_throttle, axis=1, keepdims=True)
-        else:
-            # safe fallback
-            s.unknowns.throttle = 0.7 * np.ones((n_cp, 1))
+# def _ensure_generic_throttle(segment):
+#     """Shim: if Hover.Common expects unknowns.throttle, synthesize it."""
+#     s = segment.state
+#     n_cp = s.numerics.number_control_points
+#     # Create generic throttle if missing, derived from per-rotor throttle if present
+#     if not hasattr(s.unknowns, 'throttle'):
+#         if hasattr(s.unknowns, 'lift_rotor_throttle'):
+#             # mean across rotors → shape (n_cp, 1)
+#             s.unknowns.throttle = np.mean(s.unknowns.lift_rotor_throttle, axis=1, keepdims=True)
+#         else:
+#             # safe fallback
+#             s.unknowns.throttle = 0.7 * np.ones((n_cp, 1))
 # ----------------------------------------------------------------------------------------------------------------------
 #   Mission
 # ----------------------------------------------------------------------------------------------------------------------
@@ -1252,305 +1256,306 @@ def setup_mission(vehicle,analyses):
     # ------------------------------------------------------------------
     #   Constant Altitude Hover Segment
     # ------------------------------------------------------------------
-    print("Performing k alt hover segment mission analysis")
-    segment     = Segments.Hover.Hover(base_segment)
-    segment.tag = "hover_segment"
-    segment.analyses.extend(analyses)
+#     print("Performing k alt hover segment mission analysis")
+#     segment     = Segments.Hover.Hover(base_segment)
+#     segment.tag = "hover_segment"
+#     segment.analyses.extend(analyses)
 
-    # 1) Set numerics & basics BEFORE touching unknowns/residuals
-    #segment.state.numerics.number_control_points = 8
-    segment.altitude       = 100.0 * Units.ft
-    segment.duration       = 300.0 * Units.seconds
-    segment.battery_energy = vehicle.networks.lift_cruise.battery.max_energy * 0.90
+#     # 1) Set numerics & basics BEFORE touching unknowns/residuals
+#     #segment.state.numerics.number_control_points = 8
+#     segment.altitude       = 100.0 * Units.ft
+#     segment.duration       = 300.0 * Units.seconds
+#     segment.battery_energy = vehicle.networks.lift_cruise.battery.max_energy * 0.90
 
-    #cmp fx 2
-    # Defensive SOC clamp (harmless if field not present)
-    try:
-        soc = segment.state.conditions.propulsion.battery_state_of_charge
-        soc[:,0] = np.clip(soc[:,0], 0.02, 0.98)
-    except Exception:
-        pass
+#     #cmp fx 2
+#     # Defensive SOC clamp (harmless if field not present)
+#     try:
+#         soc = segment.state.conditions.propulsion.battery_state_of_charge
+#         soc[:,0] = np.clip(soc[:,0], 0.02, 0.98)
+#     except Exception:
+#         pass
 
-    # 2) Ensure containers exist
-    if not hasattr(segment.state, 'unknowns'):
-        segment.state.unknowns = Data()
-    if not hasattr(segment.state, 'residuals'):
-        segment.state.residuals = Data()
+#     # 2) Ensure containers exist
+#     if not hasattr(segment.state, 'unknowns'):
+#         segment.state.unknowns = Data()
+#     if not hasattr(segment.state, 'residuals'):
+#         segment.state.residuals = Data()
 
-    # 3a) Seed a dummy throttle so the helper’s unconditional delete succeeds
-    n_cp = segment.state.numerics.number_control_points
-    segment.state.unknowns.throttle = 0.75 * np.ones((n_cp, 1))
+#     # 3a) Seed a dummy throttle so the helper’s unconditional delete succeeds
+#     n_cp = segment.state.numerics.number_control_points
+#     segment.state.unknowns.throttle = 0.85 * np.ones((n_cp, 1))
 
-   # 3b) Let the network install its unknowns/residuals & handlers (call ONCE)
-    segment = vehicle.networks.lift_cruise.add_lift_unknowns_and_residuals_to_segment(segment)
+#    # 3b) Let the network install its unknowns/residuals & handlers (call ONCE)
+#     segment = vehicle.networks.lift_cruise.add_lift_unknowns_and_residuals_to_segment(segment)
 
-    # 4) Re-create the generic throttle expected by Hover/Common BEFORE solver packs x0
-    if not hasattr(segment.state.unknowns, 'throttle'):
-        segment.state.unknowns.throttle = 0.85 * np.ones((n_cp, 1))  # a tad higher to help
+#     # # 4) Re-create the generic throttle expected by Hover/Common BEFORE solver packs x0
+#     if not hasattr(segment.state.unknowns, 'throttle'):
+#         segment.state.unknowns.throttle = 0.85 * np.ones((n_cp, 1))  # a tad higher to help
 
-    # >>> NEW: seed per-rotor throttle guess so rotors make thrust on the very first call
-    n_lift = len(vehicle.networks.lift_cruise.lift_rotors)
-    if hasattr(segment.state.unknowns, 'lift_rotor_throttle'):
-        segment.state.unknowns.lift_rotor_throttle[:, :] = 0.70  # shape (n_cp, n_lift)
-    # keep cruise prop at zero in hover if present (harmless, but explicit)
-    if hasattr(segment.state.unknowns, 'propeller_throttle'):
-        segment.state.unknowns.propeller_throttle[:, :] = 0.0
+#     # >>> NEW: seed per-rotor throttle guess so rotors make thrust on the very first call
+#     n_lift = len(vehicle.networks.lift_cruise.lift_rotors)
+#     if hasattr(segment.state.unknowns, 'lift_rotor_throttle'):
+#         segment.state.unknowns.lift_rotor_throttle[:, :] = 0.70  # shape (n_cp, n_lift)
+#     # keep cruise prop at zero in hover if present (harmless, but explicit)
+#     if hasattr(segment.state.unknowns, 'propeller_throttle'):
+#         segment.state.unknowns.propeller_throttle[:, :] = 0.0
 
-    # 4b) Add a zero residual matching our synthetic unknown so sizes stay equal
-    def _add_zero_throttle_residual(seg):
-        ncp = seg.state.numerics.number_control_points
-        if hasattr(seg.state.unknowns, 'throttle') and not hasattr(seg.state.residuals, 'throttle'):
-            seg.state.residuals.throttle = np.zeros((ncp, 1))
+#     # 4b) Add a zero residual matching our synthetic unknown so sizes stay equal
+#     def _add_zero_throttle_residual(seg):
+#         ncp = seg.state.numerics.number_control_points
+#         if hasattr(seg.state.unknowns, 'throttle') and not hasattr(seg.state.residuals, 'throttle'):
+#             seg.state.residuals.throttle = np.zeros((ncp, 1))
 
-    # Wrap residuals handler robustly (works whether it's a Process(.mission) or a bare function)
-    res_proc = segment.process.iterate.residuals
-    try:
-        # Case A: residuals is a Process with .mission
-        prev_residuals_handler = res_proc.mission
-        def _combined_residuals(seg):
-            prev_residuals_handler(seg)
-            _add_zero_throttle_residual(seg)
+#     # Wrap residuals handler robustly (works whether it's a Process(.mission) or a bare function)
+#     res_proc = segment.process.iterate.residuals
+#     try:
+#         # Case A: residuals is a Process with .mission
+#         prev_residuals_handler = res_proc.mission
+#         def _combined_residuals(seg):
+#             prev_residuals_handler(seg)
+#             _add_zero_throttle_residual(seg)
 
-        res_proc.mission = _combined_residuals
-    except AttributeError:
-        # Case B: residuals is a bare callable
-        prev_residuals_handler = res_proc
-        def _combined_residuals(seg):
-            prev_residuals_handler(seg)
-            _add_zero_throttle_residual(seg)
-        segment.process.iterate.residuals = _combined_residuals
+#         res_proc.mission = _combined_residuals
+#     except AttributeError:
+#         # Case B: residuals is a bare callable
+#         prev_residuals_handler = res_proc
+#         def _combined_residuals(seg):
+#             prev_residuals_handler(seg)
+#             _add_zero_throttle_residual(seg)
+#         segment.process.iterate.residuals = _combined_residuals
 
-    # 5) Optional solver nudge (don’t force conditions throttle anywhere)
-    segment.initial_throttle = 0.75
+#     # 5) Optional solver nudge (don’t force conditions throttle anywhere)
+#     segment.initial_throttle = 0.75
 
-    # 6) Skip noise only; DO NOT alter iterate.unknowns.mission
-    segment.process.iterate.noise  = SUAVE.Methods.skip
-    segment.process.finalize.noise = SUAVE.Methods.skip
+#     # 6) Skip noise only; DO NOT alter iterate.unknowns.mission
+#     segment.process.iterate.noise  = SUAVE.Methods.skip
+#     segment.process.finalize.noise = SUAVE.Methods.skip
 
-    # 7) Debug once: verify pack size includes our throttle (>= n_cp)
-    x0 = segment.state.unknowns.pack_array()
-    print(f"Initial unknowns length (should be >= {n_cp}): {len(x0)}")
+#     # 7) Debug once: verify pack size includes our throttle (>= n_cp)
+#     x0 = segment.state.unknowns.pack_array()
+#     print(f"Initial unknowns length (should be >= {n_cp}): {len(x0)}")
 
-    # 8? cnv fx
-    # === DEBUG WRAPPER AROUND THE PROPULSION CONDITIONS STEP ===
-    # This runs each iteration before residuals are evaluated.
+#     # 8? cnv fx
+#     # === DEBUG WRAPPER AROUND THE PROPULSION CONDITIONS STEP ===
+#     # This runs each iteration before residuals are evaluated.
 
-    # 1) keep the original handler
-    # keep the original handler
-    prop_step = segment.process.iterate.conditions.propulsion
-
-
-
-    def _propulsion_with_debug(seg):
-
-        # ---- Clamp battery inputs so Voltage() never sees out-of-bounds ----
-        try:
-            soc = seg.state.conditions.propulsion.battery_state_of_charge
-            soc[:] = np.clip(soc, 0.02, 0.98)
-        except Exception:
-            pass
-        try:
-            T_cell = seg.state.conditions.propulsion.battery_cell_temperature
-            T_cell[:] = np.clip(T_cell, 273.0, 333.0)
-        except Exception:
-            pass
-        # --------------------------------------------------------------------
-
-        # 1) call original propulsion builder (runs BEVW etc.)
-        prop_step(seg)
-
-        # 1b) --- Pull V/I/P directly from the battery/network if SUAVE didn't write them yet ---
-        try:
-            conds = seg.state.conditions
-            net   = vehicle.networks.lift_cruise
-            bat   = net.battery
-
-            # Voltage (safe wrapper you installed earlier will clip SOC/Temp)
-            V_cell_or_pack = bat.compute_voltage(seg.state)
-            V_pack = float(np.atleast_1d(V_cell_or_pack)[0])  # SUAVE's NMC model often returns pack-voltage per cp
-
-            # Candidates for power already in conditions (fast path)
-            P_pack = None
-            for name in ("battery_power_out","battery_power","battery_power_draw",
-                        "electrical_power","power_total","network_power","power_draw",
-                        "power_lift_total","shaft_power_lift_total"):
-                if hasattr(conds.propulsion, name):
-                    try:
-                        P_pack = float(getattr(conds.propulsion, name)[0,0])
-                        break
-                    except Exception:
-                        pass
-
-            # If still missing, estimate one:
-            #  - prefer lift rotor mechanical power if available
-            if P_pack is None:
-                try:
-                    P_pack = float(getattr(conds.propulsion,"power_lift_total")[0,0])
-                except Exception:
-                    P_pack = None
-
-            # Pack current
-            I_pack = None
-            if hasattr(conds.propulsion,"battery_current"):
-                try:
-                    I_pack = float(conds.propulsion.battery_current[0,0])
-                except Exception:
-                    pass
-            if I_pack is None and P_pack is not None and np.isfinite(V_pack) and V_pack > 1e-6:
-                I_pack = P_pack / V_pack
-
-            # Optional: stash back into conditions so plots/summaries can see them
-            try:
-                if not hasattr(conds.propulsion,"battery_voltage_under_load"):
-                    conds.propulsion.battery_voltage_under_load = np.atleast_2d([V_pack])
-                if not hasattr(conds.propulsion,"battery_current") and I_pack is not None:
-                    conds.propulsion.battery_current = np.atleast_2d([I_pack])
-                if not hasattr(conds.propulsion,"battery_power_out") and P_pack is not None:
-                    conds.propulsion.battery_power_out = np.atleast_2d([P_pack])
-            except Exception:
-                pass
-
-            # Print with your robust logger format
-            def fmt(x,s): return f"{x:.2f}{s}" if (x is not None and np.isfinite(x)) else f"NA{s}"
-            global _iter_counter
-            _iter_counter += 1
-            if _iter_counter % 5 == 0:  # print every 5th iterate
-                print(f"[POWER-ITER] V_pack={fmt(V_pack,' V')} | I_pack={fmt(I_pack,' A')} | P_pack={fmt(P_pack,' W')}")
-        except Exception as e:
-            print("[POWER-ITER] (estimation skipped):", e)
-        print("[ITER-DEBUG] starting iter debug process.")
-        #_probe_propulsion_fields(seg)  
-        try:
-            net = vehicle.networks.lift_cruise
-            print(f"[ITER-DEBUG] Lift rotors spanwise AoA/Re at current iterate:")
-
-            # 2) air props
-            rho = 1.225
-            try:
-                rho = float(seg.state.conditions.freestream.density[0,0])
-            except Exception:
-                pass
-            mu_air = 1.81e-5
-
-            # 3) best-effort per-rotor thrust from conditions; fallback to weight split
-            def get_T_per(seg_, n_rotors_):
-                candidates = [
-                    ("propulsion",  "thrust_lift_total"),
-                    ("propulsion",  "thrust_total_lift"),
-                    ("aerodynamics","thrust_total"),   # may include cruise, but ok as last resort
-                ]
-                for group, name in candidates:
-                    conds = getattr(seg_.state.conditions, group, None)
-                    if conds is not None and hasattr(conds, name):
-                        val = getattr(conds, name)
-                        try:
-                            return float(val[0,0]) / n_rotors_
-                        except Exception:
-                            try:
-                                return float(val[0]) / n_rotors_
-                            except Exception:
-                                pass
-                # Fallback: target hover thrust from the *closed-over* vehicle (avoid seg_.vehicle)
-                W = float(vehicle.mass_properties.takeoff * Units.gravity)
-                return W / n_rotors_
-
-            n_rotors = len(net.lift_rotors)
-            T_per = get_T_per(seg, n_rotors)
-
-            # 4) spanwise AoA/Re for each rotor
-            for tag, lr in net.lift_rotors.items():
-                r  = np.asarray(lr.radius_distribution)
-                c  = np.asarray(lr.chord_distribution)
-                bt = np.asarray(lr.twist_distribution)    # [rad]
-
-                omega = float(lr.angular_velocity)        # [rad/s]
-                Vt    = omega * r
-                A     = np.pi * (float(lr.tip_radius)**2)
-
-                v_i   = np.sqrt(max(T_per,1e-9) / (2.0 * rho * A))
-                phi   = np.arctan2(v_i, np.maximum(Vt, 1e-6))
-                alpha = bt - phi
-                Re_sp = (rho * Vt * c) / mu_air
-
-                print(f"[ITER-DEBUG] {tag}: AoA {np.degrees(alpha).min():.1f}..{np.degrees(alpha).max():.1f} deg | "
-                    f"Re {Re_sp.min():.0f}..{Re_sp.max():.0f}")
-        except Exception as e:
-            # don't crash the solver just for debug
-            print("[ITER-DEBUG] (skip) reason:", e)
+#     # 1) keep the original handler
+#     # keep the original handler
+#     prop_step = segment.process.iterate.conditions.propulsion
 
 
-    # install wrapper
-    segment.process.iterate.conditions.propulsion = _propulsion_with_debug
-    # === POWER LOG HOOK (robust across SUAVE builds) ===
-    # Try preferred: after the energy/battery update
-    try:
-        energy_step = segment.process.iterate.conditions.energy
 
-        def _energy_with_power_log(seg):
-            energy_step(seg)                         # original energy/battery update
-            log_power_and_voltages(seg, "[POWER-ITER]")  # <-- prints V/I/P here
+#     def _propulsion_with_debug(seg):
 
-        segment.process.iterate.conditions.energy = _energy_with_power_log
-        print("[HOOK] Logging after iterate.conditions.energy")
-    except AttributeError:
-        # Fallback A: after residuals.mission (runs late in the iterate)
-        res_proc = segment.process.iterate.residuals
-        try:
-            prev_residuals = res_proc.mission
+#         # ---- Clamp battery inputs so Voltage() never sees out-of-bounds ----
+#         try:
+#             soc = seg.state.conditions.propulsion.battery_state_of_charge
+#             soc[:] = np.clip(soc, 0.02, 0.98)
+#         except Exception:
+#             pass
+#         try:
+#             T_cell = seg.state.conditions.propulsion.battery_cell_temperature
+#             T_cell[:] = np.clip(T_cell, 273.0, 333.0)
+#         except Exception:
+#             pass
+#         # --------------------------------------------------------------------
 
-            def _residuals_with_power_log(seg):
-                prev_residuals(seg)                  # original residuals work
-                log_power_and_voltages(seg, "[POWER-ITER]")
+#         # 1) call original propulsion builder (runs BEVW etc.)
+#         prop_step(seg)
 
-            res_proc.mission = _residuals_with_power_log
-            print("[HOOK] Logging after iterate.residuals.mission")
-        except AttributeError:
-            # Fallback B: wrap residuals callable directly
-            prev_residuals = res_proc
+#         # 1b) --- Pull V/I/P directly from the battery/network if SUAVE didn't write them yet ---
+#         try:
+#             conds = seg.state.conditions
+#             net   = vehicle.networks.lift_cruise
+#             bat   = net.battery
 
-            def _residuals_with_power_log(seg):
-                prev_residuals(seg)
-                log_power_and_voltages(seg, "[POWER-ITER]")
+#             # Voltage (safe wrapper you installed earlier will clip SOC/Temp)
+#             V_cell_or_pack = bat.compute_voltage(seg.state)
+#             V_pack = float(np.atleast_1d(V_cell_or_pack)[0])  # SUAVE's NMC model often returns pack-voltage per cp
 
-            segment.process.iterate.residuals = _residuals_with_power_log
-            print("[HOOK] Logging after iterate.residuals (callable)")
+#             # Candidates for power already in conditions (fast path)
+#             P_pack = None
+#             for name in ("battery_power_out","battery_power","battery_power_draw",
+#                         "electrical_power","power_total","network_power","power_draw",
+#                         "power_lift_total","shaft_power_lift_total"):
+#                 if hasattr(conds.propulsion, name):
+#                     try:
+#                         P_pack = float(getattr(conds.propulsion, name)[0,0])
+#                         break
+#                     except Exception:
+#                         pass
 
-    # New: also hook a FINALIZE printer so you get at least one truthful line
-        post = segment.process.finalize.post_process
-        prev = getattr(post, "mission", None)
-        if callable(prev):
-            def _post_with_power(seg):
-                prev(seg)
-                log_power_and_voltages(seg, "[POWER-FINAL]")
-            post.mission = _post_with_power
-            print("[HOOK] Logging after finalize.post_process.mission")
-        else:
-            prev_post = post
-            def _post_with_power(seg):
-                prev_post(seg)
-                log_power_and_voltages(seg, "[POWER-FINAL]")
-            segment.process.finalize.post_process = _post_with_power
-            print("[HOOK] Logging after finalize.post_process (callable)")
+#             # If still missing, estimate one:
+#             #  - prefer lift rotor mechanical power if available
+#             if P_pack is None:
+#                 try:
+#                     P_pack = float(getattr(conds.propulsion,"power_lift_total")[0,0])
+#                 except Exception:
+#                     P_pack = None
 
-    # Append to mission
-    mission.append_segment(segment)
+#             # Pack current
+#             I_pack = None
+#             if hasattr(conds.propulsion,"battery_current"):
+#                 try:
+#                     I_pack = float(conds.propulsion.battery_current[0,0])
+#                 except Exception:
+#                     pass
+#             if I_pack is None and P_pack is not None and np.isfinite(V_pack) and V_pack > 1e-6:
+#                 I_pack = P_pack / V_pack
+
+#             #commented as can (silently) overwrite SUAVE’s own signs/units in some builds and poison the solver state.
+#             # # Optional: stash back into conditions so plots/summaries can see them
+#             # try:
+#             #     if not hasattr(conds.propulsion,"battery_voltage_under_load"):
+#             #         conds.propulsion.battery_voltage_under_load = np.atleast_2d([V_pack])
+#             #     if not hasattr(conds.propulsion,"battery_current") and I_pack is not None:
+#             #         conds.propulsion.battery_current = np.atleast_2d([I_pack])
+#             #     if not hasattr(conds.propulsion,"battery_power_out") and P_pack is not None:
+#             #         conds.propulsion.battery_power_out = np.atleast_2d([P_pack])
+#             # except Exception:
+#             #     pass
+
+#             # Print with your robust logger format
+#             def fmt(x,s): return f"{x:.2f}{s}" if (x is not None and np.isfinite(x)) else f"NA{s}"
+#             global _iter_counter
+#             _iter_counter += 1
+#             if _iter_counter % 5 == 0:  # print every 5th iterate
+#                 print(f"[POWER-ITER] V_pack={fmt(V_pack,' V')} | I_pack={fmt(I_pack,' A')} | P_pack={fmt(P_pack,' W')} | P_draw={fmt(-P_pack,' W')}")
+#         except Exception as e:
+#             print("[POWER-ITER] (estimation skipped):", e)
+#         print("[ITER-DEBUG] starting iter debug process.")
+#         #_probe_propulsion_fields(seg)  
+#         try:
+#             net = vehicle.networks.lift_cruise
+#             print(f"[ITER-DEBUG] Lift rotors spanwise AoA/Re at current iterate:")
+
+#             # 2) air props
+#             rho = 1.225
+#             try:
+#                 rho = float(seg.state.conditions.freestream.density[0,0])
+#             except Exception:
+#                 pass
+#             mu_air = 1.81e-5
+
+#             # 3) best-effort per-rotor thrust from conditions; fallback to weight split
+#             def get_T_per(seg_, n_rotors_):
+#                 candidates = [
+#                     ("propulsion",  "thrust_lift_total"),
+#                     ("propulsion",  "thrust_total_lift"),
+#                     ("aerodynamics","thrust_total"),   # may include cruise, but ok as last resort
+#                 ]
+#                 for group, name in candidates:
+#                     conds = getattr(seg_.state.conditions, group, None)
+#                     if conds is not None and hasattr(conds, name):
+#                         val = getattr(conds, name)
+#                         try:
+#                             return float(val[0,0]) / n_rotors_
+#                         except Exception:
+#                             try:
+#                                 return float(val[0]) / n_rotors_
+#                             except Exception:
+#                                 pass
+#                 # Fallback: target hover thrust from the *closed-over* vehicle (avoid seg_.vehicle)
+#                 W = float(vehicle.mass_properties.takeoff * Units.gravity)
+#                 return W / n_rotors_
+
+#             n_rotors = len(net.lift_rotors)
+#             T_per = get_T_per(seg, n_rotors)
+
+#             # 4) spanwise AoA/Re for each rotor
+#             for tag, lr in net.lift_rotors.items():
+#                 r  = np.asarray(lr.radius_distribution)
+#                 c  = np.asarray(lr.chord_distribution)
+#                 bt = np.asarray(lr.twist_distribution)    # [rad]
+
+#                 omega = float(lr.angular_velocity)        # [rad/s]
+#                 Vt    = omega * r
+#                 A     = np.pi * (float(lr.tip_radius)**2)
+
+#                 v_i   = np.sqrt(max(T_per,1e-9) / (2.0 * rho * A))
+#                 phi   = np.arctan2(v_i, np.maximum(Vt, 1e-6))
+#                 alpha = bt - phi
+#                 Re_sp = (rho * Vt * c) / mu_air
+
+#                 print(f"[ITER-DEBUG] {tag}: AoA {np.degrees(alpha).min():.1f}..{np.degrees(alpha).max():.1f} deg | "
+#                     f"Re {Re_sp.min():.0f}..{Re_sp.max():.0f}")
+#         except Exception as e:
+#             # don't crash the solver just for debug
+#             print("[ITER-DEBUG] (skip) reason:", e)
+
+
+#     # install wrapper
+#     segment.process.iterate.conditions.propulsion = _propulsion_with_debug
+#     # === POWER LOG HOOK (robust across SUAVE builds) ===
+#     # Try preferred: after the energy/battery update
+#     try:
+#         energy_step = segment.process.iterate.conditions.energy
+
+#         def _energy_with_power_log(seg):
+#             energy_step(seg)                         # original energy/battery update
+#             log_power_and_voltages(seg, "[POWER-ITER]")  # <-- prints V/I/P here
+
+#         segment.process.iterate.conditions.energy = _energy_with_power_log
+#         print("[HOOK] Logging after iterate.conditions.energy")
+#     except AttributeError:
+#         # Fallback A: after residuals.mission (runs late in the iterate)
+#         res_proc = segment.process.iterate.residuals
+#         try:
+#             prev_residuals = res_proc.mission
+
+#             def _residuals_with_power_log(seg):
+#                 prev_residuals(seg)                  # original residuals work
+#                 log_power_and_voltages(seg, "[POWER-ITER]")
+
+#             res_proc.mission = _residuals_with_power_log
+#             print("[HOOK] Logging after iterate.residuals.mission")
+#         except AttributeError:
+#             # Fallback B: wrap residuals callable directly
+#             prev_residuals = res_proc
+
+#             def _residuals_with_power_log(seg):
+#                 prev_residuals(seg)
+#                 log_power_and_voltages(seg, "[POWER-ITER]")
+
+#             segment.process.iterate.residuals = _residuals_with_power_log
+#             print("[HOOK] Logging after iterate.residuals (callable)")
+
+#     # New: also hook a FINALIZE printer so you get at least one truthful line
+#         post = segment.process.finalize.post_process
+#         prev = getattr(post, "mission", None)
+#         if callable(prev):
+#             def _post_with_power(seg):
+#                 prev(seg)
+#                 log_power_and_voltages(seg, "[POWER-FINAL]")
+#             post.mission = _post_with_power
+#             print("[HOOK] Logging after finalize.post_process.mission")
+#         else:
+#             prev_post = post
+#             def _post_with_power(seg):
+#                 prev_post(seg)
+#                 log_power_and_voltages(seg, "[POWER-FINAL]")
+#             segment.process.finalize.post_process = _post_with_power
+#             print("[HOOK] Logging after finalize.post_process (callable)")
+
+#     # Append to mission
+#     mission.append_segment(segment)
 
 
     # ------------------------------------------------------------------
     #   Hover Climb Segment
     # ------------------------------------------------------------------
-    # segment     = Segments.Hover.Climb(base_segment)
-    # segment.tag = "hover_climb"
-    # segment.analyses.extend(analyses)
-    # segment.altitude_start                                   = 0.0   * Units.ft
-    # segment.altitude_end                                     = 100.  * Units.ft
-    # segment.climb_rate                                       = 200.  * Units['ft/min']
-    # segment.battery_energy                                   = vehicle.networks.lift_cruise.battery.max_energy*0.95
-    # segment.process.iterate.unknowns.mission                 = SUAVE.Methods.skip
-    # segment = vehicle.networks.lift_cruise.add_lift_unknowns_and_residuals_to_segment(segment)
+    segment     = Segments.Hover.Climb(base_segment)
+    segment.tag = "hover_climb"
+    segment.analyses.extend(analyses)
+    segment.altitude_start                                   = 0.0   * Units.ft
+    segment.altitude_end                                     = 100.  * Units.ft
+    segment.climb_rate                                       = 200.  * Units['ft/min']
+    segment.battery_energy                                   = vehicle.networks.lift_cruise.battery.max_energy*0.95
+    segment.process.iterate.unknowns.mission                 = SUAVE.Methods.skip
+    segment = vehicle.networks.lift_cruise.add_lift_unknowns_and_residuals_to_segment(segment)
     
-    # # add to misison
-    # mission.append_segment(segment)
+    # add to misison
+    mission.append_segment(segment)
     
     # # ------------------------------------------------------------------
     # #   Second Climb Segment: Constant Speed, Constant Rate
@@ -1620,12 +1625,19 @@ def print_segment_results(results):
     for segment in results.segments:
         print(f"\n=== RESIDUALS FOR: {segment.tag.upper()} ===")
         try:
-            residuals = segment.conditions.residuals
-            unknowns = segment.conditions.unknowns
-            for key, val in residuals.items():
-                print(f"  Residual: {key:<20} {val}")
-            for key, val in unknowns.items():
-                print(f"  Unknown:  {key:<20} {val}")
+            residuals = getattr(segment.conditions, "residuals", None)
+            unknowns  = getattr(segment.conditions, "unknowns",  None)
+            if residuals is None and hasattr(segment, "state"):
+                residuals = getattr(segment.state, "residuals", None)
+            if unknowns  is None and hasattr(segment, "state"):
+                unknowns  = getattr(segment.state, "unknowns",  None)
+
+            if residuals is not None:
+                for key, val in residuals.items():
+                    print(f"  Residual: {key:<20} {val}")
+            if unknowns is not None:
+                for key, val in unknowns.items():
+                    print(f"  Unknown:  {key:<20} {val}")
         except Exception as e:
             print(f"  Could not read residuals: {e}")
         
@@ -1835,7 +1847,7 @@ def main():
         # cap rpm by tip Mach ~ 0.6
         a_sound = 343.0
         rpm_cap = (60.0 * (0.6 * a_sound)) / (2.0 * np.pi * R_tip)
-        rpm0    = float(np.clip(rpm0, 3000.0, rpm_cap))
+        rpm0    = float(np.clip(rpm0, 9000.0, rpm_cap))
         omega0  = 2.0*np.pi*rpm0/60.0
         for lr in net.lift_rotors.values():
             lr.angular_velocity = omega0
@@ -1855,14 +1867,14 @@ def main():
 
     #fast computation fix
     # 1
-    try:
-        Vobj = vehicle.networks.lift_cruise.battery
-        print(f"[TEST] battery fields: \n{Vobj.__dict__}\n")
-        if hasattr(Vobj, "bounds_error"): Vobj.bounds_error = False
-        if hasattr(Vobj, "fill_value"):   Vobj.fill_value   = "extrapolate"
-        print("[BAT] Voltage interpolant set to extrapolate (safety net)")
-    except Exception as e:
-        print("[BAT] Could not relax Voltage bounds:", e)
+    # try:
+    #     Vobj = vehicle.networks.lift_cruise.battery
+    #     print(f"[TEST] battery fields: \n{Vobj.__dict__}\n")
+    #     if hasattr(Vobj, "bounds_error"): Vobj.bounds_error = False
+    #     if hasattr(Vobj, "fill_value"):   Vobj.fill_value   = "extrapolate"
+    #     print("[BAT] Voltage interpolant set to extrapolate (safety net)")
+    # except Exception as e:
+    #     print("[BAT] Could not relax Voltage bounds:", e)
 
     # 1) Don't trust __dict__ (many SUAVE objects use __slots__), just set attributes directly
     bat = vehicle.networks.lift_cruise.battery
@@ -1906,9 +1918,9 @@ def main():
     try:
         # Grab any one rotor to set BEVW knobs on its prototype if available
         lr0 = next(iter(net.lift_rotors.values()))
-        if hasattr(lr0, "bevw_relaxation"): lr0.bevw_relaxation = 0.05
-        if hasattr(lr0, "bevw_max_iterations"): lr0.bevw_max_iterations = 300
-        print("[TEST] BEVW relax=0.05, max_iter=700")
+        if hasattr(lr0, "bevw_relaxation"): lr0.bevw_relaxation = 0.12
+        if hasattr(lr0, "bevw_max_iterations"): lr0.bevw_max_iterations = 1200
+        print("[TEST] BEVW relax=0.12, max_iter=1200")
     except Exception:
         pass
 
