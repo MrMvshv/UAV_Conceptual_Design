@@ -26,9 +26,9 @@ from SUAVE.Methods.Power.Battery.Sizing                  import initialize_from_
 from copy import deepcopy
 #save plots
 def save_plots(results):
-    plot_solar_flux(results)
-    plt.savefig('solar_flux.png')
-    plt.close()
+    # plot_solar_flux(results)
+    # plt.savefig('solar_flux.png')
+    # plt.close()
     
     plot_aerodynamic_forces(results)
     plt.savefig('aero_forces.png') 
