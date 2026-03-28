@@ -101,7 +101,7 @@ except Exception as e:
 os.environ["AVL_PATH"] = r"C:\Tools\AVL\avl.exe"
 os.environ["PATH"] += ";C:\\Tools\\AVL"
 USE_AVL = True   # Set True to call AVL (make sure avl.exe is installed and path set)
-AVL_PATH = os.environ.get('AVL_PATH', None)  # optionally set environment variable AVL_PATH to avl.exe location
+AVL_PATH = os.environ.get('AVL_PATH', r"C:\Tools\AVL\avl.exe")  # optionally set environment variable AVL_PATH to avl.exe location
 POLAR_INTERPOLATED_CSV = 'polars_interpolated.csv'  # preferred (post-processed)
 POLAR_RAW_CSV = 'polars.csv'                       # raw XFLR5 export fallback
 EXCRESCENCE_CD_DEFAULT = 0.01                      # small fudge for excrescence/parasitic not in polars
