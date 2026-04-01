@@ -28,6 +28,7 @@ import os
 import sys
 import copy
 import math
+import datetime
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -552,27 +553,27 @@ def setup_luna1_vehicle():
 N_ROTORS      = 4        # lift rotor count 
 R_ROTOR       = 0.1682   # m — tip radius calibrated to give 288 W hover at SL
 ETA_PROP_LIFT = 0.80     # lift rotor propulsive efficiency
-THRUST_MARGIN = 1.10     # 10% thrust margin above weight (§7.2)
+THRUST_MARGIN = 1.10     # 10% thrust margin above weight (Sec.7.2)
 
-# ── Mission phase durations from §2.2 (midpoint of stated ranges) ──────────
+# ── Mission phase durations from Sec.2.2 (midpoint of stated ranges) ──────────
 T_TAKEOFF    = 75.0    # s  — vertical climb (60–90 s range, midpoint used)
 T_TRANS_UP   = 45.0    # s  — transition to forward flight (30–60 s)
 T_TRANS_DOWN = 45.0    # s  — transition back to hover (30–60 s)
 T_LANDING    = 75.0    # s  — vertical descent + landing (60–90 s)
-T_RESERVE    = 300.0   # s  — 5 min mandatory reserve hover (§2.2 phase 6)
+T_RESERVE    = 300.0   # s  — 5 min mandatory reserve hover (Sec.2.2 phase 6)
 
-# ── Performance requirements §2.3.1 ────────────────────────────────────────
+# ── Performance requirements Sec.2.3.1 ────────────────────────────────────────
 V_CRUISE_MS  = 50.0 / 3.6   # m/s — 50 km/h design cruise speed
 RANGE_M      = 3000.0        # m   — 3 km design range
 END_MIN_REQ  = 25.0          # min — endurance capability requirement
 
-# ── Battery margins §7.3 ────────────────────────────────────────────────────
+# ── Battery margins Sec.7.3 ────────────────────────────────────────────────────
 DOD          = 0.80    # depth of discharge (use 80% to protect cells)
-DEGRADATION  = 0.20    # 20% capacity loss over battery lifecycle (§7.3)
+DEGRADATION  = 0.20    # 20% capacity loss over battery lifecycle (Sec.7.3)
 
 # ── Environment ─────────────────────────────────────────────────────────────
 ALT_CRUISE   = 90.0    # m   — cruise altitude midpoint (60–120 m AGL)
-ALT_TRANS    = 30.0    # m   — transition altitude §2.2
+ALT_TRANS    = 30.0    # m   — transition altitude Sec.2.2
 G            = 9.81    # m/s²
 
 
@@ -696,7 +697,7 @@ def run_evtol_mission(vehicle, polars, use_avl=False,
     E_total  = sum(ph['energy_Wh'] for ph in phases)
     t_total  = sum(ph['time_s']    for ph in phases)
     E_bat    = get_battery_energy_Wh(vehicle)
-    E_bat_c  = E_bat * DOD * (1.0 - DEGRADATION)  # conservative (§7.3)
+    E_bat_c  = E_bat * DOD * (1.0 - DEGRADATION)  # conservative (Sec.7.3)
     margin   = (E_bat   - E_total) / E_bat   * 100.0
     margin_c = (E_bat_c - E_total) / E_bat_c * 100.0
 
@@ -748,7 +749,7 @@ def run_idealised_mission(vehicle):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# SENSITIVITY SWEEPS §8.3
+# SENSITIVITY SWEEPS Sec.8.3
 # ══════════════════════════════════════════════════════════════════════════════
 def sweep_payload(vehicle, polars, use_avl=False, verbose=False):
     """Payload ±40% sweep — shows energy sensitivity to mass changes."""
@@ -780,11 +781,11 @@ def sweep_speed(vehicle, polars, use_avl=False, verbose=False):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# REQUIREMENT VERIFICATION §8.4
+# REQUIREMENT VERIFICATION Sec.8.4
 # ══════════════════════════════════════════════════════════════════════════════
 def verify_requirements(res):
     """
-    Check §2.3.1 requirements against simulation results.
+    Check Sec.2.3.1 requirements against simulation results.
     Endurance is a capability check, not mission time check.
     """
     peak = max(ph['power_W'] for ph in res['phases'])
@@ -818,7 +819,7 @@ def verify_requirements(res):
 def print_mission_summary(res, ideal, reqs):
     W = 72
     print('\n' + '=' * W)
-    print('  LUNA-1  §7+§8 — eVTOL Mission Analysis: Real vs Idealised')
+    print('  LUNA-1  Sec.7+Sec.8 — eVTOL Mission Analysis: Real vs Idealised')
     print('=' * W)
     print(f"  Battery   : {res['E_bat_Wh']:.0f} Wh nominal  |  "
           f"{res['E_bat_cons']:.0f} Wh conservative (DOD×degradation)")
@@ -847,7 +848,7 @@ def print_mission_summary(res, ideal, reqs):
     print(f"  Energy margin (conserv.)   : {res['margin_cons']:.1f}%")
 
     print()
-    print(f"  §8.4 Requirement Verification")
+    print(f"  Sec.8.4 Requirement Verification")
     print(f"  {'Requirement':<30} {'Target':<18} {'Result':<14} Status")
     print(f"  {'-'*30} {'-'*18} {'-'*14} {'-'*6}")
     for name, tgt, val, met in reqs:
@@ -876,7 +877,7 @@ def plot_mission_results(res, ideal, pl_g, pl_e, pl_m,
 
     # ── Figure 1: Real mission power profile ──────────────────────────────
     fig1, ax1 = plt.subplots(figsize=(10, 5))
-    fig1.suptitle('LUNA-1 §7.4 + §8.1 — Real mission power profile', fontsize=11, fontweight='bold')
+    fig1.suptitle('LUNA-1 Sec.7.4 + Sec.8.1 — Real mission power profile', fontsize=11, fontweight='bold')
     ax1r = ax1.twinx()
 
     cursor = 0.0
@@ -913,11 +914,12 @@ def plot_mission_results(res, ideal, pl_g, pl_e, pl_m,
     ax1.spines['top'].set_visible(False); ax1.spines['right'].set_visible(False)
     ax1.grid(True, alpha=0.3)
     plt.tight_layout()
+    plt.savefig(os.path.join(OUTPUT_DIR, 'fig1_power_profile.png'), dpi=150, bbox_inches='tight')
     plt.show()
 
     # ── Figure 2: Idealised vs Real ───────────────────────────────────────
     fig2, ax2 = plt.subplots(figsize=(10, 5))
-    fig2.suptitle('LUNA-1 §8.1 — Idealised vs real mission comparison', fontsize=11, fontweight='bold')
+    fig2.suptitle('LUNA-1 Sec.8.1 — Idealised vs real mission comparison', fontsize=11, fontweight='bold')
 
     tr, pr, c = [], [], 0.0
     for ph in phases_r:
@@ -943,11 +945,12 @@ def plot_mission_results(res, ideal, pl_g, pl_e, pl_m,
     ax2.spines['top'].set_visible(False); ax2.spines['right'].set_visible(False)
     ax2.grid(True, alpha=0.3)
     plt.tight_layout()
+    plt.savefig(os.path.join(OUTPUT_DIR, 'fig2_idealised_vs_real.png'), dpi=150, bbox_inches='tight')
     plt.show()
 
     # ── Figure 3: Sensitivity analysis ────────────────────────────────────
     fig3, (ax3, ax4) = plt.subplots(1, 2, figsize=(12, 5))
-    fig3.suptitle('LUNA-1 §8.3 — Sensitivity analysis', fontsize=11, fontweight='bold')
+    fig3.suptitle('LUNA-1 Sec.8.3 — Sensitivity analysis', fontsize=11, fontweight='bold')
 
     # Payload
     ax3b = ax3.twinx()
@@ -989,13 +992,14 @@ def plot_mission_results(res, ideal, pl_g, pl_e, pl_m,
     ax4.spines['top'].set_visible(False); ax4.spines['right'].set_visible(False)
     ax4.grid(True, alpha=0.3)
     plt.tight_layout()
+    plt.savefig(os.path.join(OUTPUT_DIR, 'fig3_sensitivity.png'), dpi=150, bbox_inches='tight')
     plt.show()
 
     # ── Figure 4: Requirement verification table ───────────────────────────
     fig4, ax5 = plt.subplots(figsize=(10, 3.5))
-    fig4.suptitle('LUNA-1 §8.4 — Requirement verification', fontsize=11, fontweight='bold')
+    fig4.suptitle('LUNA-1 Sec.8.4 — Requirement verification', fontsize=11, fontweight='bold')
     ax5.axis('off')
-    col_labels = ['Requirement', 'Target (§2.3.1)', 'Simulated result', 'Status']
+    col_labels = ['Requirement', 'Target (Sec.2.3.1)', 'Simulated result', 'Status']
     rows = [[r[0], r[1], r[2], 'PASS' if r[3] else 'FAIL'] for r in reqs]
     tbl  = ax5.table(cellText=rows, colLabels=col_labels,
                      cellLoc='center', loc='center', bbox=[0, 0.05, 1, 0.9])
@@ -1013,6 +1017,7 @@ def plot_mission_results(res, ideal, pl_g, pl_e, pl_m,
             else:
                 cell.set_facecolor('#F8F8F6' if i % 2 == 0 else '#FFFFFF')
     plt.tight_layout()
+    plt.savefig(os.path.join(OUTPUT_DIR, 'fig4_requirements.png'), dpi=150, bbox_inches='tight')
     plt.show()
 
     print('[PLOT] All figures displayed.')
@@ -1024,6 +1029,12 @@ def plot_mission_results(res, ideal, pl_g, pl_e, pl_m,
 
 # Global reference used by verify_requirements and print_mission_summary
 vehicle_global = None
+
+# ── Output folder — timestamped so runs never overwrite each other ──────────
+_RUN_TIMESTAMP = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                          f'luna_results_{_RUN_TIMESTAMP}')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 if __name__ == '__main__':
 
@@ -1073,4 +1084,4 @@ if __name__ == '__main__':
     plot_mission_results(res, ideal, pl_g, pl_e, pl_m,
                          spd_kmh, spd_p, spd_e, reqs)
 
-    print('\nDone. Outputs: luna_mission_analysis.png')
+    print(f'\nDone. All figures saved to: {OUTPUT_DIR}')
